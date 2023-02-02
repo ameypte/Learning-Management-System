@@ -15,8 +15,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="45dp"
-            android:padding="15dp"
+            android:layout_marginTop="29dp"
+            android:padding="10dp"
             android:text="Register"
             android:textColor="#3E3E3E"
             android:textSize="36sp"
@@ -51,6 +51,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gender: "
+                android:textSize="18sp"
+                android:textColor="#171717"/>
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
