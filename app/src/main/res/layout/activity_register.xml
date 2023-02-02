@@ -112,6 +112,25 @@
             android:inputType="textPassword"
             android:padding="14sp"
             android:textSize="18sp" />
-
+        <Button
+            android:id="@+id/btnRegister"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Register"
+            android:layout_below="@id/etConPass"
+            android:layout_centerHorizontal="true"
+            android:paddingHorizontal="25dp"
+            android:paddingVertical="10dp"
+            android:textSize="17sp"
+            />
+        <TextView
+            android:id="@+id/txtAlready"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btnRegister"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="22dp"
+            android:text="Already have an account?"
+            android:textSize="16sp" />
     </RelativeLayout>
 </ScrollView>
