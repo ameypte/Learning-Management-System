@@ -13,4 +13,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "Learning-Management-System"
-include ':app'
+include ':Login'
