@@ -2,6 +2,7 @@ package com.example.learning_management_system
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 
@@ -28,8 +29,12 @@ class RegisterActivity : AppCompatActivity() {
 
 //            val regen = findViewById<RadioGroup>(R.id.rgGender)
 //            val gen = regen.Button.toString()
-            radioGroup = findViewById(R.id.rgGender);
-            val selectedRadioButtonId: Int = radioGroup.checkedRadioButtonId
+//            radioGroup = findViewById(R.id.rgGender);
+//            val selectedRadioButtonId: Int = radioGroup.checkedRadioButtonId
+
+            val rg = findViewById<View>(R.id.rgGender) as RadioGroup
+            val value = (findViewById<View>(rg.checkedRadioButtonId) as RadioButton).text.toString()
+
 
             val Mail = findViewById<EditText>(R.id.etEmail)
             val email = Mail.text.toString()
@@ -43,21 +48,16 @@ class RegisterActivity : AppCompatActivity() {
             val Conpass = findViewById<EditText>(R.id.etConPass)
             val conpass = Conpass.text.toString()
 
-            if(name.isBlank() || uid.isBlank() || email.isBlank() || phone.isBlank() || pass.isBlank()){
+            if (name.isBlank() || uid.isBlank() || email.isBlank() || phone.isBlank() || pass.isBlank()) {
                 Toast.makeText(this, "Please insert all the detail", Toast.LENGTH_SHORT).show()
-            }
-            else if (pass != conpass){
-                Toast.makeText(this, "Password and Confirm Password didn't match", Toast.LENGTH_SHORT).show()
-            }
-            else{
-                if (selectedRadioButtonId != -1) {
-                    selectedRadioButton = findViewById(selectedRadioButtonId)
-                    val string: String = selectedRadioButton.text.toString()
-                    Toast.makeText(this, "Register successfully, $string", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(this, "Please Select The gender!", Toast.LENGTH_SHORT).show()
-                }
-
+            } else if (pass != conpass) {
+                Toast.makeText(
+                    this,
+                    "Password and Confirm Password didn't match",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                Toast.makeText(this, "Register successfully", Toast.LENGTH_SHORT).show()
             }
         }
 
