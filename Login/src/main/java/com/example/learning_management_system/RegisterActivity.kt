@@ -28,7 +28,7 @@ class RegisterActivity : AppCompatActivity() {
 
 //            val regen = findViewById<RadioGroup>(R.id.rgGender)
 //            val gen = regen.Button.toString()
-            radioGroup = findViewById(R.id.rgGender);
+            radioGroup = findViewById(R.id.rgGender)
             val selectedRadioButtonId: Int = radioGroup.checkedRadioButtonId
 
             val Mail = findViewById<EditText>(R.id.etEmail)
@@ -57,7 +57,6 @@ class RegisterActivity : AppCompatActivity() {
                 } else {
                     Toast.makeText(this, "Please Select The gender!", Toast.LENGTH_SHORT).show()
                 }
-
             }
         }
 
