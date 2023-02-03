@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "931084032585",
+    "project_id": "learning-mg-sys",
+    "storage_bucket": "learning-mg-sys.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:931084032585:android:09e797b5c779ff55f5fd98",
+        "android_client_info": {
+          "package_name": "com.example.learning_management_system"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "931084032585-f1ekk7p8pnh693dk759g6ums48j44oh9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxTZUtJDiFcKbwMo1-O5rWctCGtRCJbLg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "931084032585-f1ekk7p8pnh693dk759g6ums48j44oh9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
