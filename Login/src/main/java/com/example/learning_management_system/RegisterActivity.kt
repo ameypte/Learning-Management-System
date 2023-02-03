@@ -31,7 +31,6 @@ class RegisterActivity : AppCompatActivity() {
             radioGroup = findViewById(R.id.rgGender);
             val selectedRadioButtonId: Int = radioGroup.checkedRadioButtonId
 
-
             val Mail = findViewById<EditText>(R.id.etEmail)
             val email = Mail.text.toString()
 
