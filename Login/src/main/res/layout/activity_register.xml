@@ -129,14 +129,16 @@
             android:paddingVertical="10dp"
             android:textSize="17sp"
             />
-        <TextView
-            android:id="@+id/txtAlready"
+        <Button
+            android:id="@+id/btnAlready"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/btnRegister"
             android:layout_centerHorizontal="true"
             android:layout_margin="22dp"
+            android:backgroundTint="@color/white"
             android:text="Already have an account?"
+            android:textColor="@color/black"
             android:textSize="16sp" />
     </RelativeLayout>
 </ScrollView>
