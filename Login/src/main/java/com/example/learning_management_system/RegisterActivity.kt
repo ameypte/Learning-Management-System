@@ -3,6 +3,8 @@ package com.example.learning_management_system
 import android.content.Intent
 import android.os.Bundle
 import android.widget.*
+import android.widget.AdapterView.OnItemSelectedListener
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.learning_management_system.databinding.ActivityRegisterBinding
 import com.google.firebase.database.DatabaseReference
@@ -25,6 +27,22 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(registerBinding.root)
 
         title = "Register"
+
+
+        val spinner = findViewById<Spinner>(R.id.spinner)
+        val items = arrayOf("Select Department","Information Technology", "Computer Engineering", "Civil Engineering","Mechanical Engineering","ExTc Engineering","Electrical Engineering","Chemical Engineering")
+        val adapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items)
+        spinner.setAdapter(adapter)
+
+        spinner.onItemSelectedListener = object : OnItemSelectedListener {
+            override fun onItemSelected (arg0: AdapterView<*>?, arg1: View?, arg2: Int, arg3: Long) {
+                // Do what you want
+                val items1 = spinner.selectedItem.toString()
+            }
+
+            override fun onNothingSelected(arg0: AdapterView<*>?) {}
+        }
+
 
         val btnalready = findViewById<Button>(R.id.btnAlready)
 

@@ -44,9 +44,18 @@
             android:inputType="text"
             android:padding="14sp"
             android:textSize="18sp" />
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Select"
+            android:layout_below="@id/etId"
+            android:layout_centerHorizontal="true"/>
+
         <RadioGroup
             android:id="@+id/rgGender"
-            android:layout_below="@+id/etId"
+            android:layout_below="@+id/spinner"
             android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
