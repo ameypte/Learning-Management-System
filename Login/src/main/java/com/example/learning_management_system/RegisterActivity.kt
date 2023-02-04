@@ -5,8 +5,7 @@ import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.learning_management_system.databinding.ActivityRegisterBinding
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 
 
 class RegisterActivity : AppCompatActivity() {
@@ -39,7 +38,7 @@ class RegisterActivity : AppCompatActivity() {
             val pass = registerBinding.etPass.text.toString()
             val conpass = registerBinding.etConPass.text.toString()
 
-            // getting the refrence of realtime databse
+            // getting the reference of realtime database
             databse = FirebaseDatabase.getInstance().getReference("Student")
 
             if (name.isBlank() || uid.isBlank() || email.isBlank() || phone.isBlank() || pass.isBlank()) {
@@ -50,27 +49,42 @@ class RegisterActivity : AppCompatActivity() {
                 ).show()
             } else {
                 if (selectedRadioButtonId != -1) {
-                    selectedRadioButton = findViewById(selectedRadioButtonId)
-                    val gender: String = selectedRadioButton.text.toString()
+                    val ref = this
+                    databse.addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            // check if student is already registered
+                            if (snapshot.child(uid).exists()) {
+                                Toast.makeText( ref,"Student is already registered!", Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                            else{
+                                selectedRadioButton = findViewById(selectedRadioButtonId)
+                                val gender: String = selectedRadioButton.text.toString()
 
-                    // passing the value in Student dataclass
-                    val Student = Student(name, uid, gender, email, phone, pass)
-                    // adding child in database
-                    databse.child(uid).setValue(Student).addOnSuccessListener {
-                        registerBinding.etName.text.clear()
-                        registerBinding.etId.text.clear()
-                        registerBinding.rgGender.clearCheck()
-                        registerBinding.etEmail.text.clear()
-                        registerBinding.etPhone.text.clear()
-                        registerBinding.etPass.text.clear()
-                        registerBinding.etConPass.text.clear()
-                        Toast.makeText(this, "Register successfully", Toast.LENGTH_SHORT)
-                            .show()
-                    }.addOnFailureListener {
-                        Toast.makeText(this, "Something went wrong!", Toast.LENGTH_SHORT)
-                            .show()
-                    }
+                                // passing the value in Student dataclass
+                                val Student = Student(name, uid, gender, email, phone, pass)
 
+                                // adding child in database
+                                databse.child(uid).setValue(Student).addOnSuccessListener {
+                                    registerBinding.etName.text.clear()
+                                    registerBinding.etId.text.clear()
+                                    registerBinding.rgGender.clearCheck()
+                                    registerBinding.etEmail.text.clear()
+                                    registerBinding.etPhone.text.clear()
+                                    registerBinding.etPass.text.clear()
+                                    registerBinding.etConPass.text.clear()
+                                    Toast.makeText(ref, "Register successfully", Toast.LENGTH_SHORT)
+                                        .show()
+                                }.addOnFailureListener {
+                                    Toast.makeText(ref, "Something went wrong!", Toast.LENGTH_SHORT)
+                                        .show()
+                                }
+                            }
+                        }
+                        override fun onCancelled(error: DatabaseError) {
+                            
+                        }
+                    })
                 } else {
                     Toast.makeText(this, "Please Select The gender!", Toast.LENGTH_SHORT).show()
                 }
