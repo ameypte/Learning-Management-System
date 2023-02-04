@@ -29,12 +29,22 @@ class RegisterActivity : AppCompatActivity() {
 
 
         val spinner = findViewById<Spinner>(R.id.spinner)
-        val items = arrayOf("Select Department","Information Technology", "Computer Engineering", "Civil Engineering","Mechanical Engineering","ExTc Engineering","Electrical Engineering","Chemical Engineering")
-        val adapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items)
+        val items = arrayOf(
+            "Select Department",
+            "Information Technology",
+            "Computer Engineering",
+            "Civil Engineering",
+            "Mechanical Engineering",
+            "ExTc Engineering",
+            "Electrical Engineering",
+            "Chemical Engineering"
+        )
+        val adapter =
+            ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items)
         spinner.setAdapter(adapter)
 
         spinner.onItemSelectedListener = object : OnItemSelectedListener {
-            override fun onItemSelected (arg0: AdapterView<*>?, arg1: View?, arg2: Int, arg3: Long) {
+            override fun onItemSelected(arg0: AdapterView<*>?, arg1: View?, arg2: Int, arg3: Long) {
                 // Do what you want
                 val items1 = spinner.selectedItem.toString()
             }
@@ -50,6 +60,7 @@ class RegisterActivity : AppCompatActivity() {
             // we are retrieving the value from xml page to variables
             val name = registerBinding.etName.text.toString()
             val uid = registerBinding.etId.text.toString()
+            val branch = registerBinding.spinner.selectedItem.toString()
             val selectedRadioButtonId: Int = registerBinding.rgGender.checkedRadioButtonId
             val email = registerBinding.etEmail.text.toString()
             val phone = registerBinding.etPhone.text.toString()
@@ -59,7 +70,7 @@ class RegisterActivity : AppCompatActivity() {
             // getting the reference of realtime database
             databse = FirebaseDatabase.getInstance().getReference("Student")
 
-            if (name.isBlank() || uid.isBlank() || email.isBlank() || phone.isBlank() || pass.isBlank()) {
+            if (name.isBlank() || uid.isBlank() || email.isBlank() || phone.isBlank() || pass.isBlank()||branch == items[0]) {
                 Toast.makeText(this, "Please insert all the detail", Toast.LENGTH_SHORT).show()
             } else if (pass != conpass) {
                 Toast.makeText(
@@ -72,15 +83,15 @@ class RegisterActivity : AppCompatActivity() {
                         override fun onDataChange(snapshot: DataSnapshot) {
                             // check if student is already registered
                             if (snapshot.child(uid).exists()) {
-                                Toast.makeText( ref,"Student is already registered!", Toast.LENGTH_SHORT
+                                Toast.makeText(
+                                    ref, "Student is already registered!", Toast.LENGTH_SHORT
                                 ).show()
-                            }
-                            else{
+                            } else {
                                 selectedRadioButton = findViewById(selectedRadioButtonId)
                                 val gender: String = selectedRadioButton.text.toString()
 
                                 // passing the value in Student dataclass
-                                val Student = Student(name, uid, gender, email, phone, pass)
+                                val Student = Student(name, uid, branch, gender, email, phone, pass)
 
                                 // adding child in database
                                 databse.child(uid).setValue(Student).addOnSuccessListener {
@@ -99,8 +110,9 @@ class RegisterActivity : AppCompatActivity() {
                                 }
                             }
                         }
+
                         override fun onCancelled(error: DatabaseError) {
-                            
+
                         }
                     })
                 } else {

@@ -33,6 +33,7 @@
             android:inputType="text"
             android:padding="14sp"
             android:textSize="18sp" />
+
         <EditText
             android:id="@+id/etId"
             android:layout_width="match_parent"
@@ -47,41 +48,47 @@
 
         <Spinner
             android:id="@+id/spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="Select"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
             android:layout_below="@id/etId"
-            android:layout_centerHorizontal="true"/>
+            android:text="Sipnner"
+            android:textSize="28sp"
+            android:background="#F3F3F3"
+            android:layout_marginHorizontal="20dp"
+        />
 
         <RadioGroup
             android:id="@+id/rgGender"
-            android:layout_below="@+id/spinner"
-            android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/spinner"
+            android:layout_centerHorizontal="true"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Gender: "
-                android:textSize="18sp"
-                android:textColor="#171717"/>
+                android:textColor="#171717"
+                android:textSize="18sp" />
+
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
                 android:text="Male"
-                android:layout_marginHorizontal="20dp"
-                android:textSize="16sp"
-                />
+                android:textSize="16sp" />
+
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Female"
                 android:layout_marginHorizontal="20dp"
+                android:text="Female"
                 android:textSize="16sp"
 
                 />
         </RadioGroup>
+
         <EditText
             android:id="@+id/etEmail"
             android:layout_width="match_parent"
@@ -93,6 +100,7 @@
             android:inputType="textEmailAddress"
             android:padding="14sp"
             android:textSize="18sp" />
+
         <EditText
             android:id="@+id/etPhone"
             android:layout_width="match_parent"
@@ -105,6 +113,7 @@
             android:maxLength="10"
             android:padding="14sp"
             android:textSize="18sp" />
+
         <EditText
             android:id="@+id/etPass"
             android:layout_width="match_parent"
@@ -116,6 +125,7 @@
             android:inputType="textPassword"
             android:padding="14sp"
             android:textSize="18sp" />
+
         <EditText
             android:id="@+id/etConPass"
             android:layout_width="match_parent"
@@ -127,17 +137,18 @@
             android:inputType="textPassword"
             android:padding="14sp"
             android:textSize="18sp" />
+
         <Button
             android:id="@+id/btnRegister"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Register"
             android:layout_below="@id/etConPass"
             android:layout_centerHorizontal="true"
             android:paddingHorizontal="25dp"
             android:paddingVertical="10dp"
-            android:textSize="17sp"
-            />
+            android:text="Register"
+            android:textSize="17sp" />
+
         <Button
             android:id="@+id/btnAlready"
             android:layout_width="wrap_content"
