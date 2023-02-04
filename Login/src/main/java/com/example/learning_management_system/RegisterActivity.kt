@@ -6,10 +6,10 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.learning_management_system.databinding.ActivityRegisterBinding
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 
 class RegisterActivity : AppCompatActivity() {
-    private lateinit var radioGroup: RadioGroup
     private lateinit var selectedRadioButton: RadioButton
 
     // database code
@@ -26,33 +26,21 @@ class RegisterActivity : AppCompatActivity() {
 
         title = "Register"
 
-//        val btreg = findViewById<Button>(R.id.btnRegister)
         val btnalready = findViewById<Button>(R.id.btnAlready)
 
         registerBinding.btnRegister.setOnClickListener {
 
-            val Name = findViewById<EditText>(R.id.etName)
-            val name = Name.text.toString()
+            // we are retrieving the value from xml page to variables
+            val name = registerBinding.etName.text.toString()
+            val uid = registerBinding.etId.text.toString()
+            val selectedRadioButtonId: Int = registerBinding.rgGender.checkedRadioButtonId
+            val email = registerBinding.etEmail.text.toString()
+            val phone = registerBinding.etPhone.text.toString()
+            val pass = registerBinding.etPass.text.toString()
+            val conpass = registerBinding.etConPass.text.toString()
 
-            val Icode = findViewById<EditText>(R.id.etId)
-            val uid = Icode.text.toString()
-
-//            val regen = findViewById<RadioGroup>(R.id.rgGender)
-//            val gen = regen.Button.toString()
-            radioGroup = findViewById(R.id.rgGender)
-            val selectedRadioButtonId: Int = radioGroup.checkedRadioButtonId
-
-            val Mail = findViewById<EditText>(R.id.etEmail)
-            val email = Mail.text.toString()
-
-            val Phone = findViewById<EditText>(R.id.etPhone)
-            val phone = Phone.text.toString()
-
-            val Pass = findViewById<EditText>(R.id.etPass)
-            val pass = Pass.text.toString()
-
-            val Conpass = findViewById<EditText>(R.id.etConPass)
-            val conpass = Conpass.text.toString()
+            // getting the refrence of realtime databse
+            databse = FirebaseDatabase.getInstance().getReference("Student")
 
             if (name.isBlank() || uid.isBlank() || email.isBlank() || phone.isBlank() || pass.isBlank()) {
                 Toast.makeText(this, "Please insert all the detail", Toast.LENGTH_SHORT).show()
@@ -63,9 +51,26 @@ class RegisterActivity : AppCompatActivity() {
             } else {
                 if (selectedRadioButtonId != -1) {
                     selectedRadioButton = findViewById(selectedRadioButtonId)
-                    val string: String = selectedRadioButton.text.toString()
-                    Toast.makeText(this, "Register successfully, $string", Toast.LENGTH_SHORT)
-                        .show()
+                    val gender: String = selectedRadioButton.text.toString()
+
+                    // passing the value in Student dataclass
+                    val Student = Student(name, uid, gender, email, phone, pass)
+                    // adding child in database
+                    databse.child(uid).setValue(Student).addOnSuccessListener {
+                        registerBinding.etName.text.clear()
+                        registerBinding.etId.text.clear()
+                        registerBinding.rgGender.clearCheck()
+                        registerBinding.etEmail.text.clear()
+                        registerBinding.etPhone.text.clear()
+                        registerBinding.etPass.text.clear()
+                        registerBinding.etConPass.text.clear()
+                        Toast.makeText(this, "Register successfully", Toast.LENGTH_SHORT)
+                            .show()
+                    }.addOnFailureListener {
+                        Toast.makeText(this, "Something went wrong!", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+
                 } else {
                     Toast.makeText(this, "Please Select The gender!", Toast.LENGTH_SHORT).show()
                 }
