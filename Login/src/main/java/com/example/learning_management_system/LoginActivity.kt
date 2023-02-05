@@ -7,12 +7,16 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import com.example.learning_management_system.databinding.ActivityLoginBinding
+import com.example.learning_management_system.databinding.ActivityRegisterBinding
 
 class LoginActivity : AppCompatActivity() {
+    private lateinit var loginBinding: ActivityLoginBinding
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        loginBinding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(loginBinding.root)
 
 
         val btnlog = findViewById<Button>(R.id.btnLogin)
@@ -35,6 +39,10 @@ class LoginActivity : AppCompatActivity() {
 
         btncr.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
+        }
+        loginBinding.btnForgotPass.setOnClickListener{
+            val intent = Intent(this, ForgotPasswordActivity::class.java)
             startActivity(intent)
         }
     }
