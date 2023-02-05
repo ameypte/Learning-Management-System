@@ -49,7 +49,7 @@
         <Spinner
             android:id="@+id/spinner"
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="48dp"
             android:layout_below="@id/etId"
             android:text="Sipnner"
             android:textSize="28sp"
