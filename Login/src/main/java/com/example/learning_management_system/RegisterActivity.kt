@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.learning_management_system.databinding.ActivityRegisterBinding
 import com.google.firebase.database.*
 
-
 class RegisterActivity : AppCompatActivity() {
     private lateinit var selectedRadioButton: RadioButton
 
@@ -70,8 +69,10 @@ class RegisterActivity : AppCompatActivity() {
             // getting the reference of realtime database
             databse = FirebaseDatabase.getInstance().getReference("Student")
 
-            if (name.isBlank() || uid.isBlank() || email.isBlank() || phone.isBlank() || pass.isBlank()||branch == items[0]) {
+            if (name.isBlank() || uid.isBlank() || email.isBlank() || phone.isBlank() || pass.isBlank()) {
                 Toast.makeText(this, "Please insert all the detail", Toast.LENGTH_SHORT).show()
+            } else if (branch == items[0]) {
+                Toast.makeText(this, "Please select the department", Toast.LENGTH_SHORT).show()
             } else if (pass != conpass) {
                 Toast.makeText(
                     this, "Password and Confirm Password didn't match", Toast.LENGTH_SHORT
@@ -110,6 +111,7 @@ class RegisterActivity : AppCompatActivity() {
                                 }
                             }
                         }
+
                         override fun onCancelled(error: DatabaseError) {
 
                         }
