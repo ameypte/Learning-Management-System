@@ -80,6 +80,10 @@ class RegisterActivity : AppCompatActivity() {
             } else {
                 if (selectedRadioButtonId != -1) {
                     val ref = this
+
+                    // show progress bar
+                    registerBinding.progressBar.visibility = View.VISIBLE
+
                     databse.addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
                             // check if student is already registered
@@ -87,6 +91,7 @@ class RegisterActivity : AppCompatActivity() {
                                 Toast.makeText(
                                     ref, "Student is already registered!", Toast.LENGTH_SHORT
                                 ).show()
+                                registerBinding.progressBar.visibility = View.GONE
                             } else {
                                 selectedRadioButton = findViewById(selectedRadioButtonId)
                                 val gender: String = selectedRadioButton.text.toString()
@@ -108,6 +113,8 @@ class RegisterActivity : AppCompatActivity() {
                                 }.addOnFailureListener {
                                     Toast.makeText(ref, "Something went wrong!", Toast.LENGTH_SHORT)
                                         .show()
+                                }.addOnCompleteListener {
+                                    registerBinding.progressBar.visibility = View.GONE
                                 }
                             }
                         }
@@ -120,6 +127,7 @@ class RegisterActivity : AppCompatActivity() {
                     Toast.makeText(this, "Please Select The gender!", Toast.LENGTH_SHORT).show()
                 }
             }
+
         }
         btnalready.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)

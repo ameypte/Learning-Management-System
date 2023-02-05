@@ -137,12 +137,19 @@
             android:inputType="textPassword"
             android:padding="14sp"
             android:textSize="18sp" />
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_below="@id/etConPass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone"/>
 
         <Button
             android:id="@+id/btnRegister"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/etConPass"
+            android:layout_below="@id/progressBar"
             android:layout_centerHorizontal="true"
             android:paddingHorizontal="25dp"
             android:paddingVertical="10dp"

@@ -21,7 +21,6 @@
             android:textColor="#3E3E3E"
             android:textSize="36sp"
             android:textStyle="bold" />
-
         <EditText
             android:id="@+id/etIdCode"
             android:layout_width="match_parent"
@@ -49,12 +48,19 @@
             android:inputType="textPassword"
             android:padding="14sp"
             android:textSize="18sp" />
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_below="@id/etPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone"/>
 
         <Button
             android:id="@+id/btnLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/etPassword"
+            android:layout_below="@+id/progressBar"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
