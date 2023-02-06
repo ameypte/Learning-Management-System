@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
+import com.example.dashboard.Dashboard
 import com.example.learning_management_system.databinding.ActivityLoginBinding
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -48,6 +49,8 @@ class LoginActivity : AppCompatActivity() {
             if (it.exists()) {
                 val dbPass = it.child("password").value
                 if (pass.equals(dbPass)){
+                    val intent = Intent(this,Dashboard::class.java)
+                    startActivity(intent)
                     Toast.makeText(this, "Login Successful!", Toast.LENGTH_SHORT).show()
                 }
                 else{
@@ -61,5 +64,9 @@ class LoginActivity : AppCompatActivity() {
         }.addOnCompleteListener{
             loginBinding.progressBar.visibility = View.GONE
         }
+    }
+    override fun onPause() {
+        super.onPause()
+        finish()
     }
 }
