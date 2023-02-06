@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 include ':Login'
 rootProject.name = "Learning-Management-System"
 
+include ':Dashboard'

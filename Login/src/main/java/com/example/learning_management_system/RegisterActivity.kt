@@ -27,7 +27,7 @@ class RegisterActivity : AppCompatActivity() {
         title = "Register"
 
 
-        val spinner = findViewById<Spinner>(R.id.spinner)
+        val spinner = registerBinding.spinner
         val items = arrayOf(
             "Select Department",
             "Information Technology",
@@ -40,19 +40,15 @@ class RegisterActivity : AppCompatActivity() {
         )
         val adapter =
             ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items)
-        spinner.setAdapter(adapter)
+        spinner.adapter = adapter
 
         spinner.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(arg0: AdapterView<*>?, arg1: View?, arg2: Int, arg3: Long) {
                 // Do what you want
                 val items1 = spinner.selectedItem.toString()
             }
-
             override fun onNothingSelected(arg0: AdapterView<*>?) {}
         }
-
-
-        val btnalready = findViewById<Button>(R.id.btnAlready)
 
         registerBinding.btnRegister.setOnClickListener {
 
@@ -80,6 +76,10 @@ class RegisterActivity : AppCompatActivity() {
             } else {
                 if (selectedRadioButtonId != -1) {
                     val ref = this
+
+                    // show progress bar
+                    registerBinding.progressBar.visibility = View.VISIBLE
+
                     databse.addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
                             // check if student is already registered
@@ -87,6 +87,7 @@ class RegisterActivity : AppCompatActivity() {
                                 Toast.makeText(
                                     ref, "Student is already registered!", Toast.LENGTH_SHORT
                                 ).show()
+                                registerBinding.progressBar.visibility = View.GONE
                             } else {
                                 selectedRadioButton = findViewById(selectedRadioButtonId)
                                 val gender: String = selectedRadioButton.text.toString()
@@ -105,9 +106,12 @@ class RegisterActivity : AppCompatActivity() {
                                     registerBinding.etConPass.text.clear()
                                     Toast.makeText(ref, "Register successfully", Toast.LENGTH_SHORT)
                                         .show()
+
                                 }.addOnFailureListener {
                                     Toast.makeText(ref, "Something went wrong!", Toast.LENGTH_SHORT)
                                         .show()
+                                }.addOnCompleteListener {
+                                    registerBinding.progressBar.visibility = View.GONE
                                 }
                             }
                         }
@@ -120,8 +124,9 @@ class RegisterActivity : AppCompatActivity() {
                     Toast.makeText(this, "Please Select The gender!", Toast.LENGTH_SHORT).show()
                 }
             }
+
         }
-        btnalready.setOnClickListener {
+        registerBinding.btnAlready.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
