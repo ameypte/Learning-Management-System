@@ -15,7 +15,7 @@ class RegisterActivity : AppCompatActivity() {
     // database code
     // creating the binding for activity_register.xml
     private lateinit var registerBinding: ActivityRegisterBinding
-    private lateinit var databse: DatabaseReference
+    private lateinit var database: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,7 +25,6 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(registerBinding.root)
 
         title = "Register"
-
 
         val spinner = registerBinding.spinner
         val items = arrayOf(
@@ -44,7 +43,6 @@ class RegisterActivity : AppCompatActivity() {
 
         spinner.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(arg0: AdapterView<*>?, arg1: View?, arg2: Int, arg3: Long) {
-                // Do what you want
                 val items1 = spinner.selectedItem.toString()
             }
             override fun onNothingSelected(arg0: AdapterView<*>?) {}
@@ -63,7 +61,7 @@ class RegisterActivity : AppCompatActivity() {
             val conpass = registerBinding.etConPass.text.toString()
 
             // getting the reference of realtime database
-            databse = FirebaseDatabase.getInstance().getReference("Student")
+            database = FirebaseDatabase.getInstance().getReference("Student")
 
             if (name.isBlank() || uid.isBlank() || email.isBlank() || phone.isBlank() || pass.isBlank()) {
                 Toast.makeText(this, "Please insert all the detail", Toast.LENGTH_SHORT).show()
@@ -80,7 +78,7 @@ class RegisterActivity : AppCompatActivity() {
                     // show progress bar
                     registerBinding.progressBar.visibility = View.VISIBLE
 
-                    databse.addListenerForSingleValueEvent(object : ValueEventListener {
+                    database.addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
                             // check if student is already registered
                             if (snapshot.child(uid).exists()) {
@@ -96,7 +94,7 @@ class RegisterActivity : AppCompatActivity() {
                                 val Student = Student(name, uid, branch, gender, email, phone, pass)
 
                                 // adding child in database
-                                databse.child(uid).setValue(Student).addOnSuccessListener {
+                                database.child(uid).setValue(Student).addOnSuccessListener {
                                     registerBinding.etName.text.clear()
                                     registerBinding.etId.text.clear()
                                     registerBinding.rgGender.clearCheck()
@@ -106,6 +104,7 @@ class RegisterActivity : AppCompatActivity() {
                                     registerBinding.etConPass.text.clear()
                                     Toast.makeText(ref, "Register successfully", Toast.LENGTH_SHORT)
                                         .show()
+                                    finish()
 
                                 }.addOnFailureListener {
                                     Toast.makeText(ref, "Something went wrong!", Toast.LENGTH_SHORT)
@@ -115,7 +114,6 @@ class RegisterActivity : AppCompatActivity() {
                                 }
                             }
                         }
-
                         override fun onCancelled(error: DatabaseError) {
 
                         }

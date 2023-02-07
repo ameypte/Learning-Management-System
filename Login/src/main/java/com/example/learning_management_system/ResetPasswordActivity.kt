@@ -17,7 +17,7 @@ class ResetPasswordActivity : AppCompatActivity() {
         resetBinding = ActivityResetPasswordBinding.inflate(layoutInflater)
         setContentView(resetBinding.root)
 
-        val itemList = intent.getStringExtra("id")
+        val id = intent.getStringExtra("id")
 
         // getting the reference of realtime database
         database = FirebaseDatabase.getInstance().getReference("Student")
@@ -35,11 +35,9 @@ class ResetPasswordActivity : AppCompatActivity() {
                 } else {
                     if (intent != null) {
                         Toast.makeText(this, intent.getStringExtra("id"), Toast.LENGTH_SHORT).show()
-                        database.child("Student").child(itemList.toString()).child("password").setValue(conpass)
+                        database.child(id.toString()).child("password").setValue(conpass)
                     }
-
                 }
         }
-
     }
 }
