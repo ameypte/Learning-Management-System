@@ -1,13 +1,11 @@
 package com.example.learning_management_system
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import com.example.learning_management_system.databinding.ActivityResetPasswordBinding
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import javax.security.auth.login.LoginException
 
 class ResetPasswordActivity : AppCompatActivity() {
     private lateinit var resetBinding: ActivityResetPasswordBinding
@@ -36,11 +34,8 @@ class ResetPasswordActivity : AppCompatActivity() {
                     Toast.makeText(this, "Password and Confirm Password didn't match", Toast.LENGTH_SHORT).show()
                 } else {
                     if (intent != null) {
+                        Toast.makeText(this, intent.getStringExtra("id"), Toast.LENGTH_SHORT).show()
                         database.child(id.toString()).child("password").setValue(conpass)
-
-                        val intent = Intent(this, LoginActivity::class.java)
-                        startActivity(intent)
-                        finish()
                     }
                 }
         }
