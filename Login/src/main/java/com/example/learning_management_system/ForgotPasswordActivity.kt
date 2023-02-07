@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import com.example.learning_management_system.databinding.ActivityForgotPasswordBinding
-import com.example.learning_management_system.databinding.ActivityLoginBinding
 
 class ForgotPasswordActivity : AppCompatActivity() {
     private lateinit var forgotBinding: ActivityForgotPasswordBinding
@@ -15,8 +14,19 @@ class ForgotPasswordActivity : AppCompatActivity() {
         setContentView(forgotBinding.root)
 
         forgotBinding.btnContinue.setOnClickListener {
-            val intent = Intent(this,ResetPasswordActivity::class.java)
-            startActivity(intent)
+
+            val id = forgotBinding.etIdCode.text.toString()
+            val email = forgotBinding.etEmail.text.toString()
+
+
+            if(id.isBlank() || email.isBlank()){
+                Toast.makeText(this, "Please insert all the detail", Toast.LENGTH_SHORT).show()
+            }
+            else {
+                val intent = Intent(this, ResetPasswordActivity::class.java)
+                intent.putExtra("id", id)
+                startActivity(intent)
+            }
         }
     }
 }
