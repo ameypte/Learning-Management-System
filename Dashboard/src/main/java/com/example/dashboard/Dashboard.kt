@@ -21,7 +21,6 @@ class Dashboard : AppCompatActivity() {
         setContentView(dashboardBinding.root)
 
         loggedUser = sharedPreferences.getString("loggedInUser",null)
-
-        dashboardBinding.txt.text = loggedUser
+//        dashboardBinding.txt.text = loggedUser
     }
 }
