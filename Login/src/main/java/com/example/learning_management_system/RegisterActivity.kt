@@ -81,7 +81,7 @@ class RegisterActivity : AppCompatActivity() {
             val conpass = registerBinding.etConPass.text.toString()
 
             // getting the reference of realtime database
-            database = FirebaseDatabase.getInstance().getReference("Student")
+            database = FirebaseDatabase.getInstance().getReference("Departments")
 
             if (name.isBlank() || uid.isBlank() || email.isBlank() || phone.isBlank() || pass.isBlank()) {
                 Toast.makeText(this, "Please insert all the detail", Toast.LENGTH_SHORT).show()
@@ -114,7 +114,7 @@ class RegisterActivity : AppCompatActivity() {
                                 val Student = Student(name, uid, branch,year, gender, email, phone, pass)
 
                                 // adding child in database
-                                database.child(uid).setValue(Student).addOnSuccessListener {
+                                database.child(branch).child(year).child("Students").child(uid).setValue(Student).addOnSuccessListener {
                                     registerBinding.etName.text.clear()
                                     registerBinding.etId.text.clear()
                                     registerBinding.rgGender.clearCheck()
