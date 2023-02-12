@@ -4,6 +4,7 @@ data class Student(
     val name: String? = null,
     val idCode: String? = null,
     val branch: String? = null,
+    val year: String? = null,
     val gender: String? = null,
     val email: String? = null,
     val phone: String? = null,

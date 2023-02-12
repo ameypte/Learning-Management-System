@@ -48,12 +48,32 @@ class RegisterActivity : AppCompatActivity() {
             override fun onNothingSelected(arg0: AdapterView<*>?) {}
         }
 
+        val year = registerBinding.year
+        val item = arrayOf(
+            "Select Academic Year",
+            "First Year",
+            "Second Year",
+            "Third Year"
+        )
+
+        val adapter1 =
+            ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, item)
+        year.adapter = adapter1
+
+        year.onItemSelectedListener = object : OnItemSelectedListener {
+            override fun onItemSelected(arg0: AdapterView<*>?, arg1: View?, arg2: Int, arg3: Long) {
+                val item1 = year.selectedItem.toString()
+            }
+            override fun onNothingSelected(arg0: AdapterView<*>?) {}
+        }
+
         registerBinding.btnRegister.setOnClickListener {
 
             // we are retrieving the value from xml page to variables
             val name = registerBinding.etName.text.toString()
             val uid = registerBinding.etId.text.toString()
             val branch = registerBinding.spinner.selectedItem.toString()
+            val year = registerBinding.year.selectedItem.toString()
             val selectedRadioButtonId: Int = registerBinding.rgGender.checkedRadioButtonId
             val email = registerBinding.etEmail.text.toString()
             val phone = registerBinding.etPhone.text.toString()
@@ -91,7 +111,7 @@ class RegisterActivity : AppCompatActivity() {
                                 val gender: String = selectedRadioButton.text.toString()
 
                                 // passing the value in Student dataclass
-                                val Student = Student(name, uid, branch, gender, email, phone, pass)
+                                val Student = Student(name, uid, branch,year, gender, email, phone, pass)
 
                                 // adding child in database
                                 database.child(uid).setValue(Student).addOnSuccessListener {
