@@ -9,8 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.dashboard.Dashboard
 import com.example.learning_management_system.databinding.ActivityLoginBinding
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var loginBinding: ActivityLoginBinding
@@ -66,27 +65,58 @@ class LoginActivity : AppCompatActivity() {
 
     private fun checkIdPass(idCode: String, pass: String) {
         loginBinding.progressBar.visibility = View.VISIBLE
-        database = FirebaseDatabase.getInstance().getReference("Student")
-        database.child(idCode).get().addOnSuccessListener {
-            if (it.exists()) {
-                val dbPass = it.child("password").value
-                if (pass == dbPass) {
+
+        database = FirebaseDatabase.getInstance().getReference("Departments")
+
+        database.addListenerForSingleValueEvent(object : ValueEventListener{
+
+
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                var isStudentFound = false
+
+                for (departmentSnapshot in dataSnapshot.children){
+                    var department = departmentSnapshot.child("First Year")
+                    if (department.child("Students").child(idCode).exists()) {
+                        val student = department.child("Students").child(idCode).getValue(Student::class.java)
+                        if (student?.password == pass) {
+                            isStudentFound = true
+                            break
+                        }
+                    }
+                    department = departmentSnapshot.child("Second Year")
+                    if (department.child("Students").child(idCode).exists()) {
+                        val student = department.child("Students").child(idCode).getValue(Student::class.java)
+                        if (student?.password == pass) {
+                            isStudentFound = true
+                            break
+                        }
+                    }
+                    department = departmentSnapshot.child("Third Year")
+                    if (department.child("Students").child(idCode).exists()) {
+                        val student = department.child("Students").child(idCode).getValue(Student::class.java)
+                        if (student?.password == pass) {
+                            isStudentFound = true
+                            break
+                        }
+                    }
+                }
+                if (isStudentFound) {
                     savePreferences(idCode)
-                    val intent = Intent(this, Dashboard::class.java)
+                    val intent = Intent(this@LoginActivity, Dashboard::class.java)
                     startActivity(intent)
-                    Toast.makeText(this, "Login Successful!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@LoginActivity, "Login Successful!", Toast.LENGTH_SHORT).show()
                     finish()
                 } else {
-                    Toast.makeText(this, "Incorrect Password!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@LoginActivity, "Student not found or password is incorrect", Toast.LENGTH_SHORT).show()
                 }
-            } else {
-                Toast.makeText(this, "Student not registered!", Toast.LENGTH_SHORT).show()
+                loginBinding.progressBar.visibility = View.GONE
             }
-        }.addOnFailureListener {
-            Toast.makeText(this, "Something went wrong!", Toast.LENGTH_SHORT).show()
-        }.addOnCompleteListener {
-            loginBinding.progressBar.visibility = View.GONE
-        }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@LoginActivity, "Something went wrong", Toast.LENGTH_SHORT).show()
+            }
+        })
+
     }
 
     private fun savePreferences(idCode: String) {

@@ -23,7 +23,6 @@ class ResetPasswordActivity : AppCompatActivity() {
         // getting the reference of realtime database
         database = FirebaseDatabase.getInstance().getReference("Student")
 
-
         resetBinding.btnResetPass.setOnClickListener {
             val newpass = resetBinding.etNewPass.text.toString()
             val conpass = resetBinding.etConPass.text.toString()

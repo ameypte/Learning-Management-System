@@ -32,14 +32,11 @@ class Dashboard : AppCompatActivity() {
                 R.id.timeTable -> replaceFragment(TimeTable())
                 R.id.messages -> replaceFragment(Messages())
                 R.id.account -> replaceFragment(Account())
-
                 else -> {}
             }
             true
         }
-
     }
-
     private fun replaceFragment(fragment:Fragment){
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
