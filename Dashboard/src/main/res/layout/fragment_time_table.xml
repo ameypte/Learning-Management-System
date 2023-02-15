@@ -5,11 +5,9 @@
     android:layout_height="match_parent"
     tools:context=".TimeTable">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Time Table"
-        android:textSize="26sp"
-        android:gravity="center"/>
-
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/studentList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/student_item"/>
 </FrameLayout>

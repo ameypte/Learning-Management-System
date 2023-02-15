@@ -5,6 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.dashboard.databinding.FragmentTimeTableBinding
+import com.google.firebase.database.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -20,6 +24,10 @@ class TimeTable : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private lateinit var database: DatabaseReference
+    private var studentRecyclerView: RecyclerView? = null
+    private lateinit var studArrayList: ArrayList<Student>
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,8 +41,39 @@ class TimeTable : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        //code for recycler view
+        studentRecyclerView = view?.findViewById<RecyclerView>(R.id.studentList)
+
+        studentRecyclerView?.layoutManager = LinearLayoutManager(context)
+        studentRecyclerView?.setHasFixedSize(true)
+
+        studArrayList = arrayListOf<Student>()
+        getStudData()
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_time_table, container, false)
+    }
+
+    private fun getStudData() {
+        database = FirebaseDatabase.getInstance().getReference("Student")
+
+        database.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    for (studSnapshot in snapshot.children) {
+                        val stud = studSnapshot.getValue(Student::class.java)
+                        studArrayList.add(stud!!)
+                    }
+                    studentRecyclerView?.adapter = MyAdapter(studArrayList)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+
+        })
     }
 
     companion object {
