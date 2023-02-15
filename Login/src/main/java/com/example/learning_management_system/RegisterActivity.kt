@@ -35,7 +35,8 @@ class RegisterActivity : AppCompatActivity() {
             "Mechanical Engineering",
             "ExTc Engineering",
             "Electrical Engineering",
-            "Chemical Engineering"
+            "Chemical Engineering",
+            "Plastic & Polymer Engineering"
         )
         val adapter =
             ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items)
