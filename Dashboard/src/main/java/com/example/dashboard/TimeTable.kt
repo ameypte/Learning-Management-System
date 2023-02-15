@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.dashboard.databinding.FragmentTimeTableBinding
 import com.google.firebase.database.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -25,7 +24,7 @@ class TimeTable : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private lateinit var database: DatabaseReference
-    private var studentRecyclerView: RecyclerView? = null
+    private lateinit var studentRecyclerView: RecyclerView
     private lateinit var studArrayList: ArrayList<Student>
 
 
@@ -41,18 +40,18 @@ class TimeTable : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
+        val view = inflater.inflate(R.layout.fragment_time_table, container, false)
         //code for recycler view
-        studentRecyclerView = view?.findViewById<RecyclerView>(R.id.studentList)
+        studentRecyclerView = view.findViewById(R.id.studentList)
 
-        studentRecyclerView?.layoutManager = LinearLayoutManager(context)
-        studentRecyclerView?.setHasFixedSize(true)
+        studentRecyclerView.layoutManager = LinearLayoutManager(context)
+        studentRecyclerView.setHasFixedSize(true)
 
-        studArrayList = arrayListOf<Student>()
+        studArrayList = arrayListOf()
         getStudData()
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_time_table, container, false)
+        return view
     }
 
     private fun getStudData() {
