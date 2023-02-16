@@ -17,6 +17,16 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var registerBinding: ActivityRegisterBinding
     private lateinit var database: DatabaseReference
 
+    private fun isLettersOrDigits(uid: String): Boolean {
+        var hasOtherChar = false
+        for (c in uid) {
+            if (c !in 'A'..'Z' || c !in '0'..'9') {
+                hasOtherChar = true
+            }
+        }
+        return hasOtherChar
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -74,7 +84,7 @@ class RegisterActivity : AppCompatActivity() {
             val name = registerBinding.etName.text.toString()
             val uid = registerBinding.etId.text.toString()
             val branch = registerBinding.spinner.selectedItem.toString()
-            val year = registerBinding.year.selectedItem.toString()
+            val aYear = registerBinding.year.selectedItem.toString()
             val selectedRadioButtonId: Int = registerBinding.rgGender.checkedRadioButtonId
             val email = registerBinding.etEmail.text.toString()
             val phone = registerBinding.etPhone.text.toString()
@@ -86,12 +96,16 @@ class RegisterActivity : AppCompatActivity() {
 
             if (name.isBlank() || uid.isBlank() || email.isBlank() || phone.isBlank() || pass.isBlank()) {
                 Toast.makeText(this, "Please insert all the detail", Toast.LENGTH_SHORT).show()
+            } else if (aYear == item[0]) {
+                Toast.makeText(this, "Please select the Academic year", Toast.LENGTH_SHORT).show()
             } else if (branch == items[0]) {
                 Toast.makeText(this, "Please select the department", Toast.LENGTH_SHORT).show()
             } else if (pass != conpass) {
                 Toast.makeText(
-                    this, "Password and Confirm Password didn't match", Toast.LENGTH_SHORT
-                ).show()
+                    this, "Password and Confirm Password didn't match",Toast.LENGTH_SHORT).show()
+            } else if (!isLettersOrDigits(uid)) {
+                Toast.makeText(this, "Please insert idcode in proper manner", Toast.LENGTH_SHORT)
+                    .show()
             } else {
                 if (selectedRadioButtonId != -1) {
                     val ref = this
@@ -112,10 +126,12 @@ class RegisterActivity : AppCompatActivity() {
                                 val gender: String = selectedRadioButton.text.toString()
 
                                 // passing the value in Student dataclass
-                                val Student = Student(name, uid, branch,year, gender, email, phone, pass)
+                                val Student =
+                                    Student(name, uid, branch, aYear, gender, email, phone, pass)
 
                                 // adding child in database
-                                database.child(branch).child(year).child("Students").child(uid).setValue(Student).addOnSuccessListener {
+                                database.child(branch).child(aYear).child("Students").child(uid)
+                                    .setValue(Student).addOnSuccessListener {
                                     registerBinding.etName.text.clear()
                                     registerBinding.etId.text.clear()
                                     registerBinding.rgGender.clearCheck()
@@ -135,6 +151,7 @@ class RegisterActivity : AppCompatActivity() {
                                 }
                             }
                         }
+
                         override fun onCancelled(error: DatabaseError) {
 
                         }
