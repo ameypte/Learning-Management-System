@@ -15,6 +15,8 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var loginBinding: ActivityLoginBinding
     private lateinit var database: DatabaseReference
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var dept: String
+    private lateinit var year: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         loginBinding = ActivityLoginBinding.inflate(layoutInflater)
@@ -55,7 +57,6 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
             clear()
         }
-
     }
 
     private fun clear() {
@@ -68,34 +69,42 @@ class LoginActivity : AppCompatActivity() {
 
         database = FirebaseDatabase.getInstance().getReference("Departments")
 
-        database.addListenerForSingleValueEvent(object : ValueEventListener{
-
+        database.addListenerForSingleValueEvent(object : ValueEventListener {
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 var isStudentFound = false
 
-                for (departmentSnapshot in dataSnapshot.children){
+                for (departmentSnapshot in dataSnapshot.children) {
                     var department = departmentSnapshot.child("First Year")
                     if (department.child("Students").child(idCode).exists()) {
-                        val student = department.child("Students").child(idCode).getValue(Student::class.java)
+                        val student =
+                            department.child("Students").child(idCode).getValue(Student::class.java)
                         if (student?.password == pass) {
                             isStudentFound = true
+                            dept = departmentSnapshot.key.toString()
+                            year = department.key.toString()
                             break
                         }
                     }
                     department = departmentSnapshot.child("Second Year")
                     if (department.child("Students").child(idCode).exists()) {
-                        val student = department.child("Students").child(idCode).getValue(Student::class.java)
+                        val student =
+                            department.child("Students").child(idCode).getValue(Student::class.java)
                         if (student?.password == pass) {
                             isStudentFound = true
+                            dept = departmentSnapshot.key.toString()
+                            year = department.key.toString()
                             break
                         }
                     }
                     department = departmentSnapshot.child("Third Year")
                     if (department.child("Students").child(idCode).exists()) {
-                        val student = department.child("Students").child(idCode).getValue(Student::class.java)
+                        val student =
+                            department.child("Students").child(idCode).getValue(Student::class.java)
                         if (student?.password == pass) {
                             isStudentFound = true
+                            dept = departmentSnapshot.key.toString()
+                            year = department.key.toString()
                             break
                         }
                     }
@@ -104,16 +113,22 @@ class LoginActivity : AppCompatActivity() {
                     savePreferences(idCode)
                     val intent = Intent(this@LoginActivity, Dashboard::class.java)
                     startActivity(intent)
-                    Toast.makeText(this@LoginActivity, "Login Successful!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@LoginActivity, "Login Successful!", Toast.LENGTH_SHORT)
+                        .show()
                     finish()
                 } else {
-                    Toast.makeText(this@LoginActivity, "Student not found or password is incorrect", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this@LoginActivity,
+                        "Student not found or password is incorrect",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
                 loginBinding.progressBar.visibility = View.GONE
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(this@LoginActivity, "Something went wrong", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@LoginActivity, "Something went wrong", Toast.LENGTH_SHORT)
+                    .show()
             }
         })
 
@@ -122,6 +137,8 @@ class LoginActivity : AppCompatActivity() {
     private fun savePreferences(idCode: String) {
         sharedPreferences.edit().putBoolean("isLoggedIn", true).apply()
         sharedPreferences.edit().putString("loggedInUser", idCode).apply()
+        sharedPreferences.edit().putString("loggedUserDept", dept).apply()
+        sharedPreferences.edit().putString("loggedUserYear", year).apply()
     }
 
 }

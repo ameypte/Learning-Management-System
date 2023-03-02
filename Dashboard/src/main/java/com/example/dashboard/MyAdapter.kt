@@ -19,7 +19,6 @@ class MyAdapter(private val studentList: ArrayList<Student>):RecyclerView.Adapte
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val currentItem = studentList[position]
         holder.name.text = currentItem.name
-        holder.idCode.text = currentItem.idCode
     }
 
     class MyViewHolder(itemView:View):RecyclerView.ViewHolder(itemView){

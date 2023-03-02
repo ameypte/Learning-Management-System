@@ -1,10 +1,13 @@
 package com.example.dashboard
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -20,6 +23,9 @@ class Home : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private lateinit var loggedUserDept:String
+    private lateinit var loggedUserYear:String
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,14 +40,26 @@ class Home : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        val view = inflater.inflate(R.layout.fragment_home, container, false)
+
+        sharedPreferences = requireActivity().getSharedPreferences(
+            getString(R.string.login_preference_file_name),
+            Context.MODE_PRIVATE
+        )
+        loggedUserDept = sharedPreferences.getString("loggedUserDept",null).toString()
+        loggedUserYear = sharedPreferences.getString("loggedUserYear",null).toString()
+
+        val a = view.findViewById<TextView>(R.id.txtHome)
+        a.text = loggedUserDept + loggedUserYear
+        return view
+
+
     }
 
     companion object {
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
-         *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
          * @return A new instance of fragment Home.
