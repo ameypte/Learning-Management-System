@@ -2,7 +2,6 @@ package com.example.stafflogin
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.stafflogin.databinding.ActivityLoginBinding
 import com.example.stafflogin.databinding.ActivityRegisterBinding
 
 class Register : AppCompatActivity() {
