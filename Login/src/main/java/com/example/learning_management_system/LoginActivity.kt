@@ -131,7 +131,6 @@ class LoginActivity : AppCompatActivity() {
                     .show()
             }
         })
-
     }
 
     private fun savePreferences(idCode: String) {
