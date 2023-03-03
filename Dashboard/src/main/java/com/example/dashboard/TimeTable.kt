@@ -56,8 +56,8 @@ class TimeTable : Fragment() {
             "Monday",
             "Tuesday",
             "Wednesday",
-            "Thursday",
-            "Friday"
+            "Friday",
+            "Thursday"
         )
         val adapter = ArrayAdapter(requireContext(), R.layout.custom_spinner_dropdown_item, items)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
