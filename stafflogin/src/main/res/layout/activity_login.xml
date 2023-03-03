@@ -20,9 +20,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/txtStaffHead"
-        android:layout_margin="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
         android:hint="Email"
-        android:textSize="22sp" />
+        android:textSize="22sp"
+        android:inputType="text"/>
 
     <EditText
         android:id="@+id/etStaffPass"
@@ -31,7 +35,8 @@
         android:layout_below="@id/etStaffEmail"
         android:layout_margin="20dp"
         android:hint="Password"
-        android:textSize="22sp" />
+        android:textSize="22sp"
+        android:inputType="textPassword"/>
 
     <Button
         android:id="@+id/btnLogin"
