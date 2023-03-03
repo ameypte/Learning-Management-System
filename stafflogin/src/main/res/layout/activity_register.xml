@@ -28,7 +28,7 @@
             android:layout_marginTop="20dp"
             android:hint="Name"
             android:inputType="text"
-            android:textSize="22sp" />
+            android:textSize="20sp" />
 
         <EditText
             android:id="@+id/etmail"
@@ -39,7 +39,7 @@
             android:layout_marginTop="15dp"
             android:hint="Email"
             android:inputType="text"
-            android:textSize="22sp" />
+            android:textSize="20sp" />
 
         <Spinner
             android:id="@+id/spinner"
@@ -61,7 +61,8 @@
             android:layout_marginTop="15dp"
             android:hint="Mobile No."
             android:inputType="number"
-            android:textSize="22sp" />
+            android:textSize="20sp"
+            android:maxLength="10"/>
 
         <EditText
             android:id="@+id/etpass"
@@ -72,10 +73,10 @@
             android:layout_marginTop="15dp"
             android:hint="Password"
             android:inputType="textPassword"
-            android:textSize="22sp" />
+            android:textSize="20sp" />
 
         <EditText
-            android:id="@+id/etconpass"
+            android:id="@+id/etConPass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/etpass"
@@ -83,6 +84,24 @@
             android:layout_marginTop="15dp"
             android:hint="Confirm Password"
             android:inputType="textPassword"
-            android:textSize="22sp" />
+            android:textSize="20sp" />
+        <Button
+            android:id="@+id/btnRegister"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Register"
+            android:layout_below="@+id/etConPass"
+            android:layout_centerHorizontal="true"
+            android:textSize="20sp"
+            android:layout_margin="10dp"
+            android:paddingVertical="8dp"
+            android:paddingHorizontal="20dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Already have an account?"
+            android:layout_below="@+id/btnRegister"
+            android:textSize="19sp"
+            android:layout_centerHorizontal="true"/>
     </RelativeLayout>
 </ScrollView>

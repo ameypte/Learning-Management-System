@@ -12,7 +12,7 @@ class Login : AppCompatActivity() {
         loginBinding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(loginBinding.root)
 
-        loginBinding.btnRegister.setOnClickListener {
+        loginBinding.btnRegisterNow.setOnClickListener {
             val intent = Intent(this, Register::class.java)
             startActivity(intent)
             clear()
