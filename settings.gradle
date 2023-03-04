@@ -16,4 +16,5 @@ include ':Login'
 rootProject.name = "Learning-Management-System"
 
 include ':Dashboard'
-include ':stafflogin'
+include ':StaffLogin'
+include ':StaffDashboard'

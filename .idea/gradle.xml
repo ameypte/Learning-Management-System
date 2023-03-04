@@ -13,7 +13,8 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/Dashboard" />
             <option value="$PROJECT_DIR$/Login" />
-            <option value="$PROJECT_DIR$/stafflogin" />
+            <option value="$PROJECT_DIR$/StaffDashboard" />
+            <option value="$PROJECT_DIR$/StaffLogin" />
           </set>
         </option>
       </GradleProjectSettings>

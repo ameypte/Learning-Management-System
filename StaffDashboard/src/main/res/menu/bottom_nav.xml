@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/baseline_home_24"
+        android:title="Home" />
+    <item
+        android:id="@+id/courses"
+        android:icon="@drawable/baseline_course_24"
+        android:title="Courses" />
+    <item
+        android:id="@+id/timeTable"
+        android:icon="@drawable/baseline_time_table_24"
+        android:title="Time Table" />
+    <item
+        android:id="@+id/messages"
+        android:icon="@drawable/baseline_message_24"
+        android:title="Messages" />
+    <item
+        android:id="@+id/account"
+        android:icon="@drawable/baseline_account_circle_24"
+        android:title="Account" />
+</menu>

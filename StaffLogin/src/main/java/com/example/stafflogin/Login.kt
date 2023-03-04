@@ -1,19 +1,34 @@
 package com.example.stafflogin
 
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.example.staffdashboard.StaffDashboard
 import com.example.stafflogin.databinding.ActivityLoginBinding
 import com.google.firebase.database.*
 
 class Login : AppCompatActivity() {
     private lateinit var loginBinding: ActivityLoginBinding
     private lateinit var database: DatabaseReference
+    private lateinit var sharedPreferences: SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         loginBinding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(loginBinding.root)
+        sharedPreferences = getSharedPreferences(
+            getString(com.example.staffdashboard.R.string.login_preference_file_name),
+            MODE_PRIVATE
+        )
+
+        val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
+
+        if (isLoggedIn) {
+            val intent = Intent(this@Login, StaffDashboard::class.java)
+            startActivity(intent)
+            finish()
+        }
 
         loginBinding.btnRegisterNow.setOnClickListener {
             val intent = Intent(this, Register::class.java)
@@ -53,8 +68,12 @@ class Login : AppCompatActivity() {
                     }
                 }
                 if (isStaffFound) {
+                    savePreferences(email)
+                    val intent = Intent(this@Login,StaffDashboard::class.java)
+                    startActivity(intent)
                     Toast.makeText(this@Login, "Login Successful!", Toast.LENGTH_SHORT)
                         .show()
+                    finish()
                 } else {
                     Toast.makeText(
                         this@Login,
@@ -69,6 +88,11 @@ class Login : AppCompatActivity() {
             }
 
         })
+    }
+
+    private fun savePreferences(email: String) {
+        sharedPreferences.edit().putBoolean("isLoggedIn", true).apply()
+        sharedPreferences.edit().putString("loggedStaffEmail", email).apply()
     }
 
     private fun clear() {
