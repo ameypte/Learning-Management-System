@@ -74,12 +74,13 @@
             android:id="@+id/btnRegisterNow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
+            android:layout_below="@+id/txtForgot"
             android:layout_margin="20dp"
             android:padding="10dp"
             android:text="Register Now"
-            android:textSize="17sp" />
+            android:textSize="17sp"
+            />
 
     </RelativeLayout>
 </ScrollView>

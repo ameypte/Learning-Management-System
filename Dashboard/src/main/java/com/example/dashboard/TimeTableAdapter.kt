@@ -89,7 +89,7 @@ class TimeTableAdapter(private val itemList: List<ModelTimeTable>) :
             courseCode1View.text = item.courseCode1
             courseTeacher1View.text = item.courseTeacher1
             courseTitle1View.text = item.courseTitle1
-            courseCode2View.text = item.courseCode
+            courseCode2View.text = item.courseCode2
             courseTeacher2View.text = item.courseTeacher2
             courseTitle2View.text = item.courseTitle2
             courseCode3View.text = item.courseCode3

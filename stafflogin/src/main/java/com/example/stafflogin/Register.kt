@@ -1,5 +1,6 @@
 package com.example.stafflogin
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -37,7 +38,6 @@ class Register : AppCompatActivity() {
             override fun onItemSelected(arg0: AdapterView<*>?, arg1: View?, arg2: Int, arg3: Long) {
                 val items1 = spinner.selectedItem.toString()
             }
-
             override fun onNothingSelected(arg0: AdapterView<*>?) {}
         }
 
@@ -61,10 +61,17 @@ class Register : AppCompatActivity() {
                 database = FirebaseDatabase.getInstance().getReference("Departments")
                 val Staff = Staff(name,email,branch,phone,pass)
                 database.child(branch).child("Staff").child(email).setValue(Staff).addOnSuccessListener {
+                    val intent = Intent(this,Login::class.java)
+                    startActivity(intent)
                     Toast.makeText(this, "Register successfully", Toast.LENGTH_SHORT).show()
+                    finish()
                 }
             }
-
+        }
+        registerBinding.txtAlready.setOnClickListener {
+            val intent = Intent(this,Login::class.java)
+            startActivity(intent)
+            finish()
         }
     }
 }
