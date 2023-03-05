@@ -60,7 +60,7 @@ class Register : AppCompatActivity() {
             } else {
                 database = FirebaseDatabase.getInstance().getReference("Departments")
                 val Staff = Staff(name,email,branch,phone,pass)
-                database.child(branch).child("Staff").child(email).setValue(Staff).addOnSuccessListener {
+                database.child(branch).child("Staff").child(phone).setValue(Staff).addOnSuccessListener {
                     val intent = Intent(this,Login::class.java)
                     startActivity(intent)
                     Toast.makeText(this, "Register successfully", Toast.LENGTH_SHORT).show()

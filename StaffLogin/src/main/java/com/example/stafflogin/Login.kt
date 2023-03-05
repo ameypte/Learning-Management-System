@@ -41,17 +41,17 @@ class Login : AppCompatActivity() {
             clear()
         }
         loginBinding.btnLogin.setOnClickListener {
-            val email = loginBinding.etStaffEmail.text.toString()
+            val phone = loginBinding.etStaffPhone.text.toString()
             val pass = loginBinding.etStaffPass.text.toString()
-            if (email.isBlank() || pass.isBlank()) {
+            if (phone.isBlank() || pass.isBlank()) {
                 Toast.makeText(this, "Please insert all the details!", Toast.LENGTH_SHORT).show()
             } else {
-                checkEmailPass(email, pass)
+                checkPhonePass(phone, pass)
             }
         }
     }
 
-    private fun checkEmailPass(email: String, pass: String) {
+    private fun checkPhonePass(phone: String, pass: String) {
         database = FirebaseDatabase.getInstance().getReference("Departments")
 
         database.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -59,8 +59,8 @@ class Login : AppCompatActivity() {
                 var isStaffFound = false
                 for (departmentSnapshot in snapshot.children) {
                     var staff = departmentSnapshot.child("Staff")
-                    if (staff.child(email).exists()) {
-                        val s = staff.child(email).getValue(Staff::class.java)
+                    if (staff.child(phone).exists()) {
+                        val s = staff.child(phone).getValue(Staff::class.java)
                         if (s?.password == pass) {
                             isStaffFound = true
                             break
@@ -68,7 +68,7 @@ class Login : AppCompatActivity() {
                     }
                 }
                 if (isStaffFound) {
-                    savePreferences(email)
+                    savePreferences(phone)
                     val intent = Intent(this@Login,StaffDashboard::class.java)
                     startActivity(intent)
                     Toast.makeText(this@Login, "Login Successful!", Toast.LENGTH_SHORT)
@@ -90,13 +90,13 @@ class Login : AppCompatActivity() {
         })
     }
 
-    private fun savePreferences(email: String) {
+    private fun savePreferences(phone: String) {
         sharedPreferences.edit().putBoolean("isLoggedIn", true).apply()
-        sharedPreferences.edit().putString("loggedStaffEmail", email).apply()
+        sharedPreferences.edit().putString("loggedStaffEmail", phone).apply()
     }
 
     private fun clear() {
-        loginBinding.etStaffEmail.text.clear()
+        loginBinding.etStaffPhone.text.clear()
         loginBinding.etStaffPass.text.clear()
     }
 }

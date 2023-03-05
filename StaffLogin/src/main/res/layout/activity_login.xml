@@ -20,7 +20,7 @@
             android:textSize="29sp" />
 
         <EditText
-            android:id="@+id/etStaffEmail"
+            android:id="@+id/etStaffPhone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/txtStaffHead"
@@ -28,7 +28,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="20dp"
-            android:hint="Email"
+            android:hint="Phonne"
             android:inputType="text"
             android:textSize="22sp" />
 
@@ -36,7 +36,7 @@
             android:id="@+id/etStaffPass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/etStaffEmail"
+            android:layout_below="@id/etStaffPhone"
             android:layout_margin="20dp"
             android:hint="Password"
             android:inputType="textPassword"

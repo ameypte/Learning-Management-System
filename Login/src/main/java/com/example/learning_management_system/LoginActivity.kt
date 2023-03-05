@@ -132,7 +132,6 @@ class LoginActivity : AppCompatActivity() {
             }
         })
     }
-
     private fun savePreferences(idCode: String) {
         sharedPreferences.edit().putBoolean("isLoggedIn", true).apply()
         sharedPreferences.edit().putString("loggedInUser", idCode).apply()
