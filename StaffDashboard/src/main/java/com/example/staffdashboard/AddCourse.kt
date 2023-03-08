@@ -1,5 +1,7 @@
 package com.example.staffdashboard
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.SearchView
+import androidx.fragment.app.FragmentActivity
 import com.example.staffdashboard.databinding.FragmentAddCourseBinding
 import com.google.firebase.database.*
 
@@ -19,6 +22,7 @@ class AddCourse : Fragment() {
     private var param2: String? = null
     private lateinit var courseBinding: FragmentAddCourseBinding
     private lateinit var database: DatabaseReference
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,10 +38,15 @@ class AddCourse : Fragment() {
     ): View {
         courseBinding = FragmentAddCourseBinding.inflate(layoutInflater, container, false)
 
+        sharedPreferences = requireContext().getSharedPreferences(
+            getString(R.string.login_preference_file_name),
+            Context.MODE_PRIVATE
+        )
+
         database = FirebaseDatabase.getInstance().getReference("Courses")
         database.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val courseList = ArrayList<String>()
+                var courseList = ArrayList<String>()
                 for (course in snapshot.children) {
                     courseList.add(course.key.toString()+" "+course.child("courseTitle").value.toString())
                 }
@@ -69,6 +78,21 @@ class AddCourse : Fragment() {
 
             }
         })
+
+        // if user clicks on a course, add it to the list of courses they are teaching
+        courseBinding.lvCourses.setOnItemClickListener { parent, view, position, id ->
+            val course = parent.getItemAtPosition(position).toString()
+            val courseCode = course.split(" ")[0]
+            val loggedStaffDepartment = sharedPreferences.getString("loggedStaffDepartment", "")
+            val loggedStaffPhone = sharedPreferences.getString("loggedStaffPhone", "")
+            database = FirebaseDatabase.getInstance().getReference("Departments")
+                .child(loggedStaffDepartment.toString())
+                .child("Staff")
+                .child(loggedStaffPhone.toString())
+                .child("coursesTeach")
+            database.child(courseCode).setValue("")
+            replaceFragment(Courses())
+        }
         return courseBinding.root
     }
 
@@ -81,5 +105,12 @@ class AddCourse : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+    private fun replaceFragment(fragment: Fragment){
+        val fragmentManager = (activity as FragmentActivity).supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.dashFrameLayout,fragment)
+        fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commit()
     }
 }

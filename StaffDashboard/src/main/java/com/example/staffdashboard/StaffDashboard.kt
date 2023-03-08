@@ -10,20 +10,12 @@ import com.example.staffdashboard.databinding.ActivityStaffDashboardBinding
 
 class StaffDashboard : AppCompatActivity() {
     private lateinit var staffDashBinding: ActivityStaffDashboardBinding
-    private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var loggedStaffEmail: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         staffDashBinding = ActivityStaffDashboardBinding.inflate(layoutInflater)
         setContentView(staffDashBinding.root)
 
-        sharedPreferences = getSharedPreferences(
-            getString(R.string.login_preference_file_name),
-            Context.MODE_PRIVATE
-        )
-
-        loggedStaffEmail = sharedPreferences.getString("loggedStaffEmail",null).toString()
 
         replaceFragment(Home())
         staffDashBinding.bottomNavigationView.setOnItemSelectedListener {

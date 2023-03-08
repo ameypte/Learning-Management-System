@@ -53,6 +53,7 @@ class Login : AppCompatActivity() {
 
     private fun checkPhonePass(phone: String, pass: String) {
         database = FirebaseDatabase.getInstance().getReference("Departments")
+        var departmentName = ""
 
         database.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -63,13 +64,16 @@ class Login : AppCompatActivity() {
                         val s = staff.child(phone).getValue(Staff::class.java)
                         if (s?.password == pass) {
                             isStaffFound = true
+                            // get the department name and save it in shared preferences
+                            departmentName = departmentSnapshot.key.toString()
+                            sharedPreferences.edit().putString("loggedStaffDepartment", departmentName).apply()
                             break
                         }
                     }
                 }
                 if (isStaffFound) {
-                    savePreferences(phone)
-                    val intent = Intent(this@Login,StaffDashboard::class.java)
+                    savePreferences(phone, departmentName)
+                    val intent = Intent(this@Login, StaffDashboard::class.java)
                     startActivity(intent)
                     Toast.makeText(this@Login, "Login Successful!", Toast.LENGTH_SHORT)
                         .show()
@@ -90,9 +94,10 @@ class Login : AppCompatActivity() {
         })
     }
 
-    private fun savePreferences(phone: String) {
+    private fun savePreferences(phone: String, departmentName: String) {
         sharedPreferences.edit().putBoolean("isLoggedIn", true).apply()
-        sharedPreferences.edit().putString("loggedStaffEmail", phone).apply()
+        sharedPreferences.edit().putString("loggedStaffPhone", phone).apply()
+        sharedPreferences.edit().putString("loggedStaffDepartment", departmentName).apply()
     }
 
     private fun clear() {
