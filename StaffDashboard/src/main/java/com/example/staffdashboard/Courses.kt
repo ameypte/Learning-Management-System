@@ -3,7 +3,6 @@ package com.example.staffdashboard
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.provider.ContactsContract.CommonDataKinds.Phone
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -101,7 +100,26 @@ class Courses : Fragment() {
                             courseList.add(modelCourse)
                         }
                     }
-                    coursesRecyclerView.adapter = MyCourseAdapter(courseList)
+                    val adapter = MyCourseAdapter(courseList)
+                    coursesRecyclerView.adapter = adapter
+
+                    adapter.setOnCourseUpdateClickListener(object :
+                        MyCourseAdapter.onCourseUploadListener {
+                        override fun onCourseUpdateClick(position: Int) {
+                            val courseCode = courseList[position].courseCode
+                            val courseTitle = courseList[position].courseTitle
+                            val uploadMaterialFragment = UploadMaterial()
+
+
+                            val args = Bundle()
+                            args.putString("courseCode", courseCode)
+                            args.putString("courseTitle", courseTitle)
+                            uploadMaterialFragment.arguments = args
+
+
+                            replaceFragment(uploadMaterialFragment)
+                        }
+                    })
                 }
             }
 
