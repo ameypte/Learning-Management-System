@@ -1,25 +1,28 @@
 package com.example.staffdashboard
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.SearchView
+import androidx.fragment.app.FragmentActivity
+import com.example.staffdashboard.databinding.FragmentAddCourseBinding
+import com.google.firebase.database.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [AddCourse.newInstance] factory method to
- * create an instance of this fragment.
- */
+
 class AddCourse : Fragment() {
-    // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private lateinit var courseBinding: FragmentAddCourseBinding
+    private lateinit var database: DatabaseReference
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,21 +35,68 @@ class AddCourse : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_course, container, false)
+    ): View {
+        courseBinding = FragmentAddCourseBinding.inflate(layoutInflater, container, false)
+
+        sharedPreferences = requireContext().getSharedPreferences(
+            getString(R.string.login_preference_file_name),
+            Context.MODE_PRIVATE
+        )
+
+        database = FirebaseDatabase.getInstance().getReference("Courses")
+        database.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var courseList = ArrayList<String>()
+                for (course in snapshot.children) {
+                    courseList.add(course.key.toString()+" "+course.child("courseTitle").value.toString())
+                }
+
+                val courseAdapter: ArrayAdapter<String> = ArrayAdapter<String>(
+                    requireContext(),
+                    android.R.layout.simple_list_item_1,
+                    courseList
+                )
+                courseBinding.lvCourses.adapter = courseAdapter
+
+                courseBinding.svCourses.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(query: String?): Boolean {
+                        courseBinding.svCourses.clearFocus()
+                        if (courseList.contains(query)) {
+                            courseAdapter.filter.filter(query)
+                        }
+                        return false
+                    }
+
+                    override fun onQueryTextChange(newText: String?): Boolean {
+                        courseAdapter.filter.filter(newText)
+                        return false
+                    }
+                })
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
+
+        // if user clicks on a course, add it to the list of courses they are teaching
+        courseBinding.lvCourses.setOnItemClickListener { parent, view, position, id ->
+            val course = parent.getItemAtPosition(position).toString()
+            val courseCode = course.split(" ")[0]
+            val loggedStaffDepartment = sharedPreferences.getString("loggedStaffDepartment", "")
+            val loggedStaffPhone = sharedPreferences.getString("loggedStaffPhone", "")
+            database = FirebaseDatabase.getInstance().getReference("Departments")
+                .child(loggedStaffDepartment.toString())
+                .child("Staff")
+                .child(loggedStaffPhone.toString())
+                .child("coursesTeach")
+            database.child(courseCode).setValue("")
+            replaceFragment(Courses())
+        }
+        return courseBinding.root
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment AddCourse.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             AddCourse().apply {
@@ -55,5 +105,12 @@ class AddCourse : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+    private fun replaceFragment(fragment: Fragment){
+        val fragmentManager = (activity as FragmentActivity).supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.dashFrameLayout,fragment)
+        fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commit()
     }
 }
