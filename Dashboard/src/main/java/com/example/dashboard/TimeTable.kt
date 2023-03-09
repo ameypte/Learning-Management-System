@@ -25,7 +25,6 @@ class TimeTable : Fragment() {
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var database: DatabaseReference
 
-    //    private lateinit var studentRecyclerView: RecyclerView
     private lateinit var timeTableRecyclerView: RecyclerView
     private lateinit var itemList: ArrayList<ModelTimeTable>
     private lateinit var selectedDay: String
