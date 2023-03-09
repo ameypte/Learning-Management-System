@@ -41,12 +41,18 @@
             android:hint="Password"
             android:inputType="textPassword"
             android:textSize="22sp" />
-
+        <ProgressBar
+            android:id="@+id/prBarLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/etStaffPass"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone"/>
         <Button
             android:id="@+id/btnLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/etStaffPass"
+            android:layout_below="@+id/prBarLogin"
             android:layout_centerHorizontal="true"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"

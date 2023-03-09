@@ -58,6 +58,7 @@ class Register : AppCompatActivity() {
             } else if (branch == items[0]) {
                 Toast.makeText(this, "Please select the department", Toast.LENGTH_SHORT).show()
             } else {
+                registerBinding.prBarRegister.visibility = View.VISIBLE
                 database = FirebaseDatabase.getInstance().getReference("Departments")
                 val Staff = Staff(name,email,branch,phone,pass)
                 database.child(branch).child("Staff").child(phone).setValue(Staff).addOnSuccessListener {
@@ -65,6 +66,8 @@ class Register : AppCompatActivity() {
                     startActivity(intent)
                     Toast.makeText(this, "Register successfully", Toast.LENGTH_SHORT).show()
                     finish()
+                }.addOnCompleteListener {
+                    registerBinding.prBarRegister.visibility = View.GONE
                 }
             }
         }

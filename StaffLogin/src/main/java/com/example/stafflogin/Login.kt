@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import com.example.staffdashboard.StaffDashboard
 import com.example.stafflogin.databinding.ActivityLoginBinding
@@ -52,6 +53,7 @@ class Login : AppCompatActivity() {
     }
 
     private fun checkPhonePass(phone: String, pass: String) {
+        loginBinding.prBarLogin.visibility = View.VISIBLE
         database = FirebaseDatabase.getInstance().getReference("Departments")
 
         database.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -73,6 +75,7 @@ class Login : AppCompatActivity() {
                     startActivity(intent)
                     Toast.makeText(this@Login, "Login Successful!", Toast.LENGTH_SHORT)
                         .show()
+                    loginBinding.prBarLogin.visibility = View.GONE
                     finish()
                 } else {
                     Toast.makeText(
@@ -80,7 +83,9 @@ class Login : AppCompatActivity() {
                         "Staff not registered or password is incorrect",
                         Toast.LENGTH_SHORT
                     ).show()
+                    loginBinding.prBarLogin.visibility = View.GONE
                 }
+
             }
 
             override fun onCancelled(error: DatabaseError) {
