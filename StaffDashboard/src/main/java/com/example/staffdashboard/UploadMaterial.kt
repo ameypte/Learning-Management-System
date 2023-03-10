@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.documentfile.provider.DocumentFile
@@ -58,6 +60,24 @@ class UploadMaterial() : Fragment() {
 
         uploadMaterialBinding.btnViewCurriculum.setOnClickListener {
             getFirestoreData(courseCode)
+        }
+
+        val spinner = uploadMaterialBinding.simpleSpinner
+        val items = arrayOf(
+            "Select Year",
+            "First Year",
+            "Second Year",
+            "Third Year"
+        )
+        val adapter =
+            ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_dropdown_item, items)
+        spinner.adapter = adapter
+
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(arg0: AdapterView<*>?, arg1: View?, arg2: Int, arg3: Long) {
+                val items1 = spinner.selectedItem.toString()
+            }
+            override fun onNothingSelected(arg0: AdapterView<*>?) {}
         }
 
 
