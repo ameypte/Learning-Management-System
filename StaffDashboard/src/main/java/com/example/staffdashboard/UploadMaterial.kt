@@ -2,7 +2,6 @@ package com.example.staffdashboard
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
-import android.graphics.pdf.PdfRenderer
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -31,6 +30,7 @@ class UploadMaterial() : Fragment() {
     private lateinit var storageReference: StorageReference
     private lateinit var fileUrl : Uri
     private lateinit var toast: Toast
+    private lateinit var notesUrl : Uri
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,12 +62,24 @@ class UploadMaterial() : Fragment() {
             getFirestoreData(courseCode)
         }
 
+        uploadMaterialBinding.btnChooseNotes.setOnClickListener {
+            chooseNotes()
+        }
+
+        uploadMaterialBinding.btnUploadNotes.setOnClickListener {
+            val unit = uploadMaterialBinding.simpleSpinner.selectedItem.toString()
+            uploadNotes(courseCode,unit)
+        }
+
         val spinner = uploadMaterialBinding.simpleSpinner
         val items = arrayOf(
-            "Select Year",
-            "First Year",
-            "Second Year",
-            "Third Year"
+            "Select Unit",
+            "UNIT 1",
+            "UNIT 2",
+            "UNIT 3",
+            "UNIT 4",
+            "UNIT 5",
+            "UNIT 6",
         )
         val adapter =
             ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_dropdown_item, items)
@@ -82,6 +94,60 @@ class UploadMaterial() : Fragment() {
 
 
         return uploadMaterialBinding.root
+    }
+
+    private fun chooseNotes() {
+        val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
+            type = "*/*"
+            addCategory(Intent.CATEGORY_OPENABLE)
+        }
+        getNotes.launch(intent)
+    }
+
+
+    private fun uploadNotes(courseCode: String?, unit: String) {
+        if (uploadMaterialBinding.btnChooseNotes.text == "Choose File"){
+            if(::toast.isInitialized)
+                toast.cancel()
+            toast = Toast.makeText(requireContext(),"Please Choose a File",Toast.LENGTH_SHORT)
+            toast.show()
+        }
+        else{
+            if (uploadMaterialBinding.simpleSpinner.selectedItem.toString() == "Select Unit"){
+                if(::toast.isInitialized)
+                    toast.cancel()
+                toast = Toast.makeText(requireContext(),"Please Select a Unit",Toast.LENGTH_SHORT)
+                toast.show()
+            }
+            else{
+                uploadMaterialBinding.pbNotesUpload.visibility = View.VISIBLE
+                database = FirebaseDatabase.getInstance().getReference("Courses").child(courseCode!!).child("notes").child(unit)
+                storageReference = FirebaseStorage.getInstance().getReference("notes/${courseCode}/$unit/${uploadMaterialBinding.btnChooseNotes.text}")
+
+                storageReference.putFile(notesUrl)
+                    .addOnSuccessListener {
+                        storageReference.downloadUrl.addOnSuccessListener {
+                            var key = uploadMaterialBinding.btnChooseNotes.text.toString()
+                            key = key.substringBeforeLast(".")
+                            database.child(key).child("notesUrl").setValue(it.toString()).addOnSuccessListener {
+                                if(::toast.isInitialized)
+                                    toast.cancel()
+                                toast = Toast.makeText(requireContext(), "Notes Uploaded Successfully", Toast.LENGTH_SHORT)
+                                toast.show()
+                                uploadMaterialBinding.btnChooseNotes.text = "Choose File"
+                                uploadMaterialBinding.simpleSpinner.setSelection(0)
+                                uploadMaterialBinding.pbNotesUpload.visibility = View.GONE
+                            }
+                        }
+                    }
+                    .addOnFailureListener {
+                        if(::toast.isInitialized)
+                            toast.cancel()
+                        toast = Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT)
+                        toast.show()
+                    }
+            }
+        }
     }
 
     private fun getFirestoreData(courseCode: String?) {
@@ -124,8 +190,6 @@ class UploadMaterial() : Fragment() {
         val intent = Intent()
         intent.type = "application/pdf"
         intent.action = Intent.ACTION_GET_CONTENT
-
-
         getFile.launch(intent)
     }
 
@@ -160,13 +224,35 @@ class UploadMaterial() : Fragment() {
 
     private val getFile = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK && result.data != null) {
-            val data: Intent = result.data!!
-            fileUrl = data.data!!
-            val file = DocumentFile.fromSingleUri(requireContext(), fileUrl)
-            val fileName = file!!.name
-            uploadMaterialBinding.btnChooseCurriculum.text = fileName
+            val data = result.data
+            val fileUri = data?.data
+            if (fileUri != null) {
+                val file = DocumentFile.fromSingleUri(requireContext(), fileUri)
+                if (file != null && file.type == "application/pdf") {
+                    fileUrl = fileUri
+                    uploadMaterialBinding.btnChooseCurriculum.text = file.name
+                } else {
+                    // Show error message
+                    Toast.makeText(requireContext(), "Please select a PDF file", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
+
+    private val getNotes = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK && result.data != null) {
+            val data = result.data
+            val fileUri = data?.data
+            if (fileUri != null) {
+                val file = DocumentFile.fromSingleUri(requireContext(), fileUri)
+                    notesUrl = fileUri
+                if (file != null) {
+                    uploadMaterialBinding.btnChooseNotes.text = file.name
+                }
+            }
+        }
+    }
+
 
     companion object {
         @JvmStatic
