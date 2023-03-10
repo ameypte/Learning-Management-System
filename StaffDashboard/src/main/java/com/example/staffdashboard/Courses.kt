@@ -1,5 +1,6 @@
 package com.example.staffdashboard
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -60,6 +61,7 @@ class Courses : Fragment() {
         coursesBinding.btnAddCourse.setOnClickListener {
             replaceFragment(AddCourse())
         }
+
         return coursesBinding.root
     }
 
@@ -79,7 +81,6 @@ class Courses : Fragment() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-
             }
 
         })
@@ -118,6 +119,30 @@ class Courses : Fragment() {
 
 
                             replaceFragment(uploadMaterialFragment)
+                        }
+
+                        override fun onCourseRemoveClick(position: Int) {
+                            val courseCode = courseList[position].courseCode
+                            database =
+                                FirebaseDatabase.getInstance().getReference("Departments")
+                                    .child(loggedStaffDepartment).child("Staff")
+                                    .child(loggedStaffPhone).child("coursesTeach")
+                            val builder = AlertDialog.Builder(context)
+                            builder.setTitle("Delete Course")
+                            builder.setMessage("Are you sure you want to delete this course?")
+                            builder.setPositiveButton("Yes") { dialog, which ->
+                                if (courseCode != null) {
+                                    database.child(courseCode).removeValue()
+                                }
+                                courseList.removeAt(position)
+                                adapter.notifyItemRemoved(position)
+                            }
+                            builder.setNegativeButton("No") { dialog, which ->
+                                dialog.dismiss()
+                            }
+                            val dialog = builder.create()
+                            dialog.show()
+
                         }
                     })
                 }

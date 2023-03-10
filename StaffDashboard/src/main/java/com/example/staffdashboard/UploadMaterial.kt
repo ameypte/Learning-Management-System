@@ -60,6 +60,7 @@ class UploadMaterial() : Fragment() {
             getFirestoreData(courseCode)
         }
 
+
         return uploadMaterialBinding.root
     }
 

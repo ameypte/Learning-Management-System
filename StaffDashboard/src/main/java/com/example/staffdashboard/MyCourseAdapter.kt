@@ -1,17 +1,21 @@
 package com.example.staffdashboard
 
+import android.nfc.NfcAdapter.OnTagRemovedListener
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class MyCourseAdapter(private val itemList: List<ModelCourse>) :
     RecyclerView.Adapter<MyCourseAdapter.CourseHolder>() {
     private lateinit var updateListener: onCourseUploadListener
+    private lateinit var removedListener: onCourseUploadListener
     interface onCourseUploadListener{
         fun onCourseUpdateClick(position: Int)
+        fun onCourseRemoveClick(position: Int)
     }
     fun setOnCourseUpdateClickListener(listener: onCourseUploadListener){
         updateListener = listener
@@ -44,6 +48,9 @@ class MyCourseAdapter(private val itemList: List<ModelCourse>) :
         init {
             itemView.findViewById<TextView>(R.id.btnUpload).setOnClickListener {
                 listener.onCourseUpdateClick(adapterPosition)
+            }
+            itemView.findViewById<ImageButton>(R.id.btnRemove).setOnClickListener {
+                listener.onCourseRemoveClick(adapterPosition)
             }
         }
     }
