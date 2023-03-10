@@ -1,0 +1,106 @@
+{
+  "project_info": {
+    "project_number": "931084032585",
+    "firebase_url": "https://learning-mg-sys-default-rtdb.firebaseio.com",
+    "project_id": "learning-mg-sys",
+    "storage_bucket": "learning-mg-sys.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:931084032585:android:e0c6c0d58778a113f5fd98",
+        "android_client_info": {
+          "package_name": "com.example.dashboard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "931084032585-nb1j77ael846fv7652fncibvtc8c56u1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.dashboard",
+            "certificate_hash": "9de4fec441d361ccaed64b5a0c31bdc8a008a560"
+          }
+        },
+        {
+          "client_id": "931084032585-f1ekk7p8pnh693dk759g6ums48j44oh9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxTZUtJDiFcKbwMo1-O5rWctCGtRCJbLg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "931084032585-f1ekk7p8pnh693dk759g6ums48j44oh9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:931084032585:android:09e797b5c779ff55f5fd98",
+        "android_client_info": {
+          "package_name": "com.example.learning_management_system"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "931084032585-f1ekk7p8pnh693dk759g6ums48j44oh9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxTZUtJDiFcKbwMo1-O5rWctCGtRCJbLg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "931084032585-f1ekk7p8pnh693dk759g6ums48j44oh9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:931084032585:android:caae762b605ebfcff5fd98",
+        "android_client_info": {
+          "package_name": "com.example.staffdashboard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "931084032585-f1ekk7p8pnh693dk759g6ums48j44oh9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxTZUtJDiFcKbwMo1-O5rWctCGtRCJbLg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "931084032585-f1ekk7p8pnh693dk759g6ums48j44oh9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
