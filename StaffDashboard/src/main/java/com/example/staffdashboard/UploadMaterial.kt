@@ -2,6 +2,7 @@ package com.example.staffdashboard
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.graphics.pdf.PdfRenderer
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -12,8 +13,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.documentfile.provider.DocumentFile
 import com.example.staffdashboard.databinding.FragmentUploadMaterialBinding
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 
@@ -56,11 +56,47 @@ class UploadMaterial() : Fragment() {
             uploadCurriculum(courseCode)
         }
 
-
+        uploadMaterialBinding.btnViewCurriculum.setOnClickListener {
+            getFirestoreData(courseCode)
+        }
 
         return uploadMaterialBinding.root
     }
 
+    private fun getFirestoreData(courseCode: String?) {
+        database = FirebaseDatabase.getInstance().getReference("Courses").child(courseCode!!).child("curriculum")
+        database.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if(snapshot.exists()){
+                    val curriculumUrl = snapshot.child("curriculumUrl").value.toString()
+                    val curriculumName = snapshot.child("curriculumName").value.toString()
+                    val bundle = Bundle()
+                    bundle.putString("Url",curriculumUrl)
+                    bundle.putString("Name",curriculumName)
+                    val pdfRenderer = PdfReader()
+                    pdfRenderer.arguments = bundle
+                    val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                    transaction.replace(R.id.dashFrameLayout,pdfRenderer)
+                    transaction.addToBackStack(null)
+                    transaction.commit()
+                }
+                else{
+                    if(::toast.isInitialized)
+                        toast.cancel()
+                    toast = Toast.makeText(requireContext(),"No Curriculum Uploaded",Toast.LENGTH_SHORT)
+                    toast.show()
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                if(::toast.isInitialized)
+                    toast.cancel()
+                toast = Toast.makeText(requireContext(),error.message,Toast.LENGTH_SHORT)
+                toast.show()
+            }
+
+        })
+    }
 
 
     private fun chooseFile() {
