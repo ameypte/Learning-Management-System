@@ -1,23 +1,22 @@
 package com.example.staffdashboard
 
-import android.nfc.NfcAdapter.OnTagRemovedListener
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class MyCourseAdapter(private val itemList: List<ModelCourse>) :
     RecyclerView.Adapter<MyCourseAdapter.CourseHolder>() {
-    private lateinit var updateListener: onCourseUploadListener
-    private lateinit var removedListener: onCourseUploadListener
-    interface onCourseUploadListener{
+    private lateinit var updateListener: OnCourseListener
+    private lateinit var removedListener: OnCourseListener
+    interface OnCourseListener{
         fun onCourseUpdateClick(position: Int)
         fun onCourseRemoveClick(position: Int)
+        fun onCourseViewClick(position: Int)
     }
-    fun setOnCourseUpdateClickListener(listener: onCourseUploadListener){
+    fun setOnCourseClickListener(listener: OnCourseListener){
         updateListener = listener
     }
     override fun onCreateViewHolder(
@@ -37,7 +36,7 @@ class MyCourseAdapter(private val itemList: List<ModelCourse>) :
         return itemList.size
     }
 
-    inner class CourseHolder(itemView: View,listener: onCourseUploadListener) : RecyclerView.ViewHolder(itemView) {
+    inner class CourseHolder(itemView: View,listener: OnCourseListener) : RecyclerView.ViewHolder(itemView) {
         private val courseCode = itemView.findViewById<TextView>(R.id.course_code)
         private val courseTitle = itemView.findViewById<TextView>(R.id.course_title)
 
@@ -46,12 +45,16 @@ class MyCourseAdapter(private val itemList: List<ModelCourse>) :
             courseTitle.text = item.courseTitle
         }
         init {
+            itemView.findViewById<TextView>(R.id.btnView).setOnClickListener {
+                listener.onCourseViewClick(adapterPosition)
+            }
             itemView.findViewById<TextView>(R.id.btnUpload).setOnClickListener {
                 listener.onCourseUpdateClick(adapterPosition)
             }
             itemView.findViewById<ImageButton>(R.id.btnRemove).setOnClickListener {
                 listener.onCourseRemoveClick(adapterPosition)
             }
+
         }
     }
 

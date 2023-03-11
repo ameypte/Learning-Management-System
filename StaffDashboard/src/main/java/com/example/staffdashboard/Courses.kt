@@ -104,8 +104,21 @@ class Courses : Fragment() {
                     val adapter = MyCourseAdapter(courseList)
                     coursesRecyclerView.adapter = adapter
 
-                    adapter.setOnCourseUpdateClickListener(object :
-                        MyCourseAdapter.onCourseUploadListener {
+                    adapter.setOnCourseClickListener(object :
+                        MyCourseAdapter.OnCourseListener {
+                        override fun onCourseViewClick(position: Int) {
+                            val courseCode = courseList[position].courseCode
+                            val courseTitle = courseList[position].courseTitle
+                            val viewMaterialFragment = ViewMaterial()
+
+                            val args = Bundle()
+                            args.putString("courseCode", courseCode)
+                            args.putString("courseTitle", courseTitle)
+                            viewMaterialFragment.arguments = args
+
+                            replaceFragment(viewMaterialFragment)
+                        }
+
                         override fun onCourseUpdateClick(position: Int) {
                             val courseCode = courseList[position].courseCode
                             val courseTitle = courseList[position].courseTitle
@@ -116,7 +129,6 @@ class Courses : Fragment() {
                             args.putString("courseCode", courseCode)
                             args.putString("courseTitle", courseTitle)
                             uploadMaterialFragment.arguments = args
-
 
                             replaceFragment(uploadMaterialFragment)
                         }
@@ -143,6 +155,7 @@ class Courses : Fragment() {
                             val dialog = builder.create()
                             dialog.show()
                         }
+
                     })
                 }
             }
