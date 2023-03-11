@@ -10,6 +10,7 @@ import com.example.staffdashboard.databinding.FragmentPdfReaderBinding
 import com.github.barteksc.pdfviewer.PDFView
 import java.net.URL
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -39,6 +40,7 @@ class PdfReader : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         pdfReaderBinding = FragmentPdfReaderBinding.inflate(inflater,container,false)
+        pdfReaderBinding.progressBarFileLoading.visibility = View.VISIBLE
 
         pdfView = pdfReaderBinding.pdfView
         val args = arguments
@@ -53,8 +55,10 @@ class PdfReader : Fragment() {
                 val pdfStream = URL(pdfUrl).openStream()
                 withContext(Dispatchers.Main) {
                     pdfView.fromStream(pdfStream).load()
+                    pdfReaderBinding.progressBarFileLoading.visibility = View.GONE
                 }
             } catch (e: Exception) {
+                Toast.makeText(requireContext(), "Failed to load PDF file: ${e.message}", Toast.LENGTH_LONG).show()
                 Log.e(TAG, "Failed to load PDF file: ${e.message}")
             }
         }

@@ -87,7 +87,7 @@ class UploadMaterial() : Fragment() {
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(arg0: AdapterView<*>?, arg1: View?, arg2: Int, arg3: Long) {
-                val items1 = spinner.selectedItem.toString()
+
             }
             override fun onNothingSelected(arg0: AdapterView<*>?) {}
         }
@@ -150,7 +150,7 @@ class UploadMaterial() : Fragment() {
         }
     }
 
-    private fun getFirestoreData(courseCode: String?) {
+    fun getFirestoreData(courseCode: String?) {
         database = FirebaseDatabase.getInstance().getReference("Courses").child(courseCode!!).child("curriculum")
         database.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -181,7 +181,6 @@ class UploadMaterial() : Fragment() {
                 toast = Toast.makeText(requireContext(),error.message,Toast.LENGTH_SHORT)
                 toast.show()
             }
-
         })
     }
 
@@ -252,7 +251,6 @@ class UploadMaterial() : Fragment() {
             }
         }
     }
-
 
     companion object {
         @JvmStatic

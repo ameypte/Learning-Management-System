@@ -88,6 +88,7 @@ class Courses : Fragment() {
     }
 
     private fun getData() {
+        coursesBinding.progressBarTeachingCourses.visibility = View.VISIBLE
         database = FirebaseDatabase.getInstance().getReference("Courses")
         database.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -103,6 +104,7 @@ class Courses : Fragment() {
                     }
                     val adapter = MyCourseAdapter(courseList)
                     coursesRecyclerView.adapter = adapter
+                    coursesBinding.progressBarTeachingCourses.visibility = View.GONE
 
                     adapter.setOnCourseClickListener(object :
                         MyCourseAdapter.OnCourseListener {
