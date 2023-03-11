@@ -1,7 +1,6 @@
 package com.example.staffdashboard
 
-import android.content.Context
-import android.content.SharedPreferences
+import com.example.staffaccount.Account
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment

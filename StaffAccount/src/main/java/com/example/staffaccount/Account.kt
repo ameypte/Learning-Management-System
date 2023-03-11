@@ -1,4 +1,4 @@
-package com.example.staffdashboard
+package com.example.staffaccount
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
