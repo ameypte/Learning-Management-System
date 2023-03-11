@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.example.dashboard.databinding.ActivityDashboardBinding
+import com.example.studentcourse.Courses
 
 class Dashboard : AppCompatActivity() {
     private var loggedUser: String? = ""
