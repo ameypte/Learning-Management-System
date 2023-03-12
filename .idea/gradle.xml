@@ -16,6 +16,7 @@
             <option value="$PROJECT_DIR$/StaffAccount" />
             <option value="$PROJECT_DIR$/StaffDashboard" />
             <option value="$PROJECT_DIR$/StaffLogin" />
+            <option value="$PROJECT_DIR$/StudentAccount" />
             <option value="$PROJECT_DIR$/StudentCourse" />
           </set>
         </option>
