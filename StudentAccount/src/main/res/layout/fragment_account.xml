@@ -5,10 +5,318 @@
     android:layout_height="match_parent"
     tools:context=".Account">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#3C4DAC"
+            android:elevation="12dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imgProfile"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="38dp"
+                android:elevation="8dp"
+                android:src="@drawable/profile" />
+
+            <TextView
+                android:id="@+id/txtId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/imgProfile"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginEnd="20dp"
+                android:text="Id Code"
+                android:textColor="#FFFFFF"
+                android:textSize="24sp" />
+            <TextView
+                android:id="@+id/txtNam"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtId"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
+                android:text="Student Name"
+                android:textColor="#CCCCCC"
+                android:textSize="17sp" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical"
+            >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Account Info"
+                    android:textColor="#000000"
+                    android:textSize="27sp"
+                    android:layout_gravity="start"/>
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/edit_logo"
+                    android:layout_alignParentEnd="true"
+                    android:padding="4dp"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp">
+
+                <ImageView
+                    android:id="@+id/imgName"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginVertical="10dp"
+                    android:layout_marginEnd="15dp"
+                    android:src="@drawable/name_logo" />
+
+                <TextView
+                    android:id="@+id/tName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_toEndOf="@+id/imgName"
+                    android:text="Name"
+                    android:textColor="#2C2C2C"
+                    android:textSize="17sp" />
+
+                <TextView
+                    android:id="@+id/tNameValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tName"
+                    android:layout_toEndOf="@+id/imgName"
+                    android:text="Student Name"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/line1"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_below="@+id/course_title"
+                android:layout_marginVertical="4dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginBottom="0dp"
+                android:background="#4073F4" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp">
+
+                <ImageView
+                    android:id="@+id/imgMobile"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginVertical="10dp"
+                    android:layout_marginEnd="15dp"
+                    android:src="@drawable/mob_logo" />
+
+                <TextView
+                    android:id="@+id/tMobile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_toEndOf="@+id/imgMobile"
+                    android:text="Mob. No."
+                    android:textColor="#2C2C2C"
+                    android:textSize="17sp" />
+
+                <TextView
+                    android:id="@+id/tMobValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tMobile"
+                    android:layout_toEndOf="@+id/imgMobile"
+                    android:text="Student Mobile"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/line2"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_below="@+id/course_title"
+                android:layout_marginVertical="4dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginBottom="0dp"
+                android:background="#4073F4" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp">
+
+                <ImageView
+                    android:id="@+id/imgMail"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginVertical="10dp"
+                    android:layout_marginEnd="15dp"
+                    android:src="@drawable/mail_logo" />
+
+                <TextView
+                    android:id="@+id/tMail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_toEndOf="@+id/imgMail"
+                    android:text="Mail"
+                    android:textColor="#2C2C2C"
+                    android:textSize="17sp" />
+
+                <TextView
+                    android:id="@+id/tMailValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tMail"
+                    android:layout_toEndOf="@+id/imgMail"
+                    android:text="Student Mail"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/line3"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_below="@+id/course_title"
+                android:layout_marginVertical="4dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginBottom="0dp"
+                android:background="#4073F4" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp">
+
+                <ImageView
+                    android:id="@+id/imgDept"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginVertical="10dp"
+                    android:layout_marginEnd="15dp"
+                    android:src="@drawable/dept_logo" />
+
+                <TextView
+                    android:id="@+id/tDept"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_toEndOf="@+id/imgDept"
+                    android:text="Department"
+                    android:textColor="#2C2C2C"
+                    android:textSize="17sp" />
+
+                <TextView
+                    android:id="@+id/tDeptValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tDept"
+                    android:layout_toEndOf="@+id/imgDept"
+                    android:text="Student Department"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/line4"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_below="@+id/course_title"
+                android:layout_marginVertical="4dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginBottom="0dp"
+                android:background="#4073F4" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp">
+
+                <ImageView
+                    android:id="@+id/imgYear"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginVertical="10dp"
+                    android:layout_marginEnd="15dp"
+                    android:src="@drawable/dept_logo" />
+
+                <TextView
+                    android:id="@+id/tYear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_toEndOf="@+id/imgYear"
+                    android:text="Year"
+                    android:textColor="#2C2C2C"
+                    android:textSize="17sp" />
+
+                <TextView
+                    android:id="@+id/tYearValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tYear"
+                    android:layout_toEndOf="@+id/imgYear"
+                    android:text="Student Year"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/line5"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_below="@+id/course_title"
+                android:layout_marginVertical="4dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginBottom="0dp"
+                android:background="#4073F4" />
+
+            <Button
+                android:id="@+id/btnLogout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Logout"
+                android:layout_margin="20dp"
+                android:textSize="20sp"
+                android:padding="8dp"/>
+        </LinearLayout>
+
+    </LinearLayout>
 
 </FrameLayout>
