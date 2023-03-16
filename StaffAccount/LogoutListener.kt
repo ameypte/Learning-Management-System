@@ -1,3 +1,0 @@
-interface LogoutListener {
-    fun onLogout()
-}

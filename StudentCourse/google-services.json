@@ -76,7 +76,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:931084032585:android:caae762b605ebfcff5fd98",
         "android_client_info": {
-          "package_name": "com.example.stafflogin"
+          "package_name": "com.example.studentcourse"
         }
       },
       "oauth_client": [

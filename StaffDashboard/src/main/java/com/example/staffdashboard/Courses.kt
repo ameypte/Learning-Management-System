@@ -41,7 +41,7 @@ class Courses : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View{
         coursesBinding = FragmentCoursesBinding.inflate(inflater, container, false)
 
         sharedPreferences = requireContext().getSharedPreferences(

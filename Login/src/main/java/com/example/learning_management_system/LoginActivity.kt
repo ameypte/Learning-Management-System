@@ -17,6 +17,10 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var dept: String
     private lateinit var year: String
+    private lateinit var phone: String
+    private lateinit var email: String
+    private lateinit var name: String
+    private lateinit var gender: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         loginBinding = ActivityLoginBinding.inflate(layoutInflater)
@@ -81,8 +85,7 @@ class LoginActivity : AppCompatActivity() {
                             department.child("Students").child(idCode).getValue(Student::class.java)
                         if (student?.password == pass) {
                             isStudentFound = true
-                            dept = departmentSnapshot.key.toString()
-                            year = department.key.toString()
+                            setStudentData(departmentSnapshot, department, student)
                             break
                         }
                     }
@@ -92,8 +95,7 @@ class LoginActivity : AppCompatActivity() {
                             department.child("Students").child(idCode).getValue(Student::class.java)
                         if (student?.password == pass) {
                             isStudentFound = true
-                            dept = departmentSnapshot.key.toString()
-                            year = department.key.toString()
+                            setStudentData(departmentSnapshot, department, student)
                             break
                         }
                     }
@@ -103,8 +105,7 @@ class LoginActivity : AppCompatActivity() {
                             department.child("Students").child(idCode).getValue(Student::class.java)
                         if (student?.password == pass) {
                             isStudentFound = true
-                            dept = departmentSnapshot.key.toString()
-                            year = department.key.toString()
+                            setStudentData(departmentSnapshot, department, student)
                             break
                         }
                     }
@@ -132,11 +133,28 @@ class LoginActivity : AppCompatActivity() {
             }
         })
     }
+
+    private fun setStudentData(
+        departmentSnapshot: DataSnapshot,
+        department: DataSnapshot,
+        student: Student
+    ) {
+        dept = departmentSnapshot.key.toString()
+        year = department.key.toString()
+        name = student.name.toString()
+        phone = student.phone.toString()
+        email = student.email.toString()
+        gender = student.gender.toString()
+    }
     private fun savePreferences(idCode: String) {
         sharedPreferences.edit().putBoolean("isLoggedIn", true).apply()
         sharedPreferences.edit().putString("loggedInUser", idCode).apply()
         sharedPreferences.edit().putString("loggedUserDept", dept).apply()
         sharedPreferences.edit().putString("loggedUserYear", year).apply()
+        sharedPreferences.edit().putString("loggedUserName", name).apply()
+        sharedPreferences.edit().putString("loggedUserPhone", phone).apply()
+        sharedPreferences.edit().putString("loggedUserEmail", email).apply()
+        sharedPreferences.edit().putString("loggedUserGender",gender).apply()
     }
 
 }

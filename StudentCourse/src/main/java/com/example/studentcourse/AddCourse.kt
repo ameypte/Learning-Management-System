@@ -7,24 +7,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.fragment.app.FragmentActivity
-import com.example.studentcourse.databinding.FragmentCoursesBinding
+import com.example.studentcourse.databinding.FragmentAddCourseBinding
 import com.google.firebase.database.DatabaseReference
-import java.time.Year
+import com.google.firebase.database.FirebaseDatabase
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-class Courses : Fragment() {
+class AddCourse : Fragment() {
+
     private var param1: String? = null
     private var param2: String? = null
-    private lateinit var coursesBinding: FragmentCoursesBinding
-    private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var loggedStudentDepartment: String
-    private lateinit var loggedInStudent: String
-    private lateinit var loggedStudentYear: String
+    private lateinit var addCourseBinding: FragmentAddCourseBinding
     private lateinit var database: DatabaseReference
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,33 +34,38 @@ class Courses : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        coursesBinding = FragmentCoursesBinding.inflate(inflater, container, false)
+        addCourseBinding = FragmentAddCourseBinding.inflate(inflater, container, false)
         sharedPreferences = requireContext().getSharedPreferences(
             getString(R.string.login_preference_file_name),
             Context.MODE_PRIVATE
         )
-        loggedStudentDepartment = sharedPreferences.getString("loggedUserDept", "").toString()
-        loggedInStudent = sharedPreferences.getString("loggedInUser", "").toString()
-        loggedStudentYear = sharedPreferences.getString("loggedUserYear", "").toString()
+        database = FirebaseDatabase.getInstance().getReference("Courses")
+        database.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var courseList = ArrayList<String>()
+                for (course in snapshot.children) {
+                    courseList.add(course.key.toString()+" "+course.child("courseTitle").value.toString())
+                }
+                val courseAdapter: ArrayAdapter<String> = ArrayAdapter<String>(
+                    requireContext(),
+                    android.R.layout.simple_list_item_1,
+                    courseList
+                )
+                addCourseBinding.lvCourses.adapter = courseAdapter
+            }
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
 
-        coursesBinding.button.setOnClickListener {
-            replaceFragment(AddCourse())
-        }
-
-        return coursesBinding.root
-    }
-    private fun replaceFragment(fragment: Fragment) {
-        val fragmentManager = (activity as FragmentActivity).supportFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.addToBackStack(null)
-        fragmentTransaction.commit()
+        return addCourseBinding.root
     }
 
     companion object {
 
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            Courses().apply {
+            AddCourse().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
