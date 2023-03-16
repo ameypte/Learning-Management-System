@@ -14,6 +14,11 @@ class Login : AppCompatActivity() {
     private lateinit var loginBinding: ActivityLoginBinding
     private lateinit var database: DatabaseReference
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var name: String
+    private lateinit var email: String
+    private lateinit var dept: String
+    private lateinit var phone: String
+    private lateinit var st: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         loginBinding = ActivityLoginBinding.inflate(layoutInflater)
@@ -67,6 +72,7 @@ class Login : AppCompatActivity() {
                         if (s?.password == pass) {
                             isStaffFound = true
                             // get the department name and save it in shared preferences
+                            setStudentData(departmentSnapshot, staff,s)
                             departmentName = departmentSnapshot.key.toString()
                             sharedPreferences.edit().putString("loggedStaffDepartment", departmentName).apply()
                             break
@@ -92,6 +98,7 @@ class Login : AppCompatActivity() {
 
             }
 
+
             override fun onCancelled(error: DatabaseError) {
 
             }
@@ -99,10 +106,21 @@ class Login : AppCompatActivity() {
         })
     }
 
+    private fun setStudentData(departmentSnapshot: DataSnapshot, staff: DataSnapshot, s: Staff) {
+        dept = departmentSnapshot.key.toString()
+        st = staff.key.toString()
+        name = s.name.toString()
+        phone = s.phone.toString()
+        email = s.email.toString()
+    }
+
     private fun savePreferences(phone: String, departmentName: String) {
         sharedPreferences.edit().putBoolean("isLoggedIn", true).apply()
+        sharedPreferences.edit().putString("loggedStaffName", name).apply()
         sharedPreferences.edit().putString("loggedStaffPhone", phone).apply()
+        sharedPreferences.edit().putString("loggedStaffEmail", email).apply()
         sharedPreferences.edit().putString("loggedStaffDepartment", departmentName).apply()
+
     }
 
     private fun clear() {

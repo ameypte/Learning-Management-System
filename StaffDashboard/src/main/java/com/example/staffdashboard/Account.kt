@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.FragmentActivity
 import com.example.staffdashboard.databinding.FragmentAccountBinding
 
 private const val ARG_PARAM1 = "param1"
@@ -48,8 +49,22 @@ class Account : Fragment() {
             requireActivity().finish()
         }
 
+        accountBinding.imgEdit.setOnClickListener{
+            replaceFragment(StaffEdit())
+            Toast.makeText(requireContext(),"You can edit now!",Toast.LENGTH_SHORT).show()
+        }
+
         return accountBinding.root
     }
+
+    private fun replaceFragment(fragment: Fragment) {
+        val fragmentManager = (activity as FragmentActivity).supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.dashFrameLayout, fragment)
+        fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commit()
+    }
+
     companion object {
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
