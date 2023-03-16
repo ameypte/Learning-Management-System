@@ -43,6 +43,7 @@ class Account : Fragment() {
         accountBinding.tMobValue.text = sharedPreferences.getString("loggedUserPhone", "Phone")
         accountBinding.tDeptValue.text = sharedPreferences.getString("loggedUserDept", "Dept")
         accountBinding.tYearValue.text = sharedPreferences.getString("loggedUserYear", "Year")
+        accountBinding.tMailValue.text = sharedPreferences.getString("loggedUserEmail", "Mail")
 
         accountBinding.btnLogout.setOnClickListener {
             sharedPreferences.edit().putBoolean("isLoggedIn", false).apply()

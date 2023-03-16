@@ -36,6 +36,11 @@ class Account : Fragment() {
             getString(R.string.login_preference_file_name),
             Context.MODE_PRIVATE
         )
+        accountBinding.txtName.text = sharedPreferences.getString("loggedStaffName", "Name")
+        accountBinding.tNameValue.text = sharedPreferences.getString("loggedStaffName", "Name")
+        accountBinding.tMobValue.text = sharedPreferences.getString("loggedStaffPhone", "Phone")
+        accountBinding.tMailValue.text = sharedPreferences.getString("loggedStaffEmail", "Mail")
+        accountBinding.tDeptValue.text = sharedPreferences.getString("loggedStaffDepartment", "Dept")
 
         accountBinding.btnLogout.setOnClickListener {
             sharedPreferences.edit().putBoolean("isLoggedIn", false).apply()
