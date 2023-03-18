@@ -95,16 +95,13 @@ class Login : AppCompatActivity() {
             override fun onCancelled(error: DatabaseError) {
 
             }
-
         })
     }
-
     private fun savePreferences(phone: String, departmentName: String) {
         sharedPreferences.edit().putBoolean("isLoggedIn", true).apply()
         sharedPreferences.edit().putString("loggedStaffPhone", phone).apply()
         sharedPreferences.edit().putString("loggedStaffDepartment", departmentName).apply()
     }
-
     private fun clear() {
         loginBinding.etStaffPhone.text.clear()
         loginBinding.etStaffPass.text.clear()

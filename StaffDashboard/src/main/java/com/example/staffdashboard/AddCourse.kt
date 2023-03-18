@@ -79,7 +79,6 @@ class AddCourse : Fragment() {
             }
         })
 
-        // if user clicks on a course, add it to the list of courses they are teaching
         courseBinding.lvCourses.setOnItemClickListener { parent, view, position, id ->
             val course = parent.getItemAtPosition(position).toString()
             val courseCode = course.split(" ")[0]

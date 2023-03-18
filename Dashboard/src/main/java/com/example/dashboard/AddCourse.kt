@@ -8,6 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.SearchView
+import android.widget.Toast
+import androidx.fragment.app.FragmentActivity
 import com.example.dashboard.databinding.FragmentAddCourseBinding
 import com.google.firebase.database.*
 
@@ -18,6 +21,7 @@ class AddCourse : Fragment() {
 
     private var param1: String? = null
     private var param2: String? = null
+    private lateinit var toast: Toast
     private lateinit var addCourseBinding: FragmentAddCourseBinding
     private lateinit var database: DatabaseReference
     private lateinit var sharedPreferences: SharedPreferences
@@ -45,7 +49,7 @@ class AddCourse : Fragment() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 var courseList = ArrayList<String>()
                 for (course in snapshot.children) {
-                    courseList.add(course.key.toString()+" "+course.child("courseTitle").value.toString())
+                    courseList.add(course.key.toString() + " " + course.child("courseTitle").value.toString())
                 }
 
                 val courseAdapter: ArrayAdapter<String> = ArrayAdapter<String>(
@@ -55,17 +59,60 @@ class AddCourse : Fragment() {
                 )
 
                 addCourseBinding.lvCourses.adapter = courseAdapter
+
+                addCourseBinding.svCourses.setOnQueryTextListener(object :
+                    SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(query: String?): Boolean {
+                        addCourseBinding.svCourses.clearFocus()
+                        if (courseList.contains(query)) {
+                            courseAdapter.filter.filter(query)
+                        }
+                        return false
+                    }
+
+                    override fun onQueryTextChange(newText: String?): Boolean {
+                        courseAdapter.filter.filter(newText)
+                        return false
+                    }
+                })
             }
 
             override fun onCancelled(error: DatabaseError) {
 
             }
         })
+
+        addCourseBinding.lvCourses.setOnItemClickListener { parent, view, position, id ->
+            val course = parent.getItemAtPosition(position).toString()
+            val courseCode = course.split(" ")[0]
+            val loggedUserDept = sharedPreferences.getString("loggedUserDept", "")
+            val loggedUserYear = sharedPreferences.getString("loggedUserYear", "")
+            val loggedInUser = sharedPreferences.getString("loggedInUser", "")
+
+            database = FirebaseDatabase.getInstance().getReference("Departments")
+                .child(loggedUserDept.toString()).child(loggedUserYear.toString()).child("Students")
+                .child(loggedInUser.toString()).child("registeredCourses")
+            database.child(courseCode).setValue("")
+
+            toast = Toast.makeText(
+                requireContext(),
+                "Course $courseCode added successfully",
+                Toast.LENGTH_SHORT
+            )
+            toast.show()
+            replaceFragment(Courses())
+        }
         return addCourseBinding.root
+    }
+    private fun replaceFragment(fragment: Fragment){
+        val fragmentManager = (activity as FragmentActivity).supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.dashFrameLayout,fragment)
+        fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commit()
     }
 
     companion object {
-
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             AddCourse().apply {
