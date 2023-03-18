@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.example.dashboard.databinding.FragmentAccountBinding
 
 private const val ARG_PARAM1 = "param1"
@@ -43,6 +44,7 @@ class Account : Fragment() {
         accountBinding.tMobValue.text = sharedPreferences.getString("loggedUserPhone", "Phone")
         accountBinding.tDeptValue.text = sharedPreferences.getString("loggedUserDept", "Dept")
         accountBinding.tYearValue.text = sharedPreferences.getString("loggedUserYear", "Year")
+        accountBinding.tMailValue.text = sharedPreferences.getString("loggedUserEmail", "Mail")
 
         accountBinding.btnLogout.setOnClickListener {
             sharedPreferences.edit().putBoolean("isLoggedIn", false).apply()

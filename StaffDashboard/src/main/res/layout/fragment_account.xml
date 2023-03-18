@@ -31,7 +31,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/imgProfile"
                 android:layout_centerHorizontal="true"
-                android:layout_margin="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
                 android:text="Staff Name"
                 android:textColor="#FFFFFF"
                 android:textSize="22sp" />
@@ -61,6 +64,7 @@
                     android:layout_gravity="start"/>
 
                 <ImageView
+                    android:id="@+id/imgEdit"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:src="@drawable/edit_logo"
