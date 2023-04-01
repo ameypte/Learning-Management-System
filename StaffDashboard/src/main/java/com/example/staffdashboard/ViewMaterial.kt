@@ -79,9 +79,12 @@ class ViewMaterial : Fragment() {
         }
 
         viewMaterialBinding.notesList.setOnItemClickListener { parent, view, position, id ->
-            val fileToOpen = parent.getItemAtPosition(position).toString()
+            val fileToOpen = parent.getItemAtPosition(position).toString();
+            val index = fileToOpen.lastIndexOf('.')
+            val fileKey = if (index == -1) fileToOpen else fileToOpen.substring(0, index)
+
             database = FirebaseDatabase.getInstance().getReference("Courses").child(courseCode!!)
-                .child("notes").child(spinner.selectedItem.toString()).child(fileToOpen).child("notesUrl")
+                .child("notes").child(spinner.selectedItem.toString()).child(fileKey).child("notesUrl")
 
             database.addValueEventListener(object : ValueEventListener {
                 @SuppressLint("QueryPermissionsNeeded")
@@ -91,18 +94,49 @@ class ViewMaterial : Fragment() {
                         FirebaseStorage.getInstance().getReferenceFromUrl(url)
                     storageReference.downloadUrl.addOnSuccessListener {
                         val intent = Intent(Intent.ACTION_VIEW)
-                        val fileExtension = MimeTypeMap.getFileExtensionFromUrl(url)
-                        val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension)
-                        intent.setDataAndType(it, mimeType)
-                        val chooser = Intent.createChooser(intent, "Open file with")
-                        if (intent.resolveActivity(requireActivity().packageManager) != null) {
-                            startActivity(chooser)
-                        } else {
+                        val fileExtension = MimeTypeMap.getFileExtensionFromUrl(it.toString())
+                        if (fileExtension == "pdf"){
+                            intent.setDataAndType(it, "application/pdf")
+                        }
+                        else if (fileExtension == "docx"){
+                            intent.setDataAndType(it, "application/msword")
+                        }
+                        else if (fileExtension == "pptx"){
+                            intent.setDataAndType(it, "application/vnd.ms-powerpoint")
+                        }
+                        else if (fileExtension == "xlsx"){
+                            intent.setDataAndType(it, "application/vnd.ms-excel")
+                        }
+                        else if (fileExtension == "zip"){
+                            intent.setDataAndType(it, "application/zip")
+                        }
+                        else if (fileExtension == "rar"){
+                            intent.setDataAndType(it, "application/rar")
+                        }
+                        else if (fileExtension == "txt"){
+                            intent.setDataAndType(it, "text/plain")
+                        }
+                        else if (fileExtension == "jpg" || fileExtension == "jpeg" || fileExtension == "png"){
+                            intent.setDataAndType(it, "image/*")
+                        }
+                        else if (fileExtension == "mp3"){
+                            intent.setDataAndType(it, "audio/*")
+                        }
+                        else if (fileExtension == "mp4"){
+                            intent.setDataAndType(it, "video/*")
+                        }
+                        else{
+                            intent.setDataAndType(it, "*/*")
+                        }
+//                        intent.setDataAndType(it, null )
+                        try {
+                            startActivity(intent)
+                        } catch (e: ActivityNotFoundException) {
                             if (::toast.isInitialized)
                                 toast.cancel()
                             toast = Toast.makeText(
                                 requireContext(),
-                                "No App to open this file",
+                                "No Application found to open this file",
                                 Toast.LENGTH_SHORT
                             )
                             toast.show()
@@ -130,7 +164,7 @@ class ViewMaterial : Fragment() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val notesList = ArrayList<String>()
                 for (notes in snapshot.children) {
-                    notesList.add(notes.key.toString())
+                    notesList.add(notes.key.toString()+fileExtension(notes.child("notesUrl").value.toString()))
                 }
                 val notesAdapter: ArrayAdapter<String> = ArrayAdapter<String>(
                     requireContext(),
@@ -147,6 +181,10 @@ class ViewMaterial : Fragment() {
                 toast.show()
             }
         })
+    }
+
+    private fun fileExtension(toString: String): Any? {
+        return "." + MimeTypeMap.getFileExtensionFromUrl(toString)
     }
 
     private fun getFirestoreData(courseCode: String?) {

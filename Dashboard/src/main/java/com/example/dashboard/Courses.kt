@@ -13,6 +13,8 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dashboard.databinding.FragmentCoursesBinding
+import com.example.staffdashboard.PdfReader
+import com.example.staffdashboard.ViewMaterial
 import com.google.firebase.database.*
 
 private const val ARG_PARAM1 = "param1"
@@ -27,6 +29,7 @@ class Courses : Fragment() {
     private lateinit var loggedInStudent: String
     private lateinit var loggedStudentYear: String
     private lateinit var database: DatabaseReference
+    private lateinit var toast: Toast
 
     private lateinit var registeredCourses: ArrayList<String>
     private lateinit var courseList: ArrayList<ModelCourse>
@@ -57,10 +60,8 @@ class Courses : Fragment() {
         coursesRecyclerView.layoutManager = LinearLayoutManager(context)
         coursesRecyclerView.setHasFixedSize(true)
         registeredCourses = getRegisteredCourses()
-        Toast.makeText(context, registeredCourses.toString(), Toast.LENGTH_LONG).show()
         courseList = arrayListOf()
         getData()
-
 
         coursesBinding.button.setOnClickListener {
             replaceFragment(AddCourse())
@@ -93,8 +94,9 @@ class Courses : Fragment() {
                             val courseCode = courseList[position].courseCode
                             database =
                                 FirebaseDatabase.getInstance().getReference("Departments")
-                                    .child(loggedStudentDepartment).child("Students")
-                                    .child(loggedInStudent).child("registeredCourses")
+                                    .child(loggedStudentDepartment).child(loggedStudentYear)
+                                    .child("Students").child(loggedInStudent)
+                                    .child("registeredCourses")
                             val builder = AlertDialog.Builder(context)
                             builder.setTitle("Delete Course")
                             builder.setMessage("Are you sure you want to remove this course?")
@@ -111,12 +113,62 @@ class Courses : Fragment() {
                             val dialog = builder.create()
                             dialog.show()
                         }
+
+                        override fun onCourseViewClick(position: Int) {
+                            getFirebaseData(courseList[position].courseCode)
+                        }
+
+                        override fun onNotesViewClick(position: Int) {
+                            val courseCode = courseList[position].courseCode
+                            val courseTitle = courseList[position].courseTitle
+                            val viewMaterialFragment = ViewMaterial()
+
+                            val args = Bundle()
+                            args.putString("courseCode", courseCode)
+                            args.putString("courseTitle", courseTitle)
+                            viewMaterialFragment.arguments = args
+                            replaceFragment(viewMaterialFragment)
+                        }
                     })
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
 
+            }
+        })
+    }
+
+    private fun getFirebaseData(courseCode: String?) {
+        database = FirebaseDatabase.getInstance().getReference("Courses").child(courseCode!!).child("curriculum")
+        database.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if(snapshot.exists()){
+                    val curriculumUrl = snapshot.child("curriculumUrl").value.toString()
+                    val curriculumName = snapshot.child("curriculumName").value.toString()
+                    val bundle = Bundle()
+                    bundle.putString("Url",curriculumUrl)
+                    bundle.putString("Name",curriculumName)
+                    val pdfRenderer = PdfReader()
+                    pdfRenderer.arguments = bundle
+                    val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                    transaction.replace(R.id.dashFrameLayout,pdfRenderer)
+                    transaction.addToBackStack(null)
+                    transaction.commit()
+                }
+                else{
+                    if(::toast.isInitialized)
+                        toast.cancel()
+                    toast = Toast.makeText(requireContext(),"No Curriculum Uploaded", Toast.LENGTH_SHORT)
+                    toast.show()
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                if(::toast.isInitialized)
+                    toast.cancel()
+                toast = Toast.makeText(requireContext(),error.message, Toast.LENGTH_SHORT)
+                toast.show()
             }
         })
     }

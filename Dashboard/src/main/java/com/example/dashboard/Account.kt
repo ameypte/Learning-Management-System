@@ -50,6 +50,23 @@ class Account : Fragment() {
             sharedPreferences.edit().putBoolean("isLoggedIn", false).apply()
             requireActivity().finish()
         }
+
+        accountBinding.btnEdit.setOnClickListener {
+            accountBinding.tNameValue.visibility = View.GONE
+            accountBinding.tMobValue.visibility = View.GONE
+            accountBinding.tDeptValue.visibility = View.GONE
+            accountBinding.tYearValue.visibility = View.GONE
+            accountBinding.tMailValue.visibility = View.GONE
+
+            accountBinding.editName.visibility = View.VISIBLE
+            accountBinding.editMobile.visibility = View.VISIBLE
+            accountBinding.editMail.visibility = View.VISIBLE
+
+            accountBinding.editName.setText(sharedPreferences.getString("loggedUserName", "Name"))
+            accountBinding.editMobile.setText(sharedPreferences.getString("loggedUserPhone", "Phone"))
+            accountBinding.editMail.setText(sharedPreferences.getString("loggedUserEmail", "Mail"))
+
+        }
         return accountBinding.root
     }
 

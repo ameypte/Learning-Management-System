@@ -79,6 +79,7 @@
                         android:textSize="24sp" />
 
                     <ImageView
+                        android:id="@+id/btnEdit"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_alignParentEnd="true"
@@ -96,19 +97,19 @@
                         android:id="@+id/imgName"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-
                         android:layout_marginEnd="15dp"
-                        android:src="@drawable/name_logo" />
+                        android:src="@drawable/name_logo"
+                        android:layout_centerVertical="true"/>
 
                     <TextView
                         android:id="@+id/tName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
                         android:layout_toEndOf="@+id/imgName"
                         android:text="Name"
                         android:textColor="#2C2C2C"
-                        android:textSize="17sp" />
+                        android:textSize="17sp"
+                        />
 
                     <TextView
                         android:id="@+id/tNameValue"
@@ -117,7 +118,21 @@
                         android:layout_below="@+id/tName"
                         android:layout_toEndOf="@+id/imgName"
                         android:text="Student Name"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        />
+
+                        <EditText
+                            android:id="@+id/editName"
+                            android:layout_marginTop="5dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:layout_below="@+id/tName"
+                            android:layout_toEndOf="@+id/imgName"
+                            android:visibility="gone"/>
+
+
                 </RelativeLayout>
 
                 <View
@@ -143,7 +158,8 @@
                         android:layout_height="40dp"
                         android:padding="3dp"
                         android:layout_marginEnd="15dp"
-                        android:src="@drawable/mob_logo" />
+                        android:src="@drawable/mob_logo"
+                        android:layout_centerVertical="true"/>
 
                     <TextView
                         android:id="@+id/tMobile"
@@ -162,6 +178,18 @@
                         android:layout_toEndOf="@+id/imgMobile"
                         android:text="Student Mobile"
                         android:textSize="14sp" />
+
+                    <EditText
+                        android:id="@+id/editMobile"
+                        android:layout_marginTop="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:layout_below="@+id/tMobile"
+                        android:layout_toEndOf="@+id/imgMobile"
+                        android:visibility="gone"/>
+
                 </RelativeLayout>
 
                 <View
@@ -186,7 +214,8 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_marginEnd="15dp"
-                        android:src="@drawable/mail_logo" />
+                        android:src="@drawable/mail_logo"
+                        android:layout_centerVertical="true"/>
 
                     <TextView
                         android:id="@+id/tMail"
@@ -205,6 +234,16 @@
                         android:layout_toEndOf="@+id/imgMail"
                         android:text="Student Mail"
                         android:textSize="14sp" />
+                    <EditText
+                        android:id="@+id/editMail"
+                        android:layout_marginTop="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:layout_below="@+id/tMail"
+                        android:layout_toEndOf="@+id/imgMail"
+                        android:visibility="gone"/>
                 </RelativeLayout>
 
                 <View

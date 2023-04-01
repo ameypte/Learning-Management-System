@@ -12,6 +12,8 @@ class MyCourseAdapter(private val itemList: List<ModelCourse>) :
     private lateinit var listener: OnCourseListener
     interface OnCourseListener{
         fun onCourseRemoveClick(position: Int)
+        fun onCourseViewClick(position: Int)
+        fun onNotesViewClick(position: Int)
     }
     fun setOnCourseClickListener(listener: OnCourseListener){
         this.listener = listener
@@ -43,6 +45,12 @@ class MyCourseAdapter(private val itemList: List<ModelCourse>) :
         init {
             itemView.findViewById<ImageButton>(R.id.btnRemove).setOnClickListener {
                 listener.onCourseRemoveClick(adapterPosition)
+            }
+            itemView.findViewById<TextView>(R.id.btnCurriculum).setOnClickListener {
+                listener.onCourseViewClick(adapterPosition)
+            }
+            itemView.findViewById<TextView>(R.id.btnNotes).setOnClickListener {
+                listener.onNotesViewClick(adapterPosition)
             }
         }
     }

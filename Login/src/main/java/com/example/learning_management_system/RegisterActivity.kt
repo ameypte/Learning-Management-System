@@ -140,7 +140,6 @@ class RegisterActivity : AppCompatActivity() {
                                     Toast.makeText(ref, "Register successfully", Toast.LENGTH_SHORT)
                                         .show()
                                     finish()
-
                                 }.addOnFailureListener {
                                     Toast.makeText(ref, "Something went wrong!", Toast.LENGTH_SHORT)
                                         .show()

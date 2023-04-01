@@ -10,7 +10,6 @@ import com.example.staffdashboard.databinding.FragmentPdfReaderBinding
 import com.github.barteksc.pdfviewer.PDFView
 import java.net.URL
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -49,7 +48,6 @@ class PdfReader : Fragment() {
 
         pdfReaderBinding.txtFileName.text = pdfName
 
-        // Use a Coroutine to download the PDF file from the Firestore URL asynchronously
         lifecycleScope.launch(Dispatchers.IO) {
             try {
                 val pdfStream = URL(pdfUrl).openStream()
@@ -58,7 +56,6 @@ class PdfReader : Fragment() {
                     pdfReaderBinding.progressBarFileLoading.visibility = View.GONE
                 }
             } catch (e: Exception) {
-                Toast.makeText(requireContext(), "Failed to load PDF file: ${e.message}", Toast.LENGTH_LONG).show()
                 Log.e(TAG, "Failed to load PDF file: ${e.message}")
             }
         }
@@ -67,7 +64,6 @@ class PdfReader : Fragment() {
 
 
     companion object {
-
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             PdfReader().apply {

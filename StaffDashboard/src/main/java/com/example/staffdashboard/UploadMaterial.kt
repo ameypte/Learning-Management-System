@@ -150,7 +150,7 @@ class UploadMaterial() : Fragment() {
         }
     }
 
-    fun getFirestoreData(courseCode: String?) {
+    private fun getFirestoreData(courseCode: String?) {
         database = FirebaseDatabase.getInstance().getReference("Courses").child(courseCode!!).child("curriculum")
         database.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {

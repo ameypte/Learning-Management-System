@@ -9,22 +9,21 @@ import androidx.recyclerview.widget.RecyclerView
 
 class MyCourseAdapter(private val itemList: List<ModelCourse>) :
     RecyclerView.Adapter<MyCourseAdapter.CourseHolder>() {
-    private lateinit var updateListener: OnCourseListener
-    private lateinit var removedListener: OnCourseListener
+    private lateinit var listener: OnCourseListener
     interface OnCourseListener{
         fun onCourseUpdateClick(position: Int)
         fun onCourseRemoveClick(position: Int)
         fun onCourseViewClick(position: Int)
     }
     fun setOnCourseClickListener(listener: OnCourseListener){
-        updateListener = listener
+        this.listener = listener
     }
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): MyCourseAdapter.CourseHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.course_item, parent, false)
-        return CourseHolder(view,updateListener)
+        return CourseHolder(view,listener)
     }
 
     override fun onBindViewHolder(holder: MyCourseAdapter.CourseHolder, position: Int) {
