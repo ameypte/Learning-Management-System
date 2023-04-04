@@ -8,6 +8,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LearningManagementSystem">
         <activity
+            android:name=".ResetPasswordActivity"
+            android:exported="false" />
+        <activity
             android:name=".ForgetPassword"
             android:exported="false" />
         <activity
