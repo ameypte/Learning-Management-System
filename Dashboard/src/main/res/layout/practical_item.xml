@@ -98,7 +98,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/linIF3"
-            android:text="IF2"
+            android:text="IF3"
             android:textSize="24sp"
             android:textColor="#1E1E1E"
             android:layout_marginEnd="4dp"/>

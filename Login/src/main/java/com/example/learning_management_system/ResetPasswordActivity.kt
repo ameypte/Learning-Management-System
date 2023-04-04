@@ -18,10 +18,12 @@ class ResetPasswordActivity : AppCompatActivity() {
         resetBinding = ActivityResetPasswordBinding.inflate(layoutInflater)
         setContentView(resetBinding.root)
 
-        val id = intent.getStringExtra("id")
+        val id = intent.getStringExtra("id").toString()
+        val branch = intent.getStringExtra("branch").toString()
+        val year = intent.getStringExtra("year").toString()
 
         // getting the reference of realtime database
-        database = FirebaseDatabase.getInstance().getReference("Student")
+        database = FirebaseDatabase.getInstance().getReference("Departments")
 
         resetBinding.btnResetPass.setOnClickListener {
             val newpass = resetBinding.etNewPass.text.toString()
@@ -34,7 +36,7 @@ class ResetPasswordActivity : AppCompatActivity() {
                     Toast.makeText(this, "Password and Confirm Password didn't match", Toast.LENGTH_SHORT).show()
                 } else {
                     if (intent != null) {
-                        database.child(id.toString()).child("password").setValue(conpass)
+                        database.child(branch).child(year).child("Students").child(id).child("password").setValue(conpass)
 
                         val intent = Intent(this, LoginActivity::class.java)
                         startActivity(intent)
