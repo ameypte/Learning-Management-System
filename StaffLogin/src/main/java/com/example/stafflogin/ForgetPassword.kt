@@ -78,7 +78,7 @@ class ForgetPassword : AppCompatActivity() {
                 }
 
             } else {
-                Toast.makeText(this, "Student not registered!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Staff not registered!", Toast.LENGTH_SHORT).show()
             }
         }.addOnFailureListener {
             Toast.makeText(this, "Something went wrong!", Toast.LENGTH_SHORT).show()

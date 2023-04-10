@@ -7,19 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Spinner
-import androidx.fragment.app.FragmentActivity
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.staffdashboard.databinding.FragmentTimeTableBinding
+import com.example.staffdashboard.databinding.FragmentUploadTimeTableBinding
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
 
-class TimeTable : Fragment() {
+class UploadTimeTable : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
-    private lateinit var timeTableBinding: FragmentTimeTableBinding
+    private lateinit var uploadTimeTableBinding: FragmentUploadTimeTableBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,10 +31,9 @@ class TimeTable : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        timeTableBinding = FragmentTimeTableBinding.inflate(inflater, container, false)
+        uploadTimeTableBinding = FragmentUploadTimeTableBinding.inflate(inflater, container, false)
 
-
-        val spinner = timeTableBinding.spDay
+        val spinner = uploadTimeTableBinding.spDay
 
         val items = arrayOf(
             "Monday",
@@ -59,27 +56,13 @@ class TimeTable : Fragment() {
 
             }
         }
-
-        timeTableBinding.btnUpload.setOnClickListener {
-            replaceFragment(UploadTimeTable())
-        }
-
-        return timeTableBinding.root
+        return uploadTimeTableBinding.root
     }
-
-    private fun replaceFragment(fragment: Fragment) {
-        val fragmentManager = (activity as FragmentActivity).supportFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.dashFrameLayout, fragment)
-        fragmentTransaction.addToBackStack(null)
-        fragmentTransaction.commit()
-    }
-
 
     companion object {
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            TimeTable().apply {
+            UploadTimeTable().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
