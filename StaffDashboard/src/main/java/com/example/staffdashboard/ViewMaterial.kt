@@ -12,7 +12,6 @@ import android.webkit.MimeTypeMap
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import com.example.staffdashboard.databinding.FragmentUploadMaterialBinding
 import com.example.staffdashboard.databinding.FragmentViewMaterialBinding
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
