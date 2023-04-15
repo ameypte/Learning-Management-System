@@ -123,14 +123,13 @@
 
                         <EditText
                             android:id="@+id/editName"
-                            android:layout_marginTop="5dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
                             android:layout_below="@+id/tName"
                             android:layout_toEndOf="@+id/imgName"
-                            android:visibility="gone"/>
+                            android:visibility="gone"
+                            />
 
 
                 </RelativeLayout>
@@ -177,19 +176,16 @@
                         android:layout_below="@+id/tMobile"
                         android:layout_toEndOf="@+id/imgMobile"
                         android:text="Student Mobile"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"/>
 
                     <EditText
                         android:id="@+id/editMobile"
-                        android:layout_marginTop="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
                         android:layout_below="@+id/tMobile"
                         android:layout_toEndOf="@+id/imgMobile"
                         android:visibility="gone"/>
-
                 </RelativeLayout>
 
                 <View
@@ -236,11 +232,9 @@
                         android:textSize="14sp" />
                     <EditText
                         android:id="@+id/editMail"
-                        android:layout_marginTop="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
                         android:layout_below="@+id/tMail"
                         android:layout_toEndOf="@+id/imgMail"
                         android:visibility="gone"/>
@@ -351,6 +345,13 @@
                     android:padding="8dp"
                     android:text="Logout"
                     android:textSize="17sp"/>
+                <ProgressBar
+                    android:id="@+id/uploadProgressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    />
                 <Button
                     android:id="@+id/btnUpdate"
                     android:layout_width="match_parent"
@@ -359,7 +360,8 @@
                     android:padding="8dp"
                     android:text="Update"
                     android:textSize="17sp"
-                    android:visibility="gone"/>
+                    android:visibility="gone"
+                    />
             </LinearLayout>
 
         </LinearLayout>

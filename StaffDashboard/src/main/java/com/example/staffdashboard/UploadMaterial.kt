@@ -80,6 +80,7 @@ class UploadMaterial() : Fragment() {
             "UNIT 4",
             "UNIT 5",
             "UNIT 6",
+            "OTHERS"
         )
         val adapter =
             ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_dropdown_item, items)
@@ -113,10 +114,10 @@ class UploadMaterial() : Fragment() {
             toast.show()
         }
         else{
-            if (uploadMaterialBinding.simpleSpinner.selectedItem.toString() == "Select Unit"){
-                if(::toast.isInitialized)
+            if (uploadMaterialBinding.simpleSpinner.selectedItem.toString() == "Select Unit") {
+                if (::toast.isInitialized)
                     toast.cancel()
-                toast = Toast.makeText(requireContext(),"Please Select a Unit",Toast.LENGTH_SHORT)
+                toast = Toast.makeText(requireContext(), "Please Select a Unit", Toast.LENGTH_SHORT)
                 toast.show()
             }
             else{

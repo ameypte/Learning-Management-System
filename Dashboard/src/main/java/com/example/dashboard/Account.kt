@@ -55,10 +55,9 @@ class Account : Fragment() {
         }
 
         accountBinding.btnEdit.setOnClickListener {
+            accountBinding.btnEdit.visibility = View.GONE
             accountBinding.tNameValue.visibility = View.GONE
             accountBinding.tMobValue.visibility = View.GONE
-            accountBinding.tDeptValue.visibility = View.GONE
-            accountBinding.tYearValue.visibility = View.GONE
             accountBinding.tMailValue.visibility = View.GONE
             accountBinding.btnLogout.visibility = View.GONE
 
@@ -78,7 +77,6 @@ class Account : Fragment() {
             val mob = accountBinding.editMobile.text
             val mail = accountBinding.editMail.text
 
-            accountBinding.txtName.text = name
             accountBinding.tName.text = name
             accountBinding.tMobValue.text = mob
             accountBinding.tMailValue.text = mail
@@ -88,29 +86,37 @@ class Account : Fragment() {
                 Toast.makeText(requireContext(),"Please insert all the datails", Toast.LENGTH_SHORT).show()
             }
             else{
+                accountBinding.uploadProgressBar.visibility = View.VISIBLE
+                accountBinding.btnUpdate.visibility = View.GONE
+
                 sharedPreferences.edit().putString("loggedUserName", name.toString()).apply()
                 sharedPreferences.edit().putString("loggedUserPhone", mob.toString()).apply()
                 sharedPreferences.edit().putString("loggedUserEmail", mail.toString()).apply()
 
                 val id = sharedPreferences.getString("loggedInUser", "").toString()
-                val  dept = sharedPreferences.getString("loggedUserDept", "").toString()
+                val dept = sharedPreferences.getString("loggedUserDept", "").toString()
                 val year = sharedPreferences.getString("loggedUserYear", "").toString()
 
-                database.child(dept).child(year).child("Students").child(id).child("name").setValue(name)
-                database.child(dept).child(year).child("Students").child(id).child("phone").setValue(mob)
-                database.child(dept).child(year).child("Students").child(id).child("email").setValue(mail)
+                database.child(dept).child(year).child("Students").child(id).child("name").setValue(name.toString())
+                database.child(dept).child(year).child("Students").child(id).child("phone").setValue(mob.toString())
+                database.child(dept).child(year).child("Students").child(id).child("email").setValue(mail.toString())
                     .addOnSuccessListener{
                         accountBinding.tNameValue.visibility = View.VISIBLE
                         accountBinding.tMobValue.visibility = View.VISIBLE
-                        accountBinding.tDeptValue.visibility = View.VISIBLE
-                        accountBinding.tYearValue.visibility = View.VISIBLE
                         accountBinding.tMailValue.visibility = View.VISIBLE
                         accountBinding.btnLogout.visibility = View.VISIBLE
-
                         accountBinding.editName.visibility = View.GONE
                         accountBinding.editMobile.visibility = View.GONE
                         accountBinding.editMail.visibility = View.GONE
+                        accountBinding.uploadProgressBar.visibility = View.GONE
                         accountBinding.btnUpdate.visibility = View.GONE
+                        accountBinding.btnEdit.visibility = View.VISIBLE
+
+                        Toast.makeText(requireContext(),"Updated Successfully", Toast.LENGTH_SHORT).show()
+                    }.addOnFailureListener{
+                        accountBinding.uploadProgressBar.visibility = View.GONE
+                        accountBinding.btnUpdate.visibility = View.VISIBLE
+                        Toast.makeText(requireContext(),"Failed to update", Toast.LENGTH_SHORT).show()
                     }
             }
         }

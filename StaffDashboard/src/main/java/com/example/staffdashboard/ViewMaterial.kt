@@ -54,6 +54,7 @@ class ViewMaterial : Fragment() {
             "UNIT 4",
             "UNIT 5",
             "UNIT 6",
+            "OTHERS"
         )
         val adapter =
             ArrayAdapter<String>(
