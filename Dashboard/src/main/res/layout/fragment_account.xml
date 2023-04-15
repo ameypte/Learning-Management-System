@@ -350,7 +350,16 @@
                     android:layout_margin="20dp"
                     android:padding="8dp"
                     android:text="Logout"
-                    android:textSize="17sp" />
+                    android:textSize="17sp"/>
+                <Button
+                    android:id="@+id/btnUpdate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:padding="8dp"
+                    android:text="Update"
+                    android:textSize="17sp"
+                    android:visibility="gone"/>
             </LinearLayout>
 
         </LinearLayout>

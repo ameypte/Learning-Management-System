@@ -56,7 +56,6 @@ class StaffEdit : Fragment() {
             savePreferences(edname, edmail)
 
             database = FirebaseDatabase.getInstance().getReference("Departments")
-            val Staff = Staff(edname, edmail)
             if (edname.isBlank() || edmail.isBlank()){
                 Toast.makeText(requireContext(), "Please insert all the detail", Toast.LENGTH_SHORT).show()
             }

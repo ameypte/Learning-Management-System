@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.example.dashboard.databinding.FragmentAccountBinding
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -19,6 +21,7 @@ class Account : Fragment() {
     private var param2: String? = null
     private lateinit var accountBinding: FragmentAccountBinding
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var database: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,15 +60,59 @@ class Account : Fragment() {
             accountBinding.tDeptValue.visibility = View.GONE
             accountBinding.tYearValue.visibility = View.GONE
             accountBinding.tMailValue.visibility = View.GONE
+            accountBinding.btnLogout.visibility = View.GONE
 
             accountBinding.editName.visibility = View.VISIBLE
             accountBinding.editMobile.visibility = View.VISIBLE
             accountBinding.editMail.visibility = View.VISIBLE
+            accountBinding.btnUpdate.visibility = View.VISIBLE
 
             accountBinding.editName.setText(sharedPreferences.getString("loggedUserName", "Name"))
             accountBinding.editMobile.setText(sharedPreferences.getString("loggedUserPhone", "Phone"))
             accountBinding.editMail.setText(sharedPreferences.getString("loggedUserEmail", "Mail"))
 
+        }
+
+        accountBinding.btnUpdate.setOnClickListener {
+            val name = accountBinding.editName.text
+            val mob = accountBinding.editMobile.text
+            val mail = accountBinding.editMail.text
+
+            accountBinding.txtName.text = name
+            accountBinding.tName.text = name
+            accountBinding.tMobValue.text = mob
+            accountBinding.tMailValue.text = mail
+
+            database = FirebaseDatabase.getInstance().getReference("Departments")
+            if (name.isBlank() || mob.isBlank() || mail.isBlank()){
+                Toast.makeText(requireContext(),"Please insert all the datails", Toast.LENGTH_SHORT).show()
+            }
+            else{
+                sharedPreferences.edit().putString("loggedUserName", name.toString()).apply()
+                sharedPreferences.edit().putString("loggedUserPhone", mob.toString()).apply()
+                sharedPreferences.edit().putString("loggedUserEmail", mail.toString()).apply()
+
+                val id = sharedPreferences.getString("loggedInUser", "").toString()
+                val  dept = sharedPreferences.getString("loggedUserDept", "").toString()
+                val year = sharedPreferences.getString("loggedUserYear", "").toString()
+
+                database.child(dept).child(year).child("Students").child(id).child("name").setValue(name)
+                database.child(dept).child(year).child("Students").child(id).child("phone").setValue(mob)
+                database.child(dept).child(year).child("Students").child(id).child("email").setValue(mail)
+                    .addOnSuccessListener{
+                        accountBinding.tNameValue.visibility = View.VISIBLE
+                        accountBinding.tMobValue.visibility = View.VISIBLE
+                        accountBinding.tDeptValue.visibility = View.VISIBLE
+                        accountBinding.tYearValue.visibility = View.VISIBLE
+                        accountBinding.tMailValue.visibility = View.VISIBLE
+                        accountBinding.btnLogout.visibility = View.VISIBLE
+
+                        accountBinding.editName.visibility = View.GONE
+                        accountBinding.editMobile.visibility = View.GONE
+                        accountBinding.editMail.visibility = View.GONE
+                        accountBinding.btnUpdate.visibility = View.GONE
+                    }
+            }
         }
         return accountBinding.root
     }
