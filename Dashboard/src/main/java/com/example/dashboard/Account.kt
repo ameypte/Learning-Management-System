@@ -83,7 +83,7 @@ class Account : Fragment() {
 
             database = FirebaseDatabase.getInstance().getReference("Departments")
             if (name.isBlank() || mob.isBlank() || mail.isBlank()){
-                Toast.makeText(requireContext(),"Please insert all the datails", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(),"Please insert all the details", Toast.LENGTH_SHORT).show()
             }
             else{
                 accountBinding.uploadProgressBar.visibility = View.VISIBLE
@@ -96,6 +96,11 @@ class Account : Fragment() {
                 val id = sharedPreferences.getString("loggedInUser", "").toString()
                 val dept = sharedPreferences.getString("loggedUserDept", "").toString()
                 val year = sharedPreferences.getString("loggedUserYear", "").toString()
+
+                accountBinding.txtName.text = name
+                accountBinding.tNameValue.text = name
+                accountBinding.tMobValue.text = mob
+                accountBinding.tMailValue.text = mail
 
                 database.child(dept).child(year).child("Students").child(id).child("name").setValue(name.toString())
                 database.child(dept).child(year).child("Students").child(id).child("phone").setValue(mob.toString())
