@@ -87,12 +87,15 @@ class UploadMaterial() : Fragment() {
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(arg0: AdapterView<*>?, arg1: View?, arg2: Int, arg3: Long) {
-
+                if(uploadMaterialBinding.simpleSpinner.selectedItem.toString() == "OTHERS"){
+                    uploadMaterialBinding.etOthers.visibility = View.VISIBLE
+                }
+                else{
+                    uploadMaterialBinding.etOthers.visibility = View.GONE
+                }
             }
             override fun onNothingSelected(arg0: AdapterView<*>?) {}
         }
-
-
         return uploadMaterialBinding.root
     }
 
@@ -121,6 +124,7 @@ class UploadMaterial() : Fragment() {
             }
             else{
                 uploadMaterialBinding.pbNotesUpload.visibility = View.VISIBLE
+                val msg = uploadMaterialBinding.etOthers.text.toString()
                 database = FirebaseDatabase.getInstance().getReference("Courses").child(courseCode!!).child("notes").child(unit)
                 storageReference = FirebaseStorage.getInstance().getReference("notes/${courseCode}/$unit/${uploadMaterialBinding.btnChooseNotes.text}")
 
