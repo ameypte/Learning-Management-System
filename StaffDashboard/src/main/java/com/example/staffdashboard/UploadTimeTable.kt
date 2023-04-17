@@ -41,23 +41,17 @@ class UploadTimeTable : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         uploadTimeTableBinding = FragmentUploadTimeTableBinding.inflate(inflater, container, false)
 
         sharedPreferences = requireContext().getSharedPreferences(
-            getString(R.string.login_preference_file_name),
-            Context.MODE_PRIVATE
+            getString(R.string.login_preference_file_name), Context.MODE_PRIVATE
         )
         val spinner = uploadTimeTableBinding.spDay
 
         val items = arrayOf(
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Friday",
-            "Thursday"
+            "Monday", "Tuesday", "Wednesday", "Friday", "Thursday"
         )
         val adapter = ArrayAdapter(requireContext(), R.layout.custom_spinner_dropdown_item, items)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -76,9 +70,7 @@ class UploadTimeTable : Fragment() {
 
         val year = uploadTimeTableBinding.spYear
         val item = arrayOf(
-            "First Year",
-            "Second Year",
-            "Third Year"
+            "First Year", "Second Year", "Third Year"
         )
         val adapter1 = ArrayAdapter(requireContext(), R.layout.custom_spinner_dropdown_item, item)
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -109,9 +101,7 @@ class UploadTimeTable : Fragment() {
                         courseList.add(course.key.toString())
                     }
                     val adapter2 = ArrayAdapter(
-                        requireContext(),
-                        R.layout.custom_spinner_dropdown_item,
-                        courseList
+                        requireContext(), R.layout.custom_spinner_dropdown_item, courseList
                     )
                     adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                     courseSp.adapter = adapter2
@@ -163,10 +153,9 @@ class UploadTimeTable : Fragment() {
 
         uploadTimeTableBinding.btnAdd.setOnClickListener {
             val selectedTypeId: Int = uploadTimeTableBinding.rgType.checkedRadioButtonId
-            if (selectedTypeId == -1 || uploadTimeTableBinding.btnStart.text == "Set" ||
-                uploadTimeTableBinding.btnEnd.text == "Set"
-            ) {
-                Toast.makeText(requireContext(), "Please Fill all the details", Toast.LENGTH_SHORT).show()
+            if (selectedTypeId == -1 || uploadTimeTableBinding.btnStart.text == "Set" || uploadTimeTableBinding.btnEnd.text == "Set") {
+                Toast.makeText(requireContext(), "Please Fill all the details", Toast.LENGTH_SHORT)
+                    .show()
                 return@setOnClickListener
             }
             selectedType = requireView().findViewById(selectedTypeId)
@@ -176,57 +165,128 @@ class UploadTimeTable : Fragment() {
             var type: String = selectedType.text.toString()
             val selectedCourseCode = uploadTimeTableBinding.spCourse.selectedItem.toString()
             var selectedCourseTitle: String = ""
-            database = FirebaseDatabase.getInstance().getReference("Courses").child(selectedCourseCode)
+            database =
+                FirebaseDatabase.getInstance().getReference("Courses").child(selectedCourseCode)
             database.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
                         selectedCourseTitle = snapshot.child("courseTitle").value.toString()
-                        database =
-                            FirebaseDatabase.getInstance().getReference("Departments").child(staffDepartment)
-                                .child(selectedYear).child("TimeTable").child(day)
-
+                        database = FirebaseDatabase.getInstance().getReference("Departments")
+                            .child(staffDepartment).child(selectedYear).child("Time Table")
+                            .child(day)
 
                         if (type == "Practical") {
-                            val selectedBatchId: Int = uploadTimeTableBinding.rgBatch.checkedRadioButtonId
+                            val selectedBatchId: Int =
+                                uploadTimeTableBinding.rgBatch.checkedRadioButtonId
                             if (selectedBatchId == -1) {
-                                Toast.makeText(requireContext(), "Please select th batch", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    requireContext(), "Please select th batch", Toast.LENGTH_SHORT
+                                ).show()
                                 return
                             }
                             selectedBatch = requireView().findViewById(selectedBatchId)
                             batch = selectedBatch.text.toString()
                             type = "Pra"
 
-                            database.child(type).child("startTime").setValue(startTime)
-                            database.child(type).child("endTime").setValue(endTime)
-
                             val courseCode = "courseCode" + batch!!.last()
                             val courseTeacher = "courseTeacher" + batch!!.last()
                             val courseTitle = "courseTitle" + batch!!.last()
 
-                            database.child(type).child(batch!!).child(courseCode).setValue(selectedCourseCode)
-                            database.child(type).child(batch!!).child(courseTeacher).setValue(staffName)
-                            database.child(type).child(batch!!).child(courseTitle).setValue(selectedCourseTitle).addOnSuccessListener {
-                                activity?.supportFragmentManager?.beginTransaction()
-                                    ?.replace(R.id.dashFrameLayout, TimeTable.newInstance("", ""))
-                                    ?.commit()
-                                Toast.makeText(requireContext(), "Practical Added", Toast.LENGTH_SHORT).show()
-                            }
+                            database.addListenerForSingleValueEvent(object : ValueEventListener {
+                                override fun onDataChange(snapshot: DataSnapshot) {
+                                    var count = 1
+                                    if (snapshot.exists()) {
+                                        for (period in snapshot.children) {
+                                            if (period.child("startTime").value.toString() == startTime) {
+                                                type = period.key.toString()
+                                                break
+                                            }
+                                            count++
+                                        }
+                                    }
+                                    if (type == "Pra") {
+                                        type = "$count$type"
+                                    }
+
+                                    database.child(type).child("startTime").setValue(startTime)
+                                    database.child(type).child("endTime").setValue(endTime)
+
+                                    database.child(type).child(batch!!).child(courseCode)
+                                        .setValue(selectedCourseCode)
+                                    database.child(type).child(batch!!).child(courseTeacher)
+                                        .setValue(staffName)
+                                    database.child(type).child(batch!!).child(courseTitle)
+                                        .setValue(selectedCourseTitle).addOnSuccessListener {
+                                            activity?.supportFragmentManager?.beginTransaction()
+                                                ?.replace(
+                                                    R.id.dashFrameLayout,
+                                                    TimeTable.newInstance("", "")
+                                                )?.commit()
+                                            Toast.makeText(
+                                                requireContext(),
+                                                "Practical Added",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
+                                }
+
+                                override fun onCancelled(error: DatabaseError) {
+                                    Toast.makeText(
+                                        requireContext(), error.message, Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            })
                         } else {
                             batch = ""
                             type = "Lec"
-                            database.child(type).child("startTime").setValue(startTime)
-                            database.child(type).child("endTime").setValue(endTime)
-                            database.child(type).child("courseCode").setValue(selectedCourseCode)
-                            database.child(type).child("courseTeacher").setValue(staffName)
-                            database.child(type).child("courseTitle").setValue(selectedCourseTitle).addOnSuccessListener {
-                                activity?.supportFragmentManager?.beginTransaction()
-                                    ?.replace(R.id.dashFrameLayout, TimeTable.newInstance("", ""))
-                                    ?.commit()
-                                Toast.makeText(requireContext(), "Lecture Added", Toast.LENGTH_SHORT).show()
-                            }
+
+                            database.addListenerForSingleValueEvent(object : ValueEventListener {
+                                override fun onDataChange(snapshot: DataSnapshot) {
+                                    var count = 1
+                                    if (snapshot.exists()) {
+                                        for (period in snapshot.children) {
+                                            if (period.child("startTime").value.toString() == startTime) {
+                                                Toast.makeText(
+                                                    requireContext(),
+                                                    "Time slot already occupied",
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
+                                                return
+                                            }
+                                            count++
+                                        }
+                                    }
+                                    type = "$count$type"
+
+                                    database.child(type).child("startTime").setValue(startTime)
+                                    database.child(type).child("endTime").setValue(endTime)
+                                    database.child(type).child("courseCode")
+                                        .setValue(selectedCourseCode)
+                                    database.child(type).child("courseTitle")
+                                        .setValue(selectedCourseTitle).addOnSuccessListener {
+                                            activity?.supportFragmentManager?.beginTransaction()
+                                                ?.replace(
+                                                    R.id.dashFrameLayout,
+                                                    TimeTable.newInstance("", "")
+                                                )?.commit()
+                                            Toast.makeText(
+                                                requireContext(),
+                                                "Lecture Added",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
+                                }
+
+                                override fun onCancelled(error: DatabaseError) {
+                                    Toast.makeText(
+                                        requireContext(), error.message, Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            })
                         }
                     }
                 }
+
                 override fun onCancelled(error: DatabaseError) {
                     Toast.makeText(requireContext(), error.message, Toast.LENGTH_SHORT).show()
                 }
@@ -236,32 +296,39 @@ class UploadTimeTable : Fragment() {
         return uploadTimeTableBinding.root
     }
 
-
     private fun timePicker(callback: (String) -> Unit) {
         val currentTime = Calendar.getInstance()
         var hour = currentTime.get(Calendar.HOUR_OF_DAY)
         val minute = currentTime.get(Calendar.MINUTE)
 
         val timePicker = TimePickerDialog(
-            requireContext(),
-            { _, hourOfDay, minute ->
+            requireContext(), { _, hourOfDay, minute ->
                 hour = hourOfDay
+                //the selected time must be between 8:00 AM to 6:00 PM
+                if (hour < 8 || hour > 18) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Please select time between 8:00 AM to 6:00 PM",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    uploadTimeTableBinding.btnStart.text = "Set"
+                    uploadTimeTableBinding.btnEnd.text = "Set"
+                    return@TimePickerDialog
+                }
                 val selectedTime = "$hourOfDay:$minute"
                 callback(selectedTime)
-            },
-            hour, minute, true
+            }, hour, minute, true
         )
         timePicker.show()
     }
 
     companion object {
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            UploadTimeTable().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+        fun newInstance(param1: String, param2: String) = UploadTimeTable().apply {
+            arguments = Bundle().apply {
+                putString(ARG_PARAM1, param1)
+                putString(ARG_PARAM2, param2)
             }
+        }
     }
 }
