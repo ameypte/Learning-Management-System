@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="CustomSpinnerStyle" parent="Widget.AppCompat.Spinner">
+        <item name="android:background">@drawable/my_spinner_background</item>
+        <item name="android:spinnerItemStyle">@style/CustomSpinnerItemStyle</item>
+        <item name="android:spinnerDropDownItemStyle">@style/CustomSpinnerDropdownItemStyle</item>
+    </style>
+
+    <style name="CustomSpinnerItemStyle" parent="Widget.AppCompat.DropDownItem.Spinner">
+        <item name="android:textColor">#000</item>
+    </style>
+
+    <style name="CustomSpinnerDropdownItemStyle" parent="Widget.AppCompat.DropDownItem.Spinner">
+        <item name="android:textColor">#000</item>
+        <item name="android:background">@drawable/my_spinner_dropdown_selector</item>
+    </style>
+
+</resources>

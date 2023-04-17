@@ -86,7 +86,6 @@ class UploadTimeTable : Fragment() {
         }
 
         val courseSp = uploadTimeTableBinding.spCourse
-
         val staffDepartment = sharedPreferences.getString("loggedStaffDepartment", "").toString()
         val staffPhone = sharedPreferences.getString("loggedStaffPhone", "").toString()
         val staffName = sharedPreferences.getString("loggedStaffName", "").toString()
@@ -164,7 +163,7 @@ class UploadTimeTable : Fragment() {
             val selectedYear = uploadTimeTableBinding.spYear.selectedItem.toString()
             var type: String = selectedType.text.toString()
             val selectedCourseCode = uploadTimeTableBinding.spCourse.selectedItem.toString()
-            var selectedCourseTitle: String = ""
+            var selectedCourseTitle = ""
             database =
                 FirebaseDatabase.getInstance().getReference("Courses").child(selectedCourseCode)
             database.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -262,6 +261,7 @@ class UploadTimeTable : Fragment() {
                                     database.child(type).child("endTime").setValue(endTime)
                                     database.child(type).child("courseCode")
                                         .setValue(selectedCourseCode)
+                                    database.child(type).child("courseTeacher").setValue(staffName)
                                     database.child(type).child("courseTitle")
                                         .setValue(selectedCourseTitle).addOnSuccessListener {
                                             activity?.supportFragmentManager?.beginTransaction()
@@ -304,20 +304,12 @@ class UploadTimeTable : Fragment() {
         val timePicker = TimePickerDialog(
             requireContext(), { _, hourOfDay, minute ->
                 hour = hourOfDay
-                //the selected time must be between 8:00 AM to 6:00 PM
-                if (hour < 8 || hour > 18) {
-                    Toast.makeText(
-                        requireContext(),
-                        "Please select time between 8:00 AM to 6:00 PM",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    uploadTimeTableBinding.btnStart.text = "Set"
-                    uploadTimeTableBinding.btnEnd.text = "Set"
-                    return@TimePickerDialog
-                }
-                val selectedTime = "$hourOfDay:$minute"
+                val amPm = if (hour < 12) "AM" else "PM"
+                hour %= 12
+                if (hour == 0) hour = 12
+                val selectedTime = String.format("%d:%02d %s", hour, minute, amPm)
                 callback(selectedTime)
-            }, hour, minute, true
+            }, hour, minute, false
         )
         timePicker.show()
     }

@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TimeTable">
+    tools:context=".TimeTable"
+    android:background="#EDEDFF"
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -14,43 +16,62 @@
             android:id="@+id/frameTimeTableTop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="8dp">
+            android:paddingHorizontal="8dp"
+            android:background="#FFF"
+            android:elevation="9dp">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-
-                <TextView
-                    android:id="@+id/textView2"
+                android:layout_height="match_parent"
+                >
+                <Spinner
+                    android:id="@+id/spYear"
+                    style="@style/CustomSpinnerStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Day: "
-                    android:textSize="20sp"
+                    android:background="@drawable/my_spinner_background"
+                    android:dropDownVerticalOffset="40dp"
+                    android:padding="8dp"
+                    android:popupBackground="@drawable/my_spinner_dropdown_selector"
+                    android:spinnerMode="dropdown"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
 
                 <Spinner
                     android:id="@+id/spDay"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:background="@drawable/my_spinner_background"
+                    android:dropDownVerticalOffset="40dp"
+                    android:layout_marginEnd="12dp"
+                    android:padding="8dp"
+                    android:popupBackground="@drawable/my_spinner_dropdown_selector"
+                    android:spinnerMode="dropdown"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/textView2"
+                    app:layout_constraintEnd_toStartOf="@+id/btnUpload"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <Button
                     android:id="@+id/btnUpload"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Upload"
                     android:layout_margin="5dp"
+                    android:text="Upload"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </FrameLayout>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/timeTableList"

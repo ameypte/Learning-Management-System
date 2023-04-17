@@ -12,6 +12,7 @@ import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.dashboard.databinding.FragmentTimeTableBinding
 import com.google.firebase.database.*
 
 private const val ARG_PARAM1 = "param1"
@@ -28,6 +29,8 @@ class TimeTable : Fragment() {
     private lateinit var timeTableRecyclerView: RecyclerView
     private lateinit var itemList: ArrayList<ModelTimeTable>
     private lateinit var selectedDay: String
+    private lateinit var timeTableBinding: FragmentTimeTableBinding
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +44,7 @@ class TimeTable : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_time_table, container, false)
+        timeTableBinding = com.example.dashboard.databinding.FragmentTimeTableBinding.inflate(inflater, container, false)
         sharedPreferences = requireActivity().getSharedPreferences(
             getString(R.string.login_preference_file_name),
             Context.MODE_PRIVATE
@@ -49,7 +52,7 @@ class TimeTable : Fragment() {
         loggedUserDept = sharedPreferences.getString("loggedUserDept", null).toString()
         loggedUserYear = sharedPreferences.getString("loggedUserYear", null).toString()
 
-        val spinner = view.findViewById<Spinner>(R.id.spDay)
+        val spinner = timeTableBinding.spDay
 
         val items = arrayOf(
             "Monday",
@@ -67,7 +70,7 @@ class TimeTable : Fragment() {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 selectedDay = p0?.getItemAtPosition(p2).toString()
                 //code for recycler view
-                timeTableRecyclerView = view.findViewById(R.id.timeTableList)
+                timeTableRecyclerView = timeTableBinding.timeTableList
                 timeTableRecyclerView.layoutManager = LinearLayoutManager(context)
                 timeTableRecyclerView.setHasFixedSize(true)
                 itemList = arrayListOf()
@@ -79,7 +82,7 @@ class TimeTable : Fragment() {
             }
         }
         // Inflate the layout for this fragment
-        return view
+        return timeTableBinding.root
     }
 
     private fun getData() {
