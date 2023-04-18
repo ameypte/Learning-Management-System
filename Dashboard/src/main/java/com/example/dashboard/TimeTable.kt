@@ -9,11 +9,16 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dashboard.databinding.FragmentTimeTableBinding
 import com.google.firebase.database.*
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -86,11 +91,17 @@ class TimeTable : Fragment() {
     }
 
     private fun getData() {
+        timeTableBinding.progressBar.visibility = View.VISIBLE
         database = FirebaseDatabase.getInstance().getReference("Departments").child(loggedUserDept)
             .child(loggedUserYear).child("Time Table").child(selectedDay)
 
         database.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
+                if (!snapshot.exists()) {
+                    Toast.makeText(context, "No data found", Toast.LENGTH_SHORT).show()
+                    timeTableBinding.timeTableList.visibility = View.GONE
+                    timeTableBinding.progressBar.visibility = View.GONE
+                }
                 for (sessionSnapshot in snapshot.children) {
                     val startTime = sessionSnapshot.child("startTime").value.toString()
                     val endTime = sessionSnapshot.child("endTime").value.toString()
@@ -152,6 +163,18 @@ class TimeTable : Fragment() {
                             itemList.add(obj)
                         }
                     }
+                    itemList.sortBy { model ->
+                        val time = model.startTime ?: "12:00 AM" // use "12:00 AM" if startTime is null
+                        val sdf = SimpleDateFormat("h:mm a", Locale.getDefault())
+                        val date = try {
+                            sdf.parse(time)
+                        } catch (e: ParseException) {
+                            null
+                        }
+                        date?.time ?: Long.MAX_VALUE // return a large number to sort invalid dates to the end of the list
+                    }
+                    timeTableBinding.timeTableList.visibility = View.VISIBLE
+                    timeTableBinding.progressBar.visibility = View.GONE
                     timeTableRecyclerView.adapter = TimeTableAdapter(itemList)
                 }
             }

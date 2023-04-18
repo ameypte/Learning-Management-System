@@ -7,7 +7,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <FrameLayout
             android:id="@+id/frameTimeTableTop"
@@ -32,11 +32,17 @@
 
                 <Spinner
                     android:id="@+id/spDay"
+                    style="@style/CustomSpinnerStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:textSize="22sp"
-                    android:layout_marginLeft="8dp"/>
+                    android:layout_marginLeft="8dp"
+                    android:background="@drawable/my_spinner_background"
+                    android:dropDownVerticalOffset="40dp"
+                    android:padding="8dp"
+                    android:popupBackground="@drawable/my_spinner_dropdown_selector"
+                    android:spinnerMode="dropdown"/>
             </LinearLayout>
         </FrameLayout>
 
@@ -46,5 +52,12 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/frameTimeTableTop"
              />
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            />
     </RelativeLayout>
 </FrameLayout>
