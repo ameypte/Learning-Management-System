@@ -6,6 +6,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.TimePickerDialog
 import android.content.Context
+import android.content.Context.NOTIFICATION_SERVICE
 import android.content.Intent
 import android.content.SharedPreferences
 import android.icu.util.Calendar
@@ -16,7 +17,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.core.content.ContextCompat.getSystemService
 import com.example.staffdashboard.databinding.FragmentUploadTimeTableBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -24,8 +24,6 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 class UploadTimeTable : Fragment() {
     private var param1: String? = null
@@ -42,13 +40,11 @@ class UploadTimeTable : Fragment() {
     private lateinit var selectedBatch: RadioButton
     private lateinit var startTime: String
     private lateinit var endTime: String
+    private lateinit var type:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+        arguments?.let {}
     }
 
     override fun onCreateView(
@@ -64,7 +60,7 @@ class UploadTimeTable : Fragment() {
         val spinner = uploadTimeTableBinding.spDay
 
         val items = arrayOf(
-            "Monday", "Tuesday", "Wednesday", "Friday", "Thursday"
+            "Monday", "Tuesday", "Wednesday", "Thursday", "Friday",
         )
         val adapter = ArrayAdapter(requireContext(), R.layout.custom_spinner_dropdown_item, items)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -167,8 +163,6 @@ class UploadTimeTable : Fragment() {
                 calendarStartTime.set(Calendar.MINUTE, minute)
                 calendarStartTime.set(Calendar.SECOND, 0)
                 calendarStartTime.set(Calendar.MILLISECOND, 0)
-
-
                 uploadTimeTableBinding.btnStart.text = startTime
             }
         }
@@ -205,7 +199,7 @@ class UploadTimeTable : Fragment() {
 
             val day = uploadTimeTableBinding.spDay.selectedItem.toString()
             val selectedYear = uploadTimeTableBinding.spYear.selectedItem.toString()
-            var type: String = selectedType.text.toString()
+            type=  selectedType.text.toString()
             val selectedCourseCode = uploadTimeTableBinding.spCourse.selectedItem.toString()
             var selectedCourseTitle = ""
             database =
@@ -260,7 +254,7 @@ class UploadTimeTable : Fragment() {
                                         .setValue(staffName)
                                     database.child(type).child(batch!!).child(courseTitle)
                                         .setValue(selectedCourseTitle).addOnSuccessListener {
-                                            setNotification()
+                                            sendNotification()
                                             activity?.supportFragmentManager?.beginTransaction()
                                                 ?.replace(
                                                     R.id.dashFrameLayout,
@@ -309,7 +303,7 @@ class UploadTimeTable : Fragment() {
                                     database.child(type).child("courseTeacher").setValue(staffName)
                                     database.child(type).child("courseTitle")
                                         .setValue(selectedCourseTitle).addOnSuccessListener {
-                                            setNotification()
+                                            sendNotification()
                                             activity?.supportFragmentManager?.beginTransaction()
                                                 ?.replace(
                                                     R.id.dashFrameLayout,
@@ -342,44 +336,40 @@ class UploadTimeTable : Fragment() {
         return uploadTimeTableBinding.root
     }
 
-    private fun setNotification() {
-        alarmManager = requireContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val intent = Intent(requireContext(), TTNotificationReceiver::class.java)
+    private fun sendNotification() {
+        val intent = Intent(context,TTNotificationReceiver::class.java)
+        val title = type
+        val message = "Notification Message"
+        intent.putExtra(titleExtra,title)
+        intent.putExtra(messageExtra,message)
 
-        pendingIntent = PendingIntent.getBroadcast(
-            requireContext(),
-            0,
+        val pendingIntent = PendingIntent.getBroadcast(
+            context,
+            notificationId,
             intent,
-            PendingIntent.FLAG_IMMUTABLE
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_CANCEL_CURRENT
         )
 
-        alarmManager.setExact(
+        val alarmManager = requireContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val time = calendarStartTime.timeInMillis
+        alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,
-            calendarStartTime.timeInMillis,
+            time,
             pendingIntent
         )
-
-
-        Toast.makeText(requireContext(), "Notification set", Toast.LENGTH_SHORT).show()
-
     }
 
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name: CharSequence = "Time Table"
-            val descriptionText = "Time Table"
-            val importance = NotificationManager.IMPORTANCE_HIGH
-            val channel = NotificationChannel("TT", name, importance)
+            val name = "Time Table"
+            val descriptionText = "Time Table Notification"
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(channelId, name, importance)
             channel.description = descriptionText
 
-            val notificationManager = getSystemService(
-                requireContext(),
-                NotificationManager::class.java
-            )
-
-            notificationManager!!.createNotificationChannel(channel)
+            val notificationManager = requireContext().getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
         }
-
     }
 
     private fun timePicker(callback: (String) -> Unit) {
@@ -405,10 +395,7 @@ class UploadTimeTable : Fragment() {
     companion object {
         @JvmStatic
         fun newInstance(param1: String, param2: String) = UploadTimeTable().apply {
-            arguments = Bundle().apply {
-                putString(ARG_PARAM1, param1)
-                putString(ARG_PARAM2, param2)
-            }
+            arguments = Bundle().apply {}
         }
     }
 }
