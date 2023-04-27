@@ -1,22 +1,18 @@
-package com.example.staffdashboard
+package com.example.staffdashboard.timetable
 
 import android.app.AlarmManager
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.TimePickerDialog
 import android.content.Context
-import android.content.Context.NOTIFICATION_SERVICE
-import android.content.Intent
 import android.content.SharedPreferences
 import android.icu.util.Calendar
-import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.example.staffdashboard.R
 import com.example.staffdashboard.databinding.FragmentUploadTimeTableBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -41,6 +37,7 @@ class UploadTimeTable : Fragment() {
     private lateinit var startTime: String
     private lateinit var endTime: String
     private lateinit var type:String
+    private lateinit var selectedDay: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,8 +48,6 @@ class UploadTimeTable : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         uploadTimeTableBinding = FragmentUploadTimeTableBinding.inflate(inflater, container, false)
-
-        createNotificationChannel()
 
         sharedPreferences = requireContext().getSharedPreferences(
             getString(R.string.login_preference_file_name), Context.MODE_PRIVATE
@@ -155,6 +150,23 @@ class UploadTimeTable : Fragment() {
                 val hour = time1[0].toInt()
                 val minute = time1[1].toInt()
                 val amPm = time[1]
+                selectedDay = uploadTimeTableBinding.spDay.selectedItem.toString()
+
+                if (selectedDay === "Monday")
+                    calendarStartTime.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+                else if (selectedDay === "Tuesday")
+                    calendarStartTime.set(Calendar.DAY_OF_WEEK, Calendar.TUESDAY)
+                else if (selectedDay === "Wednesday")
+                    calendarStartTime.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY)
+                else if (selectedDay === "Thursday")
+                    calendarStartTime.set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY)
+                else if (selectedDay === "Friday")
+                    calendarStartTime.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY)
+                else if (selectedDay === "Saturday")
+                    calendarStartTime.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY)
+                else if (selectedDay === "Sunday")
+                    calendarStartTime.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY)
+
                 if (amPm == "PM") {
                     calendarStartTime.set(Calendar.HOUR_OF_DAY, hour + 12)
                 } else {
@@ -163,13 +175,13 @@ class UploadTimeTable : Fragment() {
                 calendarStartTime.set(Calendar.MINUTE, minute)
                 calendarStartTime.set(Calendar.SECOND, 0)
                 calendarStartTime.set(Calendar.MILLISECOND, 0)
+
                 uploadTimeTableBinding.btnStart.text = startTime
             }
         }
         uploadTimeTableBinding.btnEnd.setOnClickListener {
             timePicker { selectedTime ->
                 endTime = selectedTime
-//                endTime format is 12:00 PM, 1:50 PM set the calenderEndTime according to that the endTime is in 12 hour format
                 val time = endTime.split(" ")
                 val time1 = time[0].split(":")
                 val hour = time1[0].toInt()
@@ -197,7 +209,7 @@ class UploadTimeTable : Fragment() {
             }
             selectedType = requireView().findViewById(selectedTypeId)
 
-            val day = uploadTimeTableBinding.spDay.selectedItem.toString()
+            selectedDay = uploadTimeTableBinding.spDay.selectedItem.toString()
             val selectedYear = uploadTimeTableBinding.spYear.selectedItem.toString()
             type=  selectedType.text.toString()
             val selectedCourseCode = uploadTimeTableBinding.spCourse.selectedItem.toString()
@@ -210,7 +222,7 @@ class UploadTimeTable : Fragment() {
                         selectedCourseTitle = snapshot.child("courseTitle").value.toString()
                         database = FirebaseDatabase.getInstance().getReference("Departments")
                             .child(staffDepartment).child(selectedYear).child("Time Table")
-                            .child(day)
+                            .child(selectedDay)
 
                         if (type == "Practical") {
                             val selectedBatchId: Int =
@@ -254,7 +266,6 @@ class UploadTimeTable : Fragment() {
                                         .setValue(staffName)
                                     database.child(type).child(batch!!).child(courseTitle)
                                         .setValue(selectedCourseTitle).addOnSuccessListener {
-                                            sendNotification()
                                             activity?.supportFragmentManager?.beginTransaction()
                                                 ?.replace(
                                                     R.id.dashFrameLayout,
@@ -303,7 +314,6 @@ class UploadTimeTable : Fragment() {
                                     database.child(type).child("courseTeacher").setValue(staffName)
                                     database.child(type).child("courseTitle")
                                         .setValue(selectedCourseTitle).addOnSuccessListener {
-                                            sendNotification()
                                             activity?.supportFragmentManager?.beginTransaction()
                                                 ?.replace(
                                                     R.id.dashFrameLayout,
@@ -331,45 +341,8 @@ class UploadTimeTable : Fragment() {
                     Toast.makeText(requireContext(), error.message, Toast.LENGTH_SHORT).show()
                 }
             })
-
         }
         return uploadTimeTableBinding.root
-    }
-
-    private fun sendNotification() {
-        val intent = Intent(context,TTNotificationReceiver::class.java)
-        val title = type
-        val message = "Notification Message"
-        intent.putExtra(titleExtra,title)
-        intent.putExtra(messageExtra,message)
-
-        val pendingIntent = PendingIntent.getBroadcast(
-            context,
-            notificationId,
-            intent,
-            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_CANCEL_CURRENT
-        )
-
-        val alarmManager = requireContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val time = calendarStartTime.timeInMillis
-        alarmManager.setExactAndAllowWhileIdle(
-            AlarmManager.RTC_WAKEUP,
-            time,
-            pendingIntent
-        )
-    }
-
-    private fun createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = "Time Table"
-            val descriptionText = "Time Table Notification"
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(channelId, name, importance)
-            channel.description = descriptionText
-
-            val notificationManager = requireContext().getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
-        }
     }
 
     private fun timePicker(callback: (String) -> Unit) {
@@ -384,7 +357,6 @@ class UploadTimeTable : Fragment() {
                 hour %= 12
                 if (hour == 0) hour = 12
                 val selectedTime = String.format("%d:%02d %s", hour, minute, amPm)
-
                 callback(selectedTime)
             }, hour, minute, false
         )

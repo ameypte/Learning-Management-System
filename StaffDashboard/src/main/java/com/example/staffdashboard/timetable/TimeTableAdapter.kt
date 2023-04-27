@@ -1,10 +1,12 @@
-package com.example.staffdashboard
+package com.example.staffdashboard.timetable
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.staffdashboard.ModelTimeTable
+import com.example.staffdashboard.R
 
 class TimeTableAdapter(private val itemList: List<ModelTimeTable>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {

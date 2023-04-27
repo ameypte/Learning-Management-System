@@ -4,11 +4,12 @@
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
 
     <application>
-        <receiver
-            android:name=".TTNotificationReceiver"
-            android:enabled="true"
-            android:exported="true"/>
-
+        <service android:name=".MyMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
         <activity
             android:name=".StaffDashboard"
             android:exported="false" />

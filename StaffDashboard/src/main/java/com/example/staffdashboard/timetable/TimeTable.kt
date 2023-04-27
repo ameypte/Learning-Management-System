@@ -1,19 +1,20 @@
-package com.example.staffdashboard
+package com.example.staffdashboard.timetable
 
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Spinner
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.staffdashboard.ModelTimeTable
+import com.example.staffdashboard.R
 import com.example.staffdashboard.databinding.FragmentTimeTableBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -23,10 +24,6 @@ import com.google.firebase.database.ValueEventListener
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Locale
-
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
 
 class TimeTable : Fragment() {
     private var param1: String? = null
@@ -44,8 +41,6 @@ class TimeTable : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
         }
     }
 
@@ -249,8 +244,7 @@ class TimeTable : Fragment() {
         fun newInstance(param1: String, param2: String) =
             TimeTable().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+
                 }
             }
     }
