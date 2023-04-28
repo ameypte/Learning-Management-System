@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.icu.util.Calendar
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,16 +15,20 @@ import android.view.ViewGroup
 import android.widget.*
 import com.example.staffdashboard.R
 import com.example.staffdashboard.databinding.FragmentUploadTimeTableBinding
+import com.example.staffdashboard.notification.NotificationData
+import com.example.staffdashboard.notification.PushNotification
+import com.example.staffdashboard.notification.api.ApiUtilities
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class UploadTimeTable : Fragment() {
-    private var param1: String? = null
-    private var param2: String? = null
     private var batch: String? = null
     private var calendarStartTime = Calendar.getInstance()
     private var calendarEndTime = Calendar.getInstance()
@@ -314,6 +319,7 @@ class UploadTimeTable : Fragment() {
                                     database.child(type).child("courseTeacher").setValue(staffName)
                                     database.child(type).child("courseTitle")
                                         .setValue(selectedCourseTitle).addOnSuccessListener {
+                                            createNotification()
                                             activity?.supportFragmentManager?.beginTransaction()
                                                 ?.replace(
                                                     R.id.dashFrameLayout,
@@ -344,6 +350,33 @@ class UploadTimeTable : Fragment() {
         }
         return uploadTimeTableBinding.root
     }
+
+    private fun createNotification() {
+        val notificationData = PushNotification(
+            NotificationData(
+                "Time Table Updated",
+                "New Lecture Added"
+            ),
+            "eWQ1A9YuTU-BjbT0MJCyP4:APA91bHsXrekm0Lr_IVqK2R829_DVPeK0iVzhL7-1-yKEQIxoZ7SYtmbnhbA8aPA4Y1gcvFHR3PaiV0Uyw7mDR12Rh5m5XQOtmYiaiWO0HPjSyAaXAmK25-MMzDDcFtx2g90wjp1YRD8"
+        )
+        val call = ApiUtilities.getInstance().sendNotification(notificationData)
+        call.enqueue(object : Callback<PushNotification> {
+            override fun onResponse(call: Call<PushNotification>, response: Response<PushNotification>) {
+                // print response
+                Log.d("Response", response.body()?.toString() ?: "Response body is null")
+                Toast.makeText(requireContext(), "Notification Sent", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onFailure(call: Call<PushNotification>, t: Throwable) {
+                // print error message
+                Log.e("Error", t.message ?: "Unknown error occurred")
+                Toast.makeText(requireContext(), t.message, Toast.LENGTH_SHORT).show()
+            }
+        })
+        // print request
+        Log.d("Request", call.request().toString())
+    }
+
 
     private fun timePicker(callback: (String) -> Unit) {
         val currentTime = Calendar.getInstance()

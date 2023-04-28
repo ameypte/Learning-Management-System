@@ -24,7 +24,6 @@ class MyMessagingService : FirebaseMessagingService() {
 
                 showNotification(title, message)
             }
-
         }
     }
 
