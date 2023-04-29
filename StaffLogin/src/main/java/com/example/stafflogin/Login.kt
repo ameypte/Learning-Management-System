@@ -95,6 +95,10 @@ class Login : AppCompatActivity() {
                                     departmentName = departmentSnapshot.key.toString()
                                     sharedPreferences.edit()
                                         .putString("loggedStaffDepartment", departmentName).apply()
+                                    // by default subscribe to all department topics
+                                    subscribeToTopic(departmentName.replace(" ","") + "FirstYear")
+                                    subscribeToTopic(departmentName.replace(" ","") + "SecondYear")
+                                    subscribeToTopic(departmentName.replace(" ","") + "ThirdYear")
 
                                     savePreferences(phone, departmentName)
                                     val intent = Intent(this@Login, StaffDashboard::class.java)
@@ -135,6 +139,17 @@ class Login : AppCompatActivity() {
         phone = s.phone.toString()
         email = s.email.toString()
         token = s.fcmToken.toString()
+    }
+
+    private fun subscribeToTopic(s: String) {
+        FirebaseMessaging.getInstance().subscribeToTopic(s)
+            .addOnCompleteListener { task ->
+                var msg = "Subscribed to $s"
+                if (!task.isSuccessful) {
+                    msg = "Failed to subscribe to $s"
+                }
+                Log.d("FCM", msg)
+            }
     }
 
     private fun savePreferences(phone: String, departmentName: String) {

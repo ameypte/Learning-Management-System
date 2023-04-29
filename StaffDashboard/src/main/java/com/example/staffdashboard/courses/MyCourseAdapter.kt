@@ -1,4 +1,4 @@
-package com.example.staffdashboard
+package com.example.staffdashboard.courses
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.staffdashboard.R
 
 class MyCourseAdapter(private val itemList: List<ModelCourse>) :
     RecyclerView.Adapter<MyCourseAdapter.CourseHolder>() {
@@ -21,12 +22,12 @@ class MyCourseAdapter(private val itemList: List<ModelCourse>) :
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): MyCourseAdapter.CourseHolder {
+    ): CourseHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.course_item, parent, false)
         return CourseHolder(view,listener)
     }
 
-    override fun onBindViewHolder(holder: MyCourseAdapter.CourseHolder, position: Int) {
+    override fun onBindViewHolder(holder: CourseHolder, position: Int) {
         val item = itemList[position]
         holder.bind(item)
     }

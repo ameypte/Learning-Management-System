@@ -2,5 +2,26 @@ package com.example.staffdashboard.notification
 
 data class NotificationData(
     val title: String? = null,
-    val body: String? = null
+    val body: String? = null,
+    val type: String? = null,
+    val subject_teacher: String? = null,
+    val subject_code: String? = null,
+    val subject_title: String? = null,
+    val year: String? = null,
+    val branch : String? = null,
+    val day: String? = null,
+    val start_time: String? = null,
+    val end_time: String? = null,
+    val batch1: String? = null,
+    val batch2: String? = null,
+    val batch3: String? = null,
+    val subject_teacher1: String? = null,
+    val subject_teacher2: String? = null,
+    val subject_teacher3: String? = null,
+    val subject_code1: String? = null,
+    val subject_code2: String? = null,
+    val subject_code3: String? = null,
+    val subject_title1: String? = null,
+    val subject_title2: String? = null,
+    val subject_title3: String? = null,
 )

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UploadMaterial">
+    tools:context=".courses.UploadMaterial">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -179,8 +179,7 @@
                             android:id="@+id/etOthers"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:visibility="gone"
-                            android:hint="Message"/>
+                            android:hint="Message (Optional)"/>
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnChooseNotes"

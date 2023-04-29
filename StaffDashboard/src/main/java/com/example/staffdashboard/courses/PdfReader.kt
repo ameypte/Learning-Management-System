@@ -1,36 +1,28 @@
-package com.example.staffdashboard
+package com.example.staffdashboard.courses
 
-import android.content.ContentValues.TAG
+import android.content.ContentValues
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.staffdashboard.databinding.FragmentPdfReaderBinding
 import com.github.barteksc.pdfviewer.PDFView
-import java.net.URL
-import android.util.Log
-import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-
-
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+import java.net.URL
 
 class PdfReader : Fragment() {
 
-    private var param1: String? = null
-    private var param2: String? = null
     private lateinit var pdfReaderBinding: FragmentPdfReaderBinding
     private lateinit var pdfView: PDFView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
         }
     }
 
@@ -38,7 +30,7 @@ class PdfReader : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        pdfReaderBinding = FragmentPdfReaderBinding.inflate(inflater,container,false)
+        pdfReaderBinding = FragmentPdfReaderBinding.inflate(inflater, container, false)
         pdfReaderBinding.progressBarFileLoading.visibility = View.VISIBLE
 
         pdfView = pdfReaderBinding.pdfView
@@ -56,7 +48,7 @@ class PdfReader : Fragment() {
                     pdfReaderBinding.progressBarFileLoading.visibility = View.GONE
                 }
             } catch (e: Exception) {
-                Log.e(TAG, "Failed to load PDF file: ${e.message}")
+                Log.e(ContentValues.TAG, "Failed to load PDF file: ${e.message}")
             }
         }
         return pdfReaderBinding.root
@@ -68,8 +60,6 @@ class PdfReader : Fragment() {
         fun newInstance(param1: String, param2: String) =
             PdfReader().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
                 }
             }
     }

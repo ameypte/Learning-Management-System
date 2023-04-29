@@ -1,4 +1,4 @@
-package com.example.staffdashboard
+package com.example.staffdashboard.courses
 
 data class ModelCourse(
     var courseCode: String? = null,

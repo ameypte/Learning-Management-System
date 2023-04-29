@@ -1,21 +1,24 @@
-package com.example.staffdashboard
+package com.example.staffdashboard.courses
 
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.SearchView
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import com.example.staffdashboard.R
 import com.example.staffdashboard.databinding.FragmentAddCourseBinding
-import com.google.firebase.database.*
-
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.messaging.FirebaseMessaging
 
 class AddCourse : Fragment() {
     private var param1: String? = null
@@ -27,8 +30,6 @@ class AddCourse : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
         }
     }
 
@@ -58,7 +59,8 @@ class AddCourse : Fragment() {
                 )
                 courseBinding.lvCourses.adapter = courseAdapter
 
-                courseBinding.svCourses.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                courseBinding.svCourses.setOnQueryTextListener(object :
+                    SearchView.OnQueryTextListener {
                     override fun onQueryTextSubmit(query: String?): Boolean {
                         courseBinding.svCourses.clearFocus()
                         if (courseList.contains(query)) {
@@ -90,6 +92,8 @@ class AddCourse : Fragment() {
                 .child(loggedStaffPhone.toString())
                 .child("coursesTeach")
             database.child(courseCode).setValue("")
+            // subscribe to course notifications
+            subscribeToTopic(courseCode)
             replaceFragment(Courses())
         }
         return courseBinding.root
@@ -100,8 +104,6 @@ class AddCourse : Fragment() {
         fun newInstance(param1: String, param2: String) =
             AddCourse().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
                 }
             }
     }
@@ -111,5 +113,16 @@ class AddCourse : Fragment() {
         fragmentTransaction.replace(R.id.dashFrameLayout,fragment)
         fragmentTransaction.addToBackStack(null)
         fragmentTransaction.commit()
+    }
+
+    private fun subscribeToTopic(s: String) {
+        FirebaseMessaging.getInstance().subscribeToTopic(s)
+            .addOnCompleteListener { task ->
+                var msg = "Subscribed to $s"
+                if (!task.isSuccessful) {
+                    msg = "Failed to subscribe to $s"
+                }
+                Log.d("FCM", msg)
+            }
     }
 }

@@ -1,5 +1,7 @@
 package com.example.staffdashboard
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.example.staffdashboard.databinding.FragmentHomeBinding
 import com.google.firebase.messaging.FirebaseMessaging
+import java.util.prefs.AbstractPreferences
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,7 +27,7 @@ class Home : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private lateinit var homeBinding: FragmentHomeBinding
-
+    private lateinit var sharedPreferences: SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -38,18 +41,16 @@ class Home : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         homeBinding = FragmentHomeBinding.inflate(inflater, container, false)
-        homeBinding.button.setOnClickListener {
-            FirebaseMessaging.getInstance().subscribeToTopic("general")
-                .addOnCompleteListener { task ->
-                    var msg = "Successful"
-                    if (!task.isSuccessful) {
-                        msg = "Failed"
-                    }
-                    Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
-                }
-        }
+        sharedPreferences = requireContext().getSharedPreferences(
+            getString(R.string.login_preference_file_name),
+            Context.MODE_PRIVATE
+        )
+
         return homeBinding.root
     }
+
+
+
 
     companion object {
         @JvmStatic

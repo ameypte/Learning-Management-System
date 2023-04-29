@@ -1,7 +1,5 @@
 package com.example.staffdashboard.timetable
 
-import android.app.AlarmManager
-import android.app.PendingIntent
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.SharedPreferences
@@ -13,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.example.staffdashboard.ModelTimeTable
 import com.example.staffdashboard.R
 import com.example.staffdashboard.databinding.FragmentUploadTimeTableBinding
 import com.example.staffdashboard.notification.NotificationData
@@ -32,8 +31,6 @@ class UploadTimeTable : Fragment() {
     private var batch: String? = null
     private var calendarStartTime = Calendar.getInstance()
     private var calendarEndTime = Calendar.getInstance()
-    private lateinit var alarmManager: AlarmManager
-    private lateinit var pendingIntent: PendingIntent
     private lateinit var uploadTimeTableBinding: FragmentUploadTimeTableBinding
     private lateinit var database: DatabaseReference
     private lateinit var sharedPreferences: SharedPreferences
@@ -41,8 +38,16 @@ class UploadTimeTable : Fragment() {
     private lateinit var selectedBatch: RadioButton
     private lateinit var startTime: String
     private lateinit var endTime: String
-    private lateinit var type:String
+    private lateinit var type: String
     private lateinit var selectedDay: String
+    private lateinit var courseCode: String
+    private lateinit var courseTitle: String
+    private lateinit var courseTeacher: String
+    private lateinit var selectedYear: String
+    private lateinit var staffDepartment: String
+    private lateinit var staffName: String
+    private lateinit var selectedCourseCode: String
+    private lateinit var selectedCourseTitle: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,9 +100,9 @@ class UploadTimeTable : Fragment() {
         }
 
         val courseSp = uploadTimeTableBinding.spCourse
-        val staffDepartment = sharedPreferences.getString("loggedStaffDepartment", "").toString()
+        staffDepartment = sharedPreferences.getString("loggedStaffDepartment", "").toString()
         val staffPhone = sharedPreferences.getString("loggedStaffPhone", "").toString()
-        val staffName = sharedPreferences.getString("loggedStaffName", "").toString()
+        staffName = sharedPreferences.getString("loggedStaffName", "").toString()
         database = FirebaseDatabase.getInstance().getReference("Departments").child(staffDepartment)
             .child("Staff")
         val coursesTeach = database.child(staffPhone).child("coursesTeach")
@@ -215,10 +220,10 @@ class UploadTimeTable : Fragment() {
             selectedType = requireView().findViewById(selectedTypeId)
 
             selectedDay = uploadTimeTableBinding.spDay.selectedItem.toString()
-            val selectedYear = uploadTimeTableBinding.spYear.selectedItem.toString()
-            type=  selectedType.text.toString()
-            val selectedCourseCode = uploadTimeTableBinding.spCourse.selectedItem.toString()
-            var selectedCourseTitle = ""
+            selectedYear = uploadTimeTableBinding.spYear.selectedItem.toString()
+            type = selectedType.text.toString()
+            selectedCourseCode = uploadTimeTableBinding.spCourse.selectedItem.toString()
+            selectedCourseTitle = ""
             database =
                 FirebaseDatabase.getInstance().getReference("Courses").child(selectedCourseCode)
             database.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -242,9 +247,9 @@ class UploadTimeTable : Fragment() {
                             batch = selectedBatch.text.toString()
                             type = "Pra"
 
-                            val courseCode = "courseCode" + batch!!.last()
-                            val courseTeacher = "courseTeacher" + batch!!.last()
-                            val courseTitle = "courseTitle" + batch!!.last()
+                            courseCode = "courseCode" + batch!!.last()
+                            courseTeacher = "courseTeacher" + batch!!.last()
+                            courseTitle = "courseTitle" + batch!!.last()
 
                             database.addListenerForSingleValueEvent(object : ValueEventListener {
                                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -271,6 +276,9 @@ class UploadTimeTable : Fragment() {
                                         .setValue(staffName)
                                     database.child(type).child(batch!!).child(courseTitle)
                                         .setValue(selectedCourseTitle).addOnSuccessListener {
+
+                                            createPracticalNotification()
+
                                             activity?.supportFragmentManager?.beginTransaction()
                                                 ?.replace(
                                                     R.id.dashFrameLayout,
@@ -319,7 +327,9 @@ class UploadTimeTable : Fragment() {
                                     database.child(type).child("courseTeacher").setValue(staffName)
                                     database.child(type).child("courseTitle")
                                         .setValue(selectedCourseTitle).addOnSuccessListener {
-                                            createNotification()
+
+                                            createLectureNotification()
+
                                             activity?.supportFragmentManager?.beginTransaction()
                                                 ?.replace(
                                                     R.id.dashFrameLayout,
@@ -351,30 +361,141 @@ class UploadTimeTable : Fragment() {
         return uploadTimeTableBinding.root
     }
 
-    private fun createNotification() {
+    private fun createPracticalNotification() {
+        val topic = staffDepartment.replace(" ", "") + selectedYear.replace(" ", "")
+        Log.d("TAG", "createNotification: $topic")
+        database = FirebaseDatabase.getInstance().getReference("Departments")
+            .child(staffDepartment).child(selectedYear).child("Time Table").child(selectedDay).child(type)
+        database.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()){
+                    val startTime = snapshot.child("startTime").value.toString()
+                    val endTime = snapshot.child("endTime").value.toString()
+                    var courseCode1 = ""
+                    var courseTeacher1 = ""
+                    var courseTitle1 = ""
+                    var courseCode2 = ""
+                    var courseTeacher2 = ""
+                    var courseTitle2 = ""
+                    var courseCode3 = ""
+                    var courseTeacher3 = ""
+                    var courseTitle3 = ""
+                    var batch1 = ""
+                    var batch2 = ""
+                    var batch3 = ""
+
+                    for (batch in snapshot.children) {
+                        if (batch.key.toString().contains("1")) {
+                            courseCode1 = batch.child("courseCode1").value.toString()
+                            courseTeacher1 = batch.child("courseTeacher1").value.toString()
+                            courseTitle1 = batch.child("courseTitle1").value.toString()
+                            batch1 = batch.key.toString()
+                        } else if (batch.key.toString().contains("2")) {
+                            courseCode2 = batch.child("courseCode2").value.toString()
+                            courseTeacher2 = batch.child("courseTeacher2").value.toString()
+                            courseTitle2 = batch.child("courseTitle2").value.toString()
+                            batch2 = batch.key.toString()
+                        } else if (batch.key.toString().contains("3")) {
+                            courseCode3 = batch.child("courseCode3").value.toString()
+                            courseTeacher3 = batch.child("courseTeacher3").value.toString()
+                            courseTitle3 = batch.child("courseTitle3").value.toString()
+                            batch3 = batch.key.toString()
+                        }
+                    }
+
+                    val notificationData = PushNotification(
+                        NotificationData(
+                            type = type,
+                            start_time = startTime,
+                            end_time = endTime,
+                            batch1 = batch1,
+                            batch2 = batch2,
+                            batch3 = batch3,
+                            subject_code1 = courseCode1,
+                            subject_code2 = courseCode2,
+                            subject_code3 = courseCode3,
+                            subject_teacher1 = courseTeacher1,
+                            subject_teacher2 = courseTeacher2,
+                            subject_teacher3 = courseTeacher3,
+                            subject_title1 = courseTitle1,
+                            subject_title2 = courseTitle2,
+                            subject_title3 = courseTitle3,
+                            day = selectedDay,
+                            year = selectedYear,
+                            branch = staffDepartment,
+                        ),
+                        "/topics/$topic"
+                    )
+                    val apiInterface = ApiUtilities.getInstance()
+                    val call = apiInterface.sendNotification(notificationData)
+
+                    call.enqueue(object : Callback<PushNotification> {
+                        override fun onResponse(
+                            call: Call<PushNotification>,
+                            response: Response<PushNotification>
+                        ) {
+                            if (response.isSuccessful) {
+                                Log.d("TAG", "onResponse: ${response.body()}")
+                            } else {
+                                Log.d("TAG", "onResponse: ${response.errorBody()}")
+                            }
+                        }
+                        override fun onFailure(call: Call<PushNotification>, t: Throwable) {
+                            Log.d("TAG", "onFailure: ${t.message}")
+                        }
+                    })
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
+
+    }
+
+    private fun createLectureNotification() {
+        val topic = staffDepartment.replace(" ", "") + selectedYear.replace(" ", "")
+        Log.d("TAG", "createNotification: $topic")
         val notificationData = PushNotification(
             NotificationData(
                 "Time Table Updated",
-                "New Lecture Added"
+                "New Lecture Added",
+                type,
+                staffName,
+                selectedCourseCode,
+                selectedCourseTitle,
+                selectedYear,
+                staffDepartment,
+                selectedDay,
+                startTime,
+                endTime,
             ),
-            "eWQ1A9YuTU-BjbT0MJCyP4:APA91bHsXrekm0Lr_IVqK2R829_DVPeK0iVzhL7-1-yKEQIxoZ7SYtmbnhbA8aPA4Y1gcvFHR3PaiV0Uyw7mDR12Rh5m5XQOtmYiaiWO0HPjSyAaXAmK25-MMzDDcFtx2g90wjp1YRD8"
+            "/topics/$topic"
         )
-        val call = ApiUtilities.getInstance().sendNotification(notificationData)
+        val apiInterface = ApiUtilities.getInstance()
+        val call = apiInterface.sendNotification(notificationData)
+
         call.enqueue(object : Callback<PushNotification> {
-            override fun onResponse(call: Call<PushNotification>, response: Response<PushNotification>) {
-                // print response
-                Log.d("Response", response.body()?.toString() ?: "Response body is null")
-                Toast.makeText(requireContext(), "Notification Sent", Toast.LENGTH_SHORT).show()
+            override fun onResponse(
+                call: Call<PushNotification>,
+                response: Response<PushNotification>
+            ) {
+                if (response.isSuccessful) {
+                    Toast.makeText(requireContext(), "Notification Sent", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        response.errorBody().toString(),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
 
             override fun onFailure(call: Call<PushNotification>, t: Throwable) {
-                // print error message
-                Log.e("Error", t.message ?: "Unknown error occurred")
                 Toast.makeText(requireContext(), t.message, Toast.LENGTH_SHORT).show()
             }
         })
-        // print request
-        Log.d("Request", call.request().toString())
     }
 
 

@@ -1,21 +1,25 @@
-package com.example.staffdashboard
+package com.example.staffdashboard.courses
 
 import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.staffdashboard.R
 import com.example.staffdashboard.databinding.FragmentCoursesBinding
-import com.google.firebase.database.*
-
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.messaging.FirebaseMessaging
 
 class Courses : Fragment() {
     private var param1: String? = null
@@ -33,15 +37,13 @@ class Courses : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
         }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View{
+    ): View {
         coursesBinding = FragmentCoursesBinding.inflate(inflater, container, false)
 
         sharedPreferences = requireContext().getSharedPreferences(
@@ -147,6 +149,7 @@ class Courses : Fragment() {
                             builder.setPositiveButton("Yes") { dialog, which ->
                                 if (courseCode != null) {
                                     database.child(courseCode).removeValue()
+                                    unsubscribeToTopic(courseCode)
                                 }
                                 courseList.removeAt(position)
                                 adapter.notifyItemRemoved(position)
@@ -173,8 +176,6 @@ class Courses : Fragment() {
         fun newInstance(param1: String, param2: String) =
             Courses().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
                 }
             }
     }
@@ -185,5 +186,15 @@ class Courses : Fragment() {
         fragmentTransaction.replace(R.id.dashFrameLayout, fragment)
         fragmentTransaction.addToBackStack(null)
         fragmentTransaction.commit()
+    }
+    private fun unsubscribeToTopic(s: String) {
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(s)
+            .addOnCompleteListener { task ->
+                var msg = "Unsubscribed to $s"
+                if (!task.isSuccessful) {
+                    msg = "Failed to unsubscribe to $s"
+                }
+                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+            }
     }
 }

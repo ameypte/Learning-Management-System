@@ -231,13 +231,13 @@ class TimeTable : Fragment() {
 
 
     private fun replaceFragment(fragment: Fragment) {
+
         val fragmentManager = (activity as FragmentActivity).supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.dashFrameLayout, fragment)
         fragmentTransaction.addToBackStack(null)
         fragmentTransaction.commit()
     }
-
 
     companion object {
         @JvmStatic

@@ -6,7 +6,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiUtilities {
     fun getInstance(): ApiInterface {
-
         return Retrofit.Builder()
             .baseUrl("https://fcm.googleapis.com/")
             .addConverterFactory(GsonConverterFactory.create())

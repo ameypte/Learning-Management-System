@@ -13,8 +13,8 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dashboard.databinding.FragmentCoursesBinding
-import com.example.staffdashboard.PdfReader
-import com.example.staffdashboard.ViewMaterial
+import com.example.staffdashboard.courses.PdfReader
+import com.example.staffdashboard.courses.ViewMaterial
 import com.google.firebase.database.*
 
 private const val ARG_PARAM1 = "param1"
