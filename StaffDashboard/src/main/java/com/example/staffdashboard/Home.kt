@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.staffdashboard.databinding.FragmentHomeBinding
+import com.example.staffdashboard.timetable.TimeTable
 
 
 class Home : Fragment() {
@@ -32,18 +33,21 @@ class Home : Fragment() {
         homeBinding.txtName.text = ("Welcome $name")
 
         homeBinding.imgProfile.setOnClickListener {
-//            replaceFragment(Account())
+            replaceFragment(Account())
+        }
+        homeBinding.reschedule.setOnClickListener {
+            replaceFragment(TimeTable())
         }
 
         return homeBinding.root
     }
 
 
-//    private fun replaceFragment(fragment: Fragment){
-//        val fragmentManager = supportFragmentManager
-//        val fragmentTransaction = fragmentManager.beginTransaction()
-//        fragmentTransaction.replace(R.id.dashFrameLayout,fragment)
-//        fragmentTransaction.addToBackStack(null)
-//        fragmentTransaction.commit()
-//    }
+    private fun replaceFragment(fragment: Fragment){
+        val fragmentManager = requireActivity().supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.dashFrameLayout,fragment)
+        fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commit()
+    }
 }
