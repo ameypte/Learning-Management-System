@@ -62,7 +62,7 @@
             android:background="@drawable/searchview_cources_background"
             android:iconifiedByDefault="false"
             android:queryBackground="@android:color/transparent"
-            android:queryHint="Search" />
+            android:queryHint="Search"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
