@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.staffdashboard.ModelTimeTable
 import com.example.staffdashboard.R
 import com.example.staffdashboard.databinding.FragmentTimeTableBinding
 import com.google.firebase.database.DataSnapshot

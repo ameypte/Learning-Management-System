@@ -19,16 +19,19 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imgProfile"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_margin="8dp"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
                 android:elevation="8dp"
-                android:src="@drawable/profile"/>
+                android:src="@drawable/profile" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imgSetting"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:layout_alignParentEnd="true"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
@@ -49,7 +52,7 @@
                 android:layout_marginBottom="20dp"
                 android:text="Staff Name"
                 android:textColor="#FFFFFF"
-                android:textSize="22sp"/>
+                android:textSize="22sp" />
         </RelativeLayout>
 
         <SearchView
@@ -64,22 +67,24 @@
             android:queryBackground="@android:color/transparent"
             android:queryHint="Search"/>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:id="@+id/noti"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
                 android:background="#F1ECEC"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:padding="15dp"
-                app:layout_constraintDimensionRatio="H,1:1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:padding="15dp">
 
                 <ImageView
                     android:layout_width="110dp"
@@ -92,23 +97,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Notification"
+                    android:textColor="#000000"
                     android:textSize="19sp"
-                    android:textStyle="bold"
-                    android:textColor="#000000"/>
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/attendance"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="20dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="20dp"
+                android:layout_weight="1"
                 android:background="#F1ECEC"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:padding="15dp"
-                app:layout_constraintDimensionRatio="H,1:1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:padding="15dp">
 
                 <ImageView
                     android:layout_width="110dp"
@@ -121,29 +126,30 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Attendance"
+                    android:textColor="#000000"
                     android:textSize="19sp"
-                    android:textStyle="bold"
-                    android:textColor="#000000"/>
+                    android:textStyle="bold" />
             </LinearLayout>
+        </LinearLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:id="@+id/result"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
                 android:background="#F1ECEC"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:padding="15dp"
-                app:layout_constraintDimensionRatio="H,1:1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:padding="15dp">
 
                 <ImageView
                     android:layout_width="110dp"
@@ -156,23 +162,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Results"
+                    android:textColor="#000000"
                     android:textSize="19sp"
-                    android:textStyle="bold"
-                    android:textColor="#000000"/>
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/event"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="20dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="20dp"
+                android:layout_weight="1"
                 android:background="#F1ECEC"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:padding="15dp"
-                app:layout_constraintDimensionRatio="H,1:1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:padding="15dp">
 
                 <ImageView
                     android:layout_width="110dp"
@@ -185,29 +191,30 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Events"
+                    android:textColor="#000000"
                     android:textSize="19sp"
-                    android:textStyle="bold"
-                    android:textColor="#000000"/>
+                    android:textStyle="bold" />
             </LinearLayout>
+        </LinearLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:id="@+id/reschedule"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
                 android:background="#F1ECEC"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:padding="15dp"
-                app:layout_constraintDimensionRatio="H,1:1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:padding="15dp">
 
                 <ImageView
                     android:layout_width="110dp"
@@ -220,23 +227,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Reschedule"
+                    android:textColor="#000000"
                     android:textSize="19sp"
-                    android:textStyle="bold"
-                    android:textColor="#000000"/>
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/studlist"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="20dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="20dp"
+                android:layout_weight="1"
                 android:background="#F1ECEC"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:padding="15dp"
-                app:layout_constraintDimensionRatio="H,1:1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:padding="15dp">
 
                 <ImageView
                     android:layout_width="110dp"
@@ -249,30 +256,30 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Students List"
+                    android:textColor="#000000"
                     android:textSize="19sp"
-                    android:textStyle="bold"
-                    android:textColor="#000000"/>
+                    android:textStyle="bold" />
             </LinearLayout>
+        </LinearLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:id="@+id/complaint"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
                 android:background="#F1ECEC"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:padding="15dp"
-                app:layout_constraintDimensionRatio="H,1:1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:padding="15dp">
 
                 <ImageView
                     android:layout_width="110dp"
@@ -285,23 +292,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Complaints"
+                    android:textColor="#000000"
                     android:textSize="19sp"
-                    android:textStyle="bold"
-                    android:textColor="#000000"/>
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/dev"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="20dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="20dp"
+                android:layout_weight="1"
                 android:background="#F1ECEC"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:padding="15dp"
-                app:layout_constraintDimensionRatio="H,1:1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:padding="15dp">
 
                 <ImageView
                     android:layout_width="110dp"
@@ -314,13 +321,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Developers"
+                    android:textColor="#000000"
                     android:textSize="19sp"
-                    android:textStyle="bold"
-                    android:textColor="#000000"/>
+                    android:textStyle="bold" />
             </LinearLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
+        </LinearLayout>
     </LinearLayout>
-
 </ScrollView>

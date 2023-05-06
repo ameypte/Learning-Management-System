@@ -11,7 +11,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import com.example.staffdashboard.ModelTimeTable
 import com.example.staffdashboard.R
 import com.example.staffdashboard.databinding.FragmentUploadTimeTableBinding
 import com.example.staffdashboard.notification.NotificationData
