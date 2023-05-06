@@ -1,4 +1,4 @@
-package com.example.staffdashboard
+package com.example.staffdashboard.timetable
 
 data class ModelTimeTable(
     var startTime: String? = null,

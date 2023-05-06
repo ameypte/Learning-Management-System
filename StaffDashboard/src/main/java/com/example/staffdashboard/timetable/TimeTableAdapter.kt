@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.staffdashboard.ModelTimeTable
 import com.example.staffdashboard.R
 
 class TimeTableAdapter(private val itemList: List<ModelTimeTable>) :
