@@ -102,7 +102,7 @@ class AddCourse : Fragment() {
                 Toast.LENGTH_SHORT
             )
             toast.show()
-            database2.child(courseCode).child("registerStudents").child(loggedInUser).child(loggedUserName).setValue("")
+            database2.child(courseCode).child("registerStudents").child(loggedInUser).setValue("$loggedUserName")
             replaceFragment(Courses())
         }
         return addCourseBinding.root
