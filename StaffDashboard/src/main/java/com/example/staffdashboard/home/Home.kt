@@ -1,4 +1,4 @@
-package com.example.staffdashboard
+package com.example.staffdashboard.home
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -7,6 +7,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.staffdashboard.R
+import com.example.staffdashboard.account.Account
+import com.example.staffdashboard.attendance.AttendanceCourse
 import com.example.staffdashboard.databinding.FragmentHomeBinding
 import com.example.staffdashboard.timetable.TimeTable
 
@@ -38,10 +41,11 @@ class Home : Fragment() {
         homeBinding.reschedule.setOnClickListener {
             replaceFragment(TimeTable())
         }
-
+        homeBinding.attendance.setOnClickListener{
+            replaceFragment(AttendanceCourse())
+        }
         return homeBinding.root
     }
-
 
     private fun replaceFragment(fragment: Fragment){
         val fragmentManager = requireActivity().supportFragmentManager

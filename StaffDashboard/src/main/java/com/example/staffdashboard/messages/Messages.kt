@@ -1,4 +1,4 @@
-package com.example.staffdashboard
+package com.example.staffdashboard.messages
 
 import android.os.Bundle
 import android.os.Message

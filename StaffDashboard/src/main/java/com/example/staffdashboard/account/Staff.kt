@@ -1,4 +1,4 @@
-package com.example.staffdashboard
+package com.example.staffdashboard.account
 
 data class Staff(val name: String? = null,
                  val email: String? = null,

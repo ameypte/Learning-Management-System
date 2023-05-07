@@ -3,20 +3,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".courses.AddCourse">
+    tools:context=".attendance.AttendanceCourse">
+
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <TextView
+            android:id="@+id/head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="8dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_centerHorizontal="true"
+            android:text="Select Course"
+            android:textSize="22sp"
+            android:textStyle="bold" />
         <SearchView
             android:id="@+id/svCourses"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="18dp"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="7dp"
             android:layout_marginEnd="18dp"
             android:layout_marginBottom="18dp"
+            android:layout_below="@+id/head"
             android:background="@drawable/searchview_cources_background"
             android:iconifiedByDefault="false"
             android:queryBackground="@android:color/transparent"
@@ -26,9 +42,7 @@
             android:id="@+id/lvCourses"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/svCourses"
-           />
-
+            android:layout_below="@+id/svCourses" />
 
     </RelativeLayout>
 

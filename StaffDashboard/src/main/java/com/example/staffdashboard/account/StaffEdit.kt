@@ -1,24 +1,17 @@
-package com.example.staffdashboard
+package com.example.staffdashboard.account
 
-import android.R
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.Fragment
+import com.example.staffdashboard.R
 import com.example.staffdashboard.databinding.FragmentStaffEditBinding
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 class StaffEdit : Fragment() {
     // TODO: Rename and change types of parameters
@@ -33,8 +26,6 @@ class StaffEdit : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
         }
     }
 
@@ -44,7 +35,7 @@ class StaffEdit : Fragment() {
     ): View? {
         staffEditBinding = FragmentStaffEditBinding.inflate(inflater, container, false)
         sharedPreferences = requireContext().getSharedPreferences(
-            getString(com.example.staffdashboard.R.string.login_preference_file_name),
+            getString(R.string.login_preference_file_name),
             Context.MODE_PRIVATE
         )
 
@@ -57,7 +48,8 @@ class StaffEdit : Fragment() {
 
             database = FirebaseDatabase.getInstance().getReference("Departments")
             if (edname.isBlank() || edmail.isBlank()){
-                Toast.makeText(requireContext(), "Please insert all the detail", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Please insert all the detail", Toast.LENGTH_SHORT)
+                    .show()
             }
             else {
                 mob = sharedPreferences.getString("loggedStaffPhone","").toString()
@@ -85,8 +77,6 @@ class StaffEdit : Fragment() {
         fun newInstance(param1: String, param2: String) =
             StaffEdit().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
                 }
             }
     }

@@ -1,4 +1,4 @@
-package com.example.staffdashboard
+package com.example.staffdashboard.messages
 
 import android.os.Message
 import android.view.LayoutInflater
@@ -6,8 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import java.text.SimpleDateFormat
-import java.util.Date
+import com.example.staffdashboard.R
 
 class MessagesAdapter(private val messages: MutableList<Message>) :
     RecyclerView.Adapter<MessagesAdapter.ViewHolder>() {

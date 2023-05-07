@@ -1,4 +1,4 @@
-package com.example.staffdashboard
+package com.example.staffdashboard.messages
 
 data class Message(
     val id: String,

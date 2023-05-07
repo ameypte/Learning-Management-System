@@ -3,8 +3,11 @@ package com.example.staffdashboard
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import com.example.staffdashboard.account.Account
 import com.example.staffdashboard.courses.Courses
 import com.example.staffdashboard.databinding.ActivityStaffDashboardBinding
+import com.example.staffdashboard.home.Home
+import com.example.staffdashboard.messages.Messages
 import com.example.staffdashboard.timetable.TimeTable
 
 
