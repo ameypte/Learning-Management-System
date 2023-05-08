@@ -29,6 +29,7 @@ class Courses : Fragment() {
     private lateinit var loggedInStudent: String
     private lateinit var loggedStudentYear: String
     private lateinit var database: DatabaseReference
+    private lateinit var database2: DatabaseReference
     private lateinit var toast: Toast
 
     private lateinit var registeredCourses: ArrayList<String>
@@ -71,8 +72,8 @@ class Courses : Fragment() {
     }
 
     private fun getData() {
-        database = FirebaseDatabase.getInstance().getReference("Courses")
-        database.addValueEventListener(object : ValueEventListener {
+        database2 = FirebaseDatabase.getInstance().getReference("Courses")
+        database2.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     for (course in snapshot.children) {
@@ -97,12 +98,15 @@ class Courses : Fragment() {
                                     .child(loggedStudentDepartment).child(loggedStudentYear)
                                     .child("Students").child(loggedInStudent)
                                     .child("registeredCourses")
+                            database2 = FirebaseDatabase.getInstance().getReference("Courses")
+                                .child(courseCode.toString()).child("registerStudents")
                             val builder = AlertDialog.Builder(context)
                             builder.setTitle("Delete Course")
                             builder.setMessage("Are you sure you want to remove this course?")
                             builder.setPositiveButton("Yes") { dialog, which ->
                                 if (courseCode != null) {
                                     database.child(courseCode).removeValue()
+                                    database2.child(loggedInStudent).removeValue()
                                 }
                                 courseList.removeAt(position)
                                 adapter.notifyItemRemoved(position)

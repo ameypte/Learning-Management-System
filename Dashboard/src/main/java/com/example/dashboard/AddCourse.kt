@@ -24,6 +24,7 @@ class AddCourse : Fragment() {
     private lateinit var toast: Toast
     private lateinit var addCourseBinding: FragmentAddCourseBinding
     private lateinit var database: DatabaseReference
+    private lateinit var database2: DatabaseReference
     private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,9 +44,9 @@ class AddCourse : Fragment() {
             getString(R.string.login_preference_file_name),
             Context.MODE_PRIVATE
         )
-        database = FirebaseDatabase.getInstance().getReference("Courses")
+        database2 = FirebaseDatabase.getInstance().getReference("Courses")
 
-        database.addValueEventListener(object : ValueEventListener {
+        database2.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 var courseList = ArrayList<String>()
                 for (course in snapshot.children) {
@@ -85,13 +86,14 @@ class AddCourse : Fragment() {
         addCourseBinding.lvCourses.setOnItemClickListener { parent, view, position, id ->
             val course = parent.getItemAtPosition(position).toString()
             val courseCode = course.split(" ")[0]
-            val loggedUserDept = sharedPreferences.getString("loggedUserDept", "")
-            val loggedUserYear = sharedPreferences.getString("loggedUserYear", "")
-            val loggedInUser = sharedPreferences.getString("loggedInUser", "")
+            val loggedUserDept = sharedPreferences.getString("loggedUserDept", "").toString()
+            val loggedUserYear = sharedPreferences.getString("loggedUserYear", "").toString()
+            val loggedInUser = sharedPreferences.getString("loggedInUser", "1").toString()
+            val loggedUserName = sharedPreferences.getString("loggedUserName", "abc").toString()
 
             database = FirebaseDatabase.getInstance().getReference("Departments")
-                .child(loggedUserDept.toString()).child(loggedUserYear.toString()).child("Students")
-                .child(loggedInUser.toString()).child("registeredCourses")
+                .child(loggedUserDept).child(loggedUserYear).child("Students")
+                .child(loggedInUser).child("registeredCourses")
             database.child(courseCode).setValue("")
 
             toast = Toast.makeText(
@@ -100,6 +102,7 @@ class AddCourse : Fragment() {
                 Toast.LENGTH_SHORT
             )
             toast.show()
+            database2.child(courseCode).child("registerStudents").child(loggedInUser).setValue("$loggedUserName")
             replaceFragment(Courses())
         }
         return addCourseBinding.root
