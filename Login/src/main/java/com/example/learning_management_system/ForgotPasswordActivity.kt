@@ -83,7 +83,7 @@ class ForgotPasswordActivity : AppCompatActivity() {
     }
 
     private fun checkIdEmail(id: String, email: String, branch: String, aYear: String) {
-
+        forgotBinding.progressBar.visibility = View.VISIBLE
         database = FirebaseDatabase.getInstance().getReference("Departments")
         database.child(branch).child(aYear).child("Students").child(id).get().addOnSuccessListener {
             if (it.exists()) {
@@ -104,6 +104,7 @@ class ForgotPasswordActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "Student not registered!", Toast.LENGTH_SHORT).show()
             }
+            forgotBinding.progressBar.visibility = View.GONE
         }.addOnFailureListener {
             Toast.makeText(this, "Something went wrong!", Toast.LENGTH_SHORT).show()
         }

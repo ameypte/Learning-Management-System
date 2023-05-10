@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.dashboard.Dashboard
@@ -39,8 +40,8 @@ class LoginActivity : AppCompatActivity() {
             finish()
         }
 
-        val btnlog = findViewById<Button>(R.id.btnLogin)
-        val btncr = findViewById<Button>(R.id.btnCreate)
+        val btnlog = findViewById<TextView>(R.id.btnLogin)
+        val btncr = findViewById<TextView>(R.id.btnCreate)
 
         btnlog.setOnClickListener {
             val idCode = loginBinding.etIdCode.text.toString()
