@@ -490,7 +490,6 @@ class UploadTimeTable : Fragment() {
                     ).show()
                 }
             }
-
             override fun onFailure(call: Call<PushNotification>, t: Throwable) {
                 Toast.makeText(requireContext(), t.message, Toast.LENGTH_SHORT).show()
             }
@@ -513,7 +512,6 @@ class UploadTimeTable : Fragment() {
                 callback(selectedTime)
             }, hour, minute, false
         )
-
         timePicker.show()
     }
 

@@ -93,20 +93,21 @@ class Courses : Fragment() {
 
                         override fun onCourseRemoveClick(position: Int) {
                             val courseCode = courseList[position].courseCode
+                            database2 = FirebaseDatabase.getInstance().getReference("Courses")
+                                .child(courseCode.toString()).child("registerStudents")
                             database =
                                 FirebaseDatabase.getInstance().getReference("Departments")
                                     .child(loggedStudentDepartment).child(loggedStudentYear)
                                     .child("Students").child(loggedInStudent)
                                     .child("registeredCourses")
-                            database2 = FirebaseDatabase.getInstance().getReference("Courses")
-                                .child(courseCode.toString()).child("registerStudents")
                             val builder = AlertDialog.Builder(context)
                             builder.setTitle("Delete Course")
                             builder.setMessage("Are you sure you want to remove this course?")
                             builder.setPositiveButton("Yes") { dialog, which ->
                                 if (courseCode != null) {
-                                    database.child(courseCode).removeValue()
                                     database2.child(loggedInStudent).removeValue()
+                                    database.child(courseCode).removeValue()
+                                    replaceFragment(Courses())
                                 }
                                 courseList.removeAt(position)
                                 adapter.notifyItemRemoved(position)
@@ -126,7 +127,6 @@ class Courses : Fragment() {
                             val courseCode = courseList[position].courseCode
                             val courseTitle = courseList[position].courseTitle
                             val viewMaterialFragment = ViewMaterial()
-
                             val args = Bundle()
                             args.putString("courseCode", courseCode)
                             args.putString("courseTitle", courseTitle)
@@ -143,35 +143,42 @@ class Courses : Fragment() {
         })
     }
 
+
+
+
     private fun getFirebaseData(courseCode: String?) {
-        database = FirebaseDatabase.getInstance().getReference("Courses").child(courseCode!!).child("curriculum")
+        database = FirebaseDatabase.getInstance().getReference("Courses").child(courseCode!!)
+            .child("curriculum")
         database.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                if(snapshot.exists()){
+                if (snapshot.exists()) {
                     val curriculumUrl = snapshot.child("curriculumUrl").value.toString()
                     val curriculumName = snapshot.child("curriculumName").value.toString()
                     val bundle = Bundle()
-                    bundle.putString("Url",curriculumUrl)
-                    bundle.putString("Name",curriculumName)
+                    bundle.putString("Url", curriculumUrl)
+                    bundle.putString("Name", curriculumName)
                     val pdfRenderer = PdfReader()
                     pdfRenderer.arguments = bundle
                     val transaction = requireActivity().supportFragmentManager.beginTransaction()
-                    transaction.replace(R.id.dashFrameLayout,pdfRenderer)
+                    transaction.replace(R.id.dashFrameLayout, pdfRenderer)
                     transaction.addToBackStack(null)
                     transaction.commit()
-                }
-                else{
-                    if(::toast.isInitialized)
+                } else {
+                    if (::toast.isInitialized)
                         toast.cancel()
-                    toast = Toast.makeText(requireContext(),"No Curriculum Uploaded", Toast.LENGTH_SHORT)
+                    toast = Toast.makeText(
+                        requireContext(),
+                        "No Curriculum Uploaded",
+                        Toast.LENGTH_SHORT
+                    )
                     toast.show()
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
-                if(::toast.isInitialized)
+                if (::toast.isInitialized)
                     toast.cancel()
-                toast = Toast.makeText(requireContext(),error.message, Toast.LENGTH_SHORT)
+                toast = Toast.makeText(requireContext(), error.message, Toast.LENGTH_SHORT)
                 toast.show()
             }
         })

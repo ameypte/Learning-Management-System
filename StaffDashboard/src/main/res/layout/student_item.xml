@@ -14,14 +14,13 @@
         android:layout_height="wrap_content"
         android:text="Student Name"
         android:textColor="#1E1E1E"
-        android:textSize="24sp"
+        android:textSize="21sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/attendance"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <CheckBox
-        android:id="@+id/attendance"
+        android:id="@+id/chAttendance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scaleX="1.3"
