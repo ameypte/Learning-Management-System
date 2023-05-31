@@ -31,13 +31,58 @@
             android:textColor="#000000"
             android:textSize="20sp" />
 
+        <TextView
+            android:id="@+id/total_students"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/subject_code_title"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"
+            android:text="Total Students: "
+            android:textColor="#000000"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/total_students_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/subject_code_title"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/total_students"
+            android:text="0"
+            android:textColor="#000000"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/subject_code_title"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:text="date"
+            android:textColor="#000000"
+            android:textSize="18dp" />
+
+        <View
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/total_students"
+            android:layout_marginTop="10dp"
+            android:background="#000000" />
+
+
         <DatePicker
             android:id="@+id/datePicker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/subject_code_title"
+            android:layout_below="@+id/line"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="18dp"
             android:layout_marginBottom="10dp" />
 
         <Button
@@ -52,24 +97,25 @@
             android:textSize="18sp" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:visibility="gone"
             android:id="@+id/studentList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/next" />
+            android:layout_below="@+id/next"
+            android:layout_marginTop="10dp"
+            android:visibility="gone" />
+
         <Button
             android:id="@+id/btnSave"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Save"
+            android:layout_below="@+id/studentList"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
             android:paddingHorizontal="29dp"
             android:paddingVertical="12dp"
-            android:layout_below="@+id/studentList"
-            android:layout_marginTop="10dp"
-            android:layout_centerHorizontal="true"
+            android:text="Save"
             android:textSize="18sp"
-            android:visibility="gone"
-            />
+            android:visibility="gone" />
 
 
     </RelativeLayout>

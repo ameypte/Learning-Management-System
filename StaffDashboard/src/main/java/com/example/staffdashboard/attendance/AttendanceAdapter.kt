@@ -1,7 +1,6 @@
 package com.example.staffdashboard.attendance
 
 import android.view.LayoutInflater
-import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
@@ -30,10 +29,12 @@ class AttendanceAdapter(private val itemList: List<Student>) :
     inner class AttendanceHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val studentName: TextView = itemView.findViewById(R.id.student_name)
         val attendance: CheckBox = itemView.findViewById(R.id.chAttendance)
+        val percentage: TextView = itemView.findViewById(R.id.txtPercentage)
 
         fun bind(item: Student) {
             studentName.text = item.idCode + " - " + item.name
             attendance.isChecked = item.attendance
+            percentage.text = item.percentage.toString() + "%"
         }
 
         init {
